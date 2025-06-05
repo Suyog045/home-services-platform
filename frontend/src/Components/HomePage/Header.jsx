@@ -26,7 +26,7 @@ const Header = () => {
                             key={navLink}
                             to={navLink == "Home" ? "/" : `/${navLink.toLowerCase()}`}
                             className={({isActive})=>
-                                `${isActive ? "text-primary" : "text-tertiary"}`
+                                `${isActive ? "text-primary" : "text-tertiary"} hover:text-primary`
                             }
                         >
                             {navLink}
