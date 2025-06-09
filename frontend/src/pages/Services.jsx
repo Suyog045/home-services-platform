@@ -1,5 +1,5 @@
 import React from 'react'
-import ServicesLayout from '../Components/ServicesPage/ServicesLayout'
+import ServicesLayout from '../components/ServicesPage/ServicesLayout'
 
 const Services = () => {
   return <ServicesLayout/>
