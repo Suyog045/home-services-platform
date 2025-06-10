@@ -14,7 +14,6 @@ const Header = () => {
   const navLinkFilter = ["Home", "Services", "About-Us", "Contact-Us"];
 
   return (
-    <ThemeProvider>
       <Navbar fluid rounded className="shadow-2xl ">
         <NavbarBrand className="text-2xl font-semibold">
           Home Services
@@ -42,7 +41,6 @@ const Header = () => {
           </div>
         </NavbarCollapse>
       </Navbar>
-    </ThemeProvider>
   );
 };
 
