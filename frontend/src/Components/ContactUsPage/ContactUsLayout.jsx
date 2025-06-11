@@ -30,35 +30,23 @@ const ContactUsLayout = () => {
   };
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div style={{
-        background: '#05203c',
-        color: '#fff',
-        padding: '24px 0',
-        textAlign: 'center',
-        fontSize: 28,
-        fontWeight: 600,
-        letterSpacing: 1,
-        borderRadius: '0 0 4px 4px'
-      }}>
+    <div className="bg-white min-h-screen">
+      <div className="bg-[#05203c] text-white py-6 text-center text-2xl font-semibold tracking-wide rounded-b-md">
         Contact Us
       </div>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        padding: '40px 32px 32px 32px',
-        maxWidth: 900,
-        margin: '0 auto'
-      }}>
-        <ContactInfo />
-        <ContactForm
-          form={form}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          error={error}
-          success={success}
-        />
+      <div className="flex flex-row flex-wrap gap-4 p-8 max-w-3xl mx-auto">
+        <div className="flex-1 min-w-[320px]">
+          <ContactInfo />
+        </div>
+        <div className="flex-1 min-w-[320px]">
+          <ContactForm
+            form={form}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            error={error}
+            success={success}
+          />
+        </div>
       </div>
       <ContactMap />
     </div>
