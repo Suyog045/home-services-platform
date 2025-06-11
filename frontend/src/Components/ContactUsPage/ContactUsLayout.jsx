@@ -35,7 +35,7 @@ const ContactUsLayout = () => {
         Contact Us
       </div>
       <div className="flex flex-row flex-wrap gap-4 p-8 max-w-3xl mx-auto">
-        <div className="flex-1 min-w-[320px]">
+        <div className="flex-1 min-w-[320px] md:-ml-6">
           <ContactInfo />
         </div>
         <div className="flex-1 min-w-[320px]">
