@@ -4,9 +4,8 @@ import { ThemeConfig } from "flowbite-react"
 function App() {
   return (
     <>
-    <ThemeConfig dark={false}/>
+    <ThemeConfig dark={false} />
     <RouterProvider router={Routes}/>
-
     </>
   )
 }
