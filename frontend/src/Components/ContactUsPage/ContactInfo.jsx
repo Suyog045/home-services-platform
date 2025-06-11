@@ -7,7 +7,7 @@ const ContactInfo = () => (
     <div className="font-semibold text-2xl mb-2">
       We are always ready to help you and answer your questions
     </div>
-    <div className="w-10 h-1 bg-blue-600 mb-6" />
+    <div className="w-24 h-1 bg-secondary rounded-3xl mb-5" />
     <div className="mb-6 text-base">
       <div className="mb-2 flex items-center gap-2">
         <MdEmail size={22} color="#05203c" />

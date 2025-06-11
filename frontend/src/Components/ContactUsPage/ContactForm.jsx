@@ -1,14 +1,8 @@
+import { Button } from 'flowbite-react';
 import React from 'react';
 
 const ContactForm = ({ form, handleChange, handleSubmit, error, success }) => (
-  <div style={{
-    flex: 1,
-    minWidth: 450,
-    background: '#f9f9f9',
-    padding: 24,
-    borderRadius: 8,
-    boxShadow: '0 2px 8px #0001'
-  }}>
+  <div className="flex p-24 rounded shadow-2xl"  >
     <form onSubmit={handleSubmit}>
       <div style={{ marginBottom: 12 }}>
         <label>Name:</label><br />
@@ -52,15 +46,9 @@ const ContactForm = ({ form, handleChange, handleSubmit, error, success }) => (
       </div>
       {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
       {success && <div style={{ color: 'green', marginBottom: 12 }}>{success}</div>}
-      <button type="submit" style={{
-        padding: '8px 24px',
-        background: '#05203c',
-        color: '#fff',
-        border: 'none',
-        borderRadius: 4,
-        fontWeight: 600,
-        cursor: 'pointer'
-      }}>Send</button>
+      <Button className="bg-secondary rounded-4xl hover:bg-secondary cursor-pointer text-nowrap text-md transition-all duration-300 hover:scale-105 gap-1 hover:gap-2 ">
+        Send 
+      </Button>
     </form>
   </div>
 );
