@@ -7,14 +7,13 @@ import {
   NavbarToggle,
   ThemeProvider,
 } from "flowbite-react";
-import { LoginButton } from "../Shared/Button";
+import { SharedButton } from "../Shared/SharedButton";
 import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const navLinkFilter = ["Home", "Services", "About-Us", "Contact-Us"];
 
   return (
-    <ThemeProvider>
       <Navbar fluid rounded className="shadow-2xl ">
         <NavbarBrand className="text-2xl font-semibold">
           Home Services
@@ -37,12 +36,11 @@ const Header = () => {
             ))}
           </div>
           <div className="gap-2 flex items-center flex-col md:flex-row">
-            <LoginButton label="Login" />
-            <LoginButton label="Register" />
+            <SharedButton label="Login" />
+            <SharedButton label="Register" />
           </div>
         </NavbarCollapse>
       </Navbar>
-    </ThemeProvider>
   );
 };
 

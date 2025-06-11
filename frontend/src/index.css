@@ -7,3 +7,11 @@
     --color-secondary:#F9A316;
     --color-tertiary:#302F2F;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
