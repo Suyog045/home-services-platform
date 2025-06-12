@@ -1,3 +1,4 @@
+import { Button } from 'flowbite-react';
 import React from 'react';
 
 const ContactForm = ({ form, handleChange, handleSubmit, error, success }) => (
@@ -45,12 +46,12 @@ const ContactForm = ({ form, handleChange, handleSubmit, error, success }) => (
       </div>
       {error && <div className="text-red-600 font-medium">{error}</div>}
       {success && <div className="text-green-600 font-medium">{success}</div>}
-      <button
+      <Button
         type="submit"
         className="px-6 py-2 bg-secondary text-white rounded font-semibold cursor-pointer hover:bg-secondary/90 transition"
       >
         Send
-      </button>
+      </Button>
     </form>
   </div>
 );

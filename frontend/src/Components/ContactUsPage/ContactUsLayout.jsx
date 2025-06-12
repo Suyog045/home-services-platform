@@ -35,11 +35,11 @@ const ContactUsLayout = () => {
         <h2 className='text-white md:text-center text-4xl md:text-5xl font-semibold mt-12'>Contact Us</h2>
       </div>
 
-      <div className="flex flex-row flex-wrap gap-4 p-8 max-w-3xl mx-auto">
+      <div className="flex flex-col md:flex-row justify-between  gap-8 md:gap-24 p-8 max-w-3xl mx-auto">
         <div className="flex-1 min-w-[320px] md:-ml-6">
           <ContactInfo />
         </div>
-        <div className="flex-1 min-w-[320px]">
+        <div className="flex justify-center min-w-[320px]">
           <ContactForm
             form={form}
             handleChange={handleChange}
