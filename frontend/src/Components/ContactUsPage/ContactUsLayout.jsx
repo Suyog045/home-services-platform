@@ -31,7 +31,7 @@ const ContactUsLayout = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className='bg-primary h-40 w-full flex justify-center items-center' >
+      <div className='bg-primary h-60 w-full flex justify-center items-center' >
         <h2 className='text-white md:text-center md:text-5xl font-semibold'>Contact Us</h2>
       </div>
 
