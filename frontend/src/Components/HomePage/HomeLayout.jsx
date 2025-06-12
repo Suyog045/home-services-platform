@@ -2,7 +2,7 @@ import React from 'react'
 import HeroSection from './HeroSection'
 import OurServiceSection from './OurServiceSection'
 import HomeFeature from './HomeFeature'
-import Testinomial from './Testinomial'
+import Testinomial from './Testimonial'
 
 const HomeLayout = () => {
   return (
