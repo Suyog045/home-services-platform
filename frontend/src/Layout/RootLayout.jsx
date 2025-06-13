@@ -5,10 +5,7 @@ import FootBar from "../Components/HomePage/Footer";
 const RootLayout = () => {
   return (
     <div>
-        <div className="h-2 bg-primary"/>
-      <div>
-        <Header />
-      </div>
+          <Header />
       <div>
         <Outlet />
       </div>
