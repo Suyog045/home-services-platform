@@ -10,12 +10,24 @@ import {
 import { SharedButton } from "../Shared/SharedButton";
 import { NavLink } from "react-router-dom";
 
+const customTheme = createTheme(
+  {
+  navbar: {
+    link: {
+      active: {
+        on: "text-primary border-b-2 border-primary",
+        off: "text-secondary",
+      },
+    },
+  },
+}
+)
 const Header = () => {
   const navLinkFilter = ["Home", "Services", "About-Us", "Contact-Us"];
 
   return (
-      <Navbar fluid rounded className="shadow-2xl ">
-        <NavbarBrand className="text-2xl font-semibold">
+      <Navbar theme={customTheme} className="fixed w-full z-50 rounded md:rounded-4xl transition-transform duration-300 mt-3 shadow-2xl ">
+        <NavbarBrand className="text-2xl font-semibold text-center">
           Home Services
         </NavbarBrand>
         <NavbarToggle />
@@ -35,12 +47,12 @@ const Header = () => {
               </NavLink>
             ))}
           </div>
-          <div className="gap-2 flex items-center flex-col md:flex-row">
+          <div className="mt-3 md:mt-0 gap-2 flex items-center flex-col md:flex-row">
             <SharedButton label="Login" />
             <SharedButton label="Register" />
           </div>
         </NavbarCollapse>
-      </Navbar>
+        </Navbar>
   );
 };
 
