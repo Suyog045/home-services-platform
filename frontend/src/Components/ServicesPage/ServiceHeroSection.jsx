@@ -3,10 +3,9 @@ import React from 'react'
 
 const ServiceHeroSection = () => {
     return (
-        <div className='h-40 bg-primary mb-4 flex justify-center gap-10 '>
-            <div className='flex gap-5 flex-col justify-center'>
-                <h2 className='text-white text-6xl font-bold text-wrap '>Service</h2>
-            </div>
+        <div className="bg-primary h-60 w-full flex justify-center items-center ">
+                 <h2 className='text-white md:text-center text-4xl md:text-5xl font-semibold mt-12'>Service </h2>
+            
         </div>
     )
 }

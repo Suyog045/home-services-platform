@@ -1,126 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ServicePageCard from "./ServicePageCard";
-
-// Dummy data (you can move this to a separate file if preferred)
-const services = [
-  {
-    category: "Cleaning Services",
-    items: [
-      "Home deep cleaning",
-      "Bathroom cleaning",
-      "Kitchen cleaning",
-      "Sofa & carpet cleaning",
-      "Water tank cleaning",
-      "Pest control & termite treatment"
-    ]
-  },
-  {
-    category: "Electrical Services",
-    items: [
-      "Fan, light & switch installation",
-      "Inverter & stabilizer setup",
-      "Wiring and circuit repair",
-      "MCB, fuse, and circuit board fixes",
-      "Electrical appliance installation"
-    ]
-  },
-  {
-    category: "Carpentry Services",
-    items: [
-      "Door and window repair",
-      "Furniture repair and polishing",
-      "Modular kitchen fittings",
-      "Wardrobe or shelf installation",
-      "Wooden flooring work"
-    ]
-  },
-  {
-    category: "Appliance Repair and Installation",
-    items: [
-      "AC servicing & repair",
-      "Washing machine repair",
-      "Refrigerator repair",
-      "Water purifier service",
-      "Microwave, chimney, and geyser servicing"
-    ]
-  },
-  {
-    category: "Home Renovation & Maintenance",
-    items: [
-      "Painting (interior & exterior)",
-      "POP & false ceiling",
-      "Wallpaper installation",
-      "Waterproofing",
-      "Civil work (tiling, flooring, etc.)"
-    ]
-  },
-  {
-    category: "Pest Control",
-    items: [
-      "Cockroach control",
-      "Termite control",
-      "Rodent control",
-      "Bedbug treatment",
-      "General disinfection"
-    ]
-  },
-  {
-    category: "Home Security Services",
-    items: [
-      "CCTV installation & repair",
-      "Doorbell camera setup",
-      "Smart lock setup",
-      "Alarm system installation"
-    ]
-  },
-  {
-    category: "Safety & Compliance",
-    items: [
-      "Fire extinguisher installation",
-      "Smoke detector setup",
-      "Gas leak detector installation"
-    ]
-  },
-  {
-    category: "Home Improvement Services",
-    items: [
-      "Interior design & consultation",
-      "Modular furniture setup",
-      "Home automation setup",
-      "Curtain rod, mirror, and frame fitting"
-    ]
-  },
-  {
-    category: "Miscellaneous Services",
-    items: [
-      "Packers & Movers",
-      "Handyman for odd jobs",
-      "Home sanitization",
-      "Garden & landscaping",
-      "Swimming pool maintenance"
-    ]
-  }
-];
+import { fetchServices } from "../../api/Services";
+import { MdCleaningServices, MdDesignServices, MdElectricalServices, MdOutlineMiscellaneousServices, MdPestControl } from "react-icons/md";
+import { GrCompliance, GrShieldSecurity, GrUpgrade } from "react-icons/gr";
+import { GiAutoRepair } from "react-icons/gi";
+import { SiRenovate } from "react-icons/si";
 
 const MultiServiceSection = () => {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const serviceIcon = 
+    {"Cleaning Services":<MdCleaningServices className="text-5xl" />,"Electrical Services" : <MdElectricalServices className="text-5xl" />
+      ,"Carpentry Services":<MdDesignServices className="text-5xl" />
+      ,"Appliance Repair and Installation":<GiAutoRepair className="text-5xl" />
+      ,"Home Renovation & Maintenance":<SiRenovate className="text-5xl" />,
+      "Pest Control":<MdPestControl className="text-5xl" />,"Home Security Services":<GrShieldSecurity className="text-5xl" />
+      ,"Safety & Compliance": <GrCompliance className="text-5xl" />,
+      "Home Improvement Services":<GrUpgrade className="text-5xl" />
+      ,"Miscellaneous Services":<MdOutlineMiscellaneousServices className="text-5xl" />};
+
+  useEffect(() => {
+    const loadServices = async () => {
+      const data = await fetchServices();
+      setServices(data);
+      setLoading(false);
+    };
+
+    loadServices();
+  }, []);
+
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-2 items-center">
-        <div className="text-center">
+      <div className="flex flex-col gap-2 items-center mt-10">
+        <div className="text-center flex flex-col justify-center items-center md:items-start gap-2">
           <h2 className="text-black text-3xl font-semibold mb-1 whitespace-normal">
             Browse By Category
           </h2>
-          <div className="w-24 h-1 bg-green-600 rounded-3xl" />
+          <div className="w-24 h-1 bg-secondary rounded-3xl" />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-4 p-4">
-          {services.map((service, index) => (
-            <ServicePageCard
-              key={index}
-              category={service.category}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <p className="text-gray-600 mt-4">Loading services...</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:grid-cols-4 p-4">
+            {services.map((service, index) => (
+              <ServicePageCard key={index} category={service.category} serviceIcon={serviceIcon[service.category]} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
