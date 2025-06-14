@@ -1,8 +1,13 @@
 import React from 'react'
+import ServiceHeroSection from './ServiceHeroSection'
+import MultiServiceSection from './MultiServiceSection'
 
 const ServicesLayout = () => {
   return (
-    <div className='text-primary h-100'>Services</div>
+    <div className='text-primary'>
+         <ServiceHeroSection/>
+         <MultiServiceSection/>
+    </div>
   )
 }
 
