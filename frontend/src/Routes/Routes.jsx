@@ -5,6 +5,7 @@ import Home from '../pages/Home'
 import Services from '../pages/Services'
 import AboutUs from '../pages/AboutUs'
 import ContactUs from '../pages/ContactUs'
+import CleaningServicePage from '../pages/ServicePages/CleaningServicePage'
 
 const Routes = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ const Routes = createBrowserRouter([
             {
                 path:"/services",
                 element:<Services/>
+            },
+            {
+                path:"/services/cleaning-services",
+                element:<CleaningServicePage/>
             },
             {
                 path:"/about-us",

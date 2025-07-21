@@ -5,10 +5,13 @@ import { MdCleaningServices, MdDesignServices, MdElectricalServices, MdOutlineMi
 import { GrCompliance, GrShieldSecurity, GrUpgrade } from "react-icons/gr";
 import { GiAutoRepair } from "react-icons/gi";
 import { SiRenovate } from "react-icons/si";
+import {Link} from "react-router-dom"
 
 const MultiServiceSection = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const slugify = (str) => str.toLowerCase().replace(/\s+/g, '-');
 
   const serviceIcon = 
     {"Cleaning Services":<MdCleaningServices className="text-5xl" />,"Electrical Services" : <MdElectricalServices className="text-5xl" />
@@ -45,7 +48,12 @@ const MultiServiceSection = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:grid-cols-4 p-4">
             {services.map((service, index) => (
-              <ServicePageCard key={index} category={service.category} serviceIcon={serviceIcon[service.category]} />
+              <Link to={`/services/${slugify(service.category)}`} key={index}>
+                <ServicePageCard
+                  category={service.category}
+                  serviceIcon={serviceIcon[service.category]}
+                />
+              </Link>
             ))}
           </div>
         )}
@@ -53,5 +61,5 @@ const MultiServiceSection = () => {
     </div>
   );
 };
-
+// 
 export default MultiServiceSection;
