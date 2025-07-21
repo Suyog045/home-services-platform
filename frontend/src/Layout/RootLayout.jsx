@@ -7,10 +7,10 @@ const RootLayout = () => {
     <div>
           <Header />
       <div>
-        <Outlet />
+          <Outlet />
       </div>
       <div>
-        <FootBar />
+          <FootBar />
       </div>
     </div>
   );
