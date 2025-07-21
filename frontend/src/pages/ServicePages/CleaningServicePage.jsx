@@ -1,5 +1,5 @@
 import React from 'react'
-import CleaningServiceLayout from '../../Components/ServicesPage/ServicePages/CleaningService/CleaningServiceLayout'
+import CleaningServiceLayout from '../../Components/ServicesPage/Pages/CleaningService/CleaningServiceLayout'
 
 const CleaningServicePage = () => {
   return <CleaningServiceLayout/>
