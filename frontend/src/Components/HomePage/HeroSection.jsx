@@ -19,14 +19,8 @@ const HeroSection = () => {
         <div className='md:h-100 flex'>
             <img className='h-84 md:h-154 md:mt-23.5' src="/images/background.png" alt="" />
         </div>
-      </div>
-      <div className="md:h-100 flex">
-        <img
-          className="h-84 md:h-154 md:mt-23.5"
-          src="/images/background.png"
-          alt=""
-        />
-      </div>
+      
+    
     </div>
   );
 };
