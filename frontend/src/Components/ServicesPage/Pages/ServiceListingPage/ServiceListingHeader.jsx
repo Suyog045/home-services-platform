@@ -1,17 +1,22 @@
+import { Button } from 'flowbite-react'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-const CleaningServiceHeader = () => {
+const ServiceListingHeader = () => {
   return (
     <div className="flex flex-col md:flex-row w-full h-150 bg-white rounded-lg overflow-hidden justify-around items-center ">
   <div className="md:w-1/3 p-10 flex flex-col justify-center items-start bg-white">
-    <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4">Cleaning Services</h1>
+    <h1 className="text-3xl md:text-6xl text-nowrap font-bold text-primary mb-4">Cleaning Services</h1>
     <p className="text-gray-600 mb-6">
       Subsidized housing programs, government schemes, and co-operative housing societies
       often provide more affordable options
     </p>
-    <button className="bg-yellow-400 hover:bg-yellow-500 text-white px-5 py-2 rounded-lg font-medium">
-      Get your work done →
-    </button>
+    <Link to="/services/cleaning-services">
+      <Button className="bg-secondary hover:bg-secondary-hover text-white px-5 py-2 rounded-lg font-medium ">
+        Get your work done <span className="text-2xl">&#8594;</span>
+      </Button>
+    </Link>
+    
   </div>
 
   <div className="h-full w-1/3 flex justify=center items-center">
@@ -26,4 +31,4 @@ const CleaningServiceHeader = () => {
   )
 }
 
-export default CleaningServiceHeader
+export default ServiceListingHeader

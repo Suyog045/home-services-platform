@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import CleaningServiceCard from '../CleaningServiceCard'
+import ServiceProfileCard from '../Card/ServiceProfileCard'
 
-const CleaningServicePage = () => {
+const ServiceListings = () => {
   const [providers, setProviders] = useState([])
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const CleaningServicePage = () => {
   return (
     <div className="flex flex-col items-center gap-6 mt-10 px-4">
       {providers.map((provider, index) => (
-        <CleaningServiceCard key={index} {...provider} />
+        <ServiceProfileCard key={index} {...provider} />
       ))}
     </div>
   )
 }
 
-export default CleaningServicePage
+export default ServiceListings
