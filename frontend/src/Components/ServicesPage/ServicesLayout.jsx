@@ -11,4 +11,4 @@ const ServicesLayout = () => {
   )
 }
 
-export default ServicesLayout
+export default ServicesLayout;

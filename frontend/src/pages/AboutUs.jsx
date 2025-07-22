@@ -1,9 +1,8 @@
-import React from 'react'
-import AboutUsLayout from '../components/AboutUsPage/AboutUsLayout'
+import React from "react";
+import AboutUsLayout from "../components/AboutUsPage/AboutUsLayout";
 
 const AboutUs = () => {
-  return <AboutUsLayout/>
-  
-}
+  return <AboutUsLayout />;
+};
 
-export default AboutUs
+export default AboutUs;

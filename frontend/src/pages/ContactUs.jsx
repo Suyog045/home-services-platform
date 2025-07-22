@@ -1,8 +1,8 @@
-import React from 'react'
-import ContactUsLayout from '../components/ContactUsPage/ContactUsLayout'
+import React from "react";
+import ContactUsLayout from "../components/ContactUsPage/ContactUsLayout";
 
 const ContactUs = () => {
-  return <ContactUsLayout/>
-}
+  return <ContactUsLayout />;
+};
 
-export default ContactUs
+export default ContactUs;
