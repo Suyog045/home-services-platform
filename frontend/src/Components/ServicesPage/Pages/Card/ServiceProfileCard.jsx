@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const CleaningServiceCard = ({ name, image, specialty, experience, charges, availability, userId }) => {
+const ServiceProfileCard = ({ name, image, specialty, experience, charges, availability, userId }) => {
   return (
     <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-3xl flex items-center gap-6">
       <img
@@ -33,4 +33,4 @@ const CleaningServiceCard = ({ name, image, specialty, experience, charges, avai
   )
 }
 
-export default CleaningServiceCard
+export default ServiceProfileCard
