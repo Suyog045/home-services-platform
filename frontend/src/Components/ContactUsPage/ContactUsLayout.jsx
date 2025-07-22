@@ -1,38 +1,40 @@
-import React, { useState } from 'react';
-import ContactInfo from './ContactInfo';
-import ContactForm from './ContactForm';
-import ContactMap from './ContactMap';
+import React, { useState } from "react";
+import ContactInfo from "./ContactInfo";
+import ContactForm from "./ContactForm";
+import ContactMap from "./ContactMap";
 
 const ContactUsLayout = () => {
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.subject || !form.message) {
-      setError('Please fill in all fields.');
+      setError("Please fill in all fields.");
       return;
     }
-    setSuccess('Thank you for contacting us! We will get back to you soon.');
-    setForm({ name: '', email: '', subject: '', message: '' });
+    setSuccess("Thank you for contacting us! We will get back to you soon.");
+    setForm({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
     <div className="bg-white min-h-screen">
-      <div className='bg-primary h-60 w-full flex justify-center items-center' >
-        <h2 className='text-white md:text-center text-4xl md:text-5xl font-semibold mt-12'>Contact Us</h2>
+      <div className="bg-primary h-60 w-full flex justify-center items-center">
+        <h2 className="text-white md:text-center text-4xl md:text-5xl font-semibold mt-12">
+          Contact Us
+        </h2>
       </div>
 
       <div className="flex flex-col md:flex-row justify-between  gap-8 md:gap-24 p-8 max-w-3xl mx-auto">

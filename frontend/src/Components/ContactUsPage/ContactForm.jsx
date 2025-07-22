@@ -1,5 +1,5 @@
-import { Button } from 'flowbite-react';
-import React from 'react';
+import { Button } from "flowbite-react";
+import React from "react";
 
 const ContactForm = ({ form, handleChange, handleSubmit, error, success }) => (
   <div className="flex-1 min-w-[350px] md:min-w-[450px] bg-gray-50 p-6 md:p-8 rounded-lg shadow-lg">
@@ -25,7 +25,9 @@ const ContactForm = ({ form, handleChange, handleSubmit, error, success }) => (
         />
       </div>
       <div>
-        <label className="block text-gray-700 font-semibold mb-1">Subject:</label>
+        <label className="block text-gray-700 font-semibold mb-1">
+          Subject:
+        </label>
         <input
           type="text"
           name="subject"
@@ -35,7 +37,9 @@ const ContactForm = ({ form, handleChange, handleSubmit, error, success }) => (
         />
       </div>
       <div>
-        <label className="block text-gray-700 font-semibold mb-1">Message:</label>
+        <label className="block text-gray-700 font-semibold mb-1">
+          Message:
+        </label>
         <textarea
           name="message"
           value={form.message}

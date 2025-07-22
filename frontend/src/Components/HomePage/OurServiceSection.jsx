@@ -16,9 +16,9 @@ const OurServiceSection = () => {
         </div>
         <div>
           <Link to={"services"}>
-          <Button className="bg-secondary rounded-4xl hover:bg-secondary cursor-pointer text-nowrap text-md transition-all duration-300 hover:scale-105 md:flex gap-1 hover:gap-2 hidden">
-            Explore More <span className="text-2xl">&#8594;</span>
-          </Button>
+            <Button className="bg-secondary rounded-4xl hover:bg-secondary cursor-pointer text-nowrap text-md transition-all duration-300 hover:scale-105 md:flex gap-1 hover:gap-2 hidden">
+              Explore More <span className="text-2xl">&#8594;</span>
+            </Button>
           </Link>
         </div>
       </div>
@@ -28,12 +28,12 @@ const OurServiceSection = () => {
         ))}
       </div>
       <div className="mt-5 md:hidden">
-          <Link to={"services"}>
-            <Button className="bg-secondary rounded-4xl hover:bg-secondary cursor-pointer text-nowrap transition-all duration-300 hover:scale-105 gap-1 hover:gap-2 ">
-              Explore More <span className="text-2xl">&#8594;</span>
-            </Button>
-          </Link>
-        </div>
+        <Link to={"services"}>
+          <Button className="bg-secondary rounded-4xl hover:bg-secondary cursor-pointer text-nowrap transition-all duration-300 hover:scale-105 gap-1 hover:gap-2 ">
+            Explore More <span className="text-2xl">&#8594;</span>
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };
