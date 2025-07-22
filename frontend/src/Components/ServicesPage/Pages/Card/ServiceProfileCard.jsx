@@ -1,4 +1,5 @@
 // src/Components/CleaningServiceCard.jsx
+import { Button } from 'flowbite-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -18,11 +19,11 @@ const ServiceProfileCard = ({ name, image, specialty, experience, charges, avail
           Charges: ₹{charges}/-
         </p>
       </div>
-      <div className="text-center">
+      <div className="text-center flex flex-col items-center">
         <p className="text-green-600 font-semibold mb-2">{availability}</p>
-        <button className="bg-secondary text-white px-4 py-2 rounded-full">
+        <Button className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-secondary-hover cursor-pointer">
           Book Visit
-        </button>
+        </Button>
         <div className="mt-2">
           <Link to={`/profile/${userId}`} className="text-sm text-blue-600 hover:underline">
             View Profile →

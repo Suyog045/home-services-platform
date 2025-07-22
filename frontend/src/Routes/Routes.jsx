@@ -21,7 +21,7 @@ const Routes = createBrowserRouter([
                 element:<Services/>
             },
             {
-                path:"/services/cleaning-services",
+                path:"/services/:serviceType",
                 element:<ServiceListingPage/>
             },
             {
