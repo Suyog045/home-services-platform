@@ -18,10 +18,10 @@ const Testinomial = () => {
       </div>
       <div className="overflow-hidden w-full">
         <div className="relative w-max flex overflow-hidden gap-4 animate-slide ">
-            {[...Array(10)].map((card) => (
+          {[...Array(10)].map((card) => (
             <TestinomialCard />
           ))}
-      </div>
+        </div>
       </div>
     </div>
   );

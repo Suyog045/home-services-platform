@@ -1,6 +1,6 @@
-import React from 'react';
-import { MdEmail, MdPhone } from 'react-icons/md';
-import { FaMapMarkerAlt } from 'react-icons/fa';
+import React from "react";
+import { MdEmail, MdPhone } from "react-icons/md";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 const ContactInfo = () => (
   <div className="flex-1 mr-8">
@@ -24,7 +24,8 @@ const ContactInfo = () => (
       <div className="flex items-center gap-2">
         <FaMapMarkerAlt size={20} color="#05203c" />
         <span>
-          <span className="font-medium">Address:</span> Hinjawadi Phase 2, Pune, Maharashtra 411057
+          <span className="font-medium">Address:</span> Hinjawadi Phase 2, Pune,
+          Maharashtra 411057
         </span>
       </div>
     </div>

@@ -12,7 +12,7 @@ export const SharedButton = ({label}) => {
     <>
     <Button onClick={handleAuthBtn} className='bg-secondary rounded-4xl hover:bg-secondary cursor-pointer w-24 text-nowrap font-medium'>
         {label}
-    </Button>
+      </Button>
     </>
-  )
-}
+  );
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const ContactMap = () => (
   <div className="bg-gray-200 h-[300px] flex items-center justify-center font-semibold text-lg mt-6 rounded-lg overflow-hidden">
