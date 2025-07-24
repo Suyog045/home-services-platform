@@ -1,44 +1,68 @@
 import { ColorModeContext } from "./theme";
 import { useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import Topbar from "./scenes/global/Topbar";
-import Dashboard from "./scenes/dashboard/index.jsx";
-import Sidebar from "./scenes/global/Sidebar";
-import { Route, Routes } from "react-router-dom";
-// import Partners from "./scenes/partners/Partners";
-// import Line from "./scenes/line/Line";
-// import Pie from "./scenes/pie/Pie";
-// import Bar from "./scenes/bar/Bar";
-// import Geography from "./scenes/geography/Geography";
-
-// import Orders from './scenes/orders/Orders';
-// import Profile from './scenes/profile/Profile';
-// import Calendar from './scenes/calendar/Calendar';
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import Dashboard from "./scenes/dashboard";
+import Partners from "./scenes/Partners/Verified";
+import UnPartners from "./scenes/Partners/Unverified";
+import Logout from "./scenes/Logout";
+import Profile from "./scenes/Profile";
+import Login from "./Auth/Login";
+import Layout from "./Layout/Layout";
+import { useEffect, useState } from "react";
 
 function App() {
   const [theme, colorMode] = useMode();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const isProtectedRoute = location.pathname !== "/";
+    if (!isLoggedIn && isProtectedRoute) {
+      navigate("/");
+    }
+  }, [isLoggedIn, location.pathname, navigate]);
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className="app">
-          <Sidebar />
-          <main className="content">
-            <Topbar />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-            </Routes>
-            {/* <Route path="/partners" element={<Partners />} /> */}
-            {/* <Route path="/orders" element={<Orders />} /> */}
-            {/* <Route path="/profile" element={<Profile />} /> */}
-            {/* <Route path="/calendar" element={<Calendar />} /> */}
-            {/* <Route path="/line" element={<Line />} /> */}
-            {/* <Route path="/bar" element={<Bar />} /> */}
-            {/* <Route path="/pie" element={<Pie />} /> */}
-            {/* <Route path="/geography" element={<Geography />} /> */}
-            {/* <Route path="/logout" element={<Logout />} /> */}
-          </main>
-        </div>
+        <Routes>
+          {/* Login page */}
+          <Route
+            path="/"
+            element={
+              <Login
+                onLogin={() => {
+                  setIsLoggedIn(true);
+                  navigate("/dashboard");
+                }}
+              />
+            }
+          />
+
+          {/* Protected routes wrapped with Layout */}
+          {isLoggedIn && (
+            <Route element={<Layout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/partners/Verified" element={<Partners />} />
+              <Route path="/partners/Unverified" element={<UnPartners />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route
+                path="/logout"
+                element={
+                  <Logout
+                    onLogout={() => {
+                      setIsLoggedIn(false);
+                      navigate("/");
+                    }}
+                  />
+                }
+              />
+            </Route>
+          )}
+        </Routes>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

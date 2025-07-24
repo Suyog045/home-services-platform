@@ -7,12 +7,12 @@ export const tokens = (mode) =>
     ? {
         grey: {
           100: "#e0e0e0",
-          200: "#c2c2c2",
+          200: "#e0e0e0",
           300: "#a3a3a3",
           400: "#858585",
           500: "#666666",
           600: "#525252",
-          700: "#3d3d3d",
+          700: "#FFFFFF",
           800: "#292929",
           900: "#141414",
         },
@@ -25,20 +25,20 @@ export const tokens = (mode) =>
           500: "#141b2d",
           600: "#101624",
           700: "#0c101b",
-          800: "#080b12",
+          800: "#1f2A40",
           900: "#040509",
         },
 
-        greenAccent: {
-          100: "#dbf5ee",
-          200: "#b7ebde",
-          300: "#94e2cd",
-          400: "#70d8bd",
-          500: "#4cceac",
-          600: "#3da58a",
-          700: "#2e7c67",
-          800: "#1e5245",
-          900: "#0f2922",
+        orangeYellowAccent: {
+          100: "#fff2db",
+          200: "#ffe0b7",
+          300: "#ffcd94",
+          400: "#ffbb70",
+          500: "#f9a316", 
+          600: "#c27f12",
+          700: "#FFFFFF",
+          800: "#533c09",
+          900: "#1d1b04",
         },
 
         redAccent: {
@@ -68,12 +68,12 @@ export const tokens = (mode) =>
     : {
         grey: {
           100: "#141414",
-          200: "#292929",
-          300: "#3d3d3d",
-          400: "#525252",
+          200: "#e0e0e0",
+          300: "#e0e0e0",
+          400: "#888888",
           500: "#666666",
           600: "#858585",
-          700: "#a3a3a3",
+          700: "#FFFFFF",
           800: "#c2c2c2",
           900: "#e0e0e0",
         },
@@ -82,24 +82,24 @@ export const tokens = (mode) =>
           100: "#040509",
           200: "#080b12",
           300: "#0c101b",
-          400: "#1a2e45",
-          500: "#ffffff",
+          400: "#001837",
+          500: "#001837",
           600: "#434957",
           700: "#727681",
-          800: "#a1a4ab",
+          800: "#263349",
           900: "#d0d1d5",
         },
 
-        greenAccent: {
-          100: "#0f2922",
-          200: "#1e5245",
-          300: "#2e7c67",
-          400: "#3da58a",
-          500: "#4cceac",
-          600: "#70d8bd",
-          700: "#94e2cd",
-          800: "#b7ebde",
-          900: "#dbf5ee",
+        orangeYellowAccent: {
+          100: "#1d1b04",
+          200: "#533c09",
+          300: "#8a5e0d",
+          400: "#c27f12",
+          500: "#e68a00", 
+          600: "#ffbb70",
+          700: "#ffcd94",
+          800: "#ffe0b7",
+          900: "#fff2db",
         },
 
         redAccent: {
@@ -139,7 +139,7 @@ export const themeSettings = (mode) => {
               main: colors.primary[500],
             },
             secondary: {
-              main: colors.greenAccent[500],
+              main: colors.orangeYellowAccent[500],
             },
             neutral: {
               dark: colors.grey[700],
@@ -155,7 +155,7 @@ export const themeSettings = (mode) => {
               main: "#f5f5f5",
             },
             secondary: {
-              main: colors.greenAccent[500],
+              main: colors.orangeYellowAccent[500],
             },
             neutral: {
               dark: colors.grey[700],
@@ -211,7 +211,7 @@ export const useMode = () => {
       toggleColorMode: () =>
         setMode((prev) => (prev === "light" ? "dark" : "light")),
     }),
-    [],
+    []
   );
 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);

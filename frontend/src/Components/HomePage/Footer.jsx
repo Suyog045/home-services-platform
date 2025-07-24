@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const footerTheme = createTheme({
   root: {
-    base: "w-full bg-white shadow md:flex md:items-center md:justify-between dark:bg-primary rounded-none",
+    base: "w-full bg-primary shadow md:flex md:items-center md:justify-between rounded-none",
     container: "w-full p-6",
     bgDark: "bg-primary",
   },

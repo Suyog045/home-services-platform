@@ -1,7 +1,8 @@
 import { Box, IconButton, useTheme } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
-import InputBase from "@mui/material/InputBase";
+import Badge from "@mui/material/Badge";
+
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
@@ -14,9 +15,9 @@ const Topbar = () => {
   const colorMode = useContext(ColorModeContext);
 
   return (
-    <Box display="flex" justifyContent="right" p={2}>
-      {/* ICONS */}
-      <Box display="flex">
+    <Box display="flex" justifyContent="flex-end" p={2}>
+      <Box display="flex" alignItems="center" gap={1}>
+        {/* Theme Toggle Icon */}
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon sx={{ color: colors.grey[100] }} />
@@ -24,12 +25,20 @@ const Topbar = () => {
             <LightModeOutlinedIcon sx={{ color: colors.grey[100] }} />
           )}
         </IconButton>
+
+        {/* Notifications with Badge */}
         <IconButton>
-          <NotificationsOutlinedIcon sx={{ color: colors.grey[100] }} />
+          <Badge badgeContent={4} color="warning">
+            <NotificationsOutlinedIcon sx={{ color: colors.grey[100] }} />
+          </Badge>
         </IconButton>
+
+        {/* Settings */}
         <IconButton>
           <SettingsOutlinedIcon sx={{ color: colors.grey[100] }} />
         </IconButton>
+
+        {/* Profile */}
         <IconButton>
           <PersonOutlinedIcon sx={{ color: colors.grey[100] }} />
         </IconButton>
