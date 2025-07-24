@@ -24,7 +24,6 @@ const PersonalInfo = () => {
     const [UpdateButton, setUpdateButton] = useState(false);
     const handleUpdateButton = () => {
         if (editable) {
-            // Logic to update the user information
             console.log('User information updated:', formData);
         }
         setEditable(false);
@@ -44,7 +43,6 @@ const PersonalInfo = () => {
       <h2 className="text-lg font-semibold mb-6">Personal Information</h2>
 
       <div className="flex items-start space-x-6">
-        {/* Profile Image */}
         <div className="flex-shrink-0">
           <img
             src={profileImg}
@@ -53,12 +51,11 @@ const PersonalInfo = () => {
           />
         </div>
 
-        {/* Input Grid */}
         <div className="grid grid-cols-2 gap-4 flex-grow">
           <input
             type="text"
             value={formData.firstName}
-            readOnly={true}
+            readOnly={!editable}
             name='firstName'
             onChange={(e)=>handleChange(e)}
             className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
@@ -66,7 +63,7 @@ const PersonalInfo = () => {
           <input
             type="text"
             value={formData.lastName}
-            readOnly
+            readOnly={!editable}
             name='lastName'
             onChange={(e)=>handleChange(e)}
             className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
@@ -74,7 +71,7 @@ const PersonalInfo = () => {
           <input
             type="email"
             value={formData.email}
-            readOnly
+            readOnly={!editable}
             name='email'
             onChange={(e)=>handleChange(e)}
             className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
@@ -82,7 +79,7 @@ const PersonalInfo = () => {
           <input
             type="tel"
             value={formData.phone}
-            readOnly
+            readOnly={!editable}
             name='phone'
             onChange={(e)=>handleChange(e)}
             className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
