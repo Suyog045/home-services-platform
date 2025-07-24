@@ -1,27 +1,31 @@
 import { useState } from "react";
-import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-// import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-// import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-// import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-// import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-// import MapOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
+import NewReleasesOutlinedIcon from "@mui/icons-material/NewReleasesOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
-const Item = ({ title, to, icon, selected, setSelected, customClass }) => {
+const Item = ({
+  title,
+  to,
+  icon,
+  selected,
+  setSelected,
+  customClass,
+  isCollapsed,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  return (
+  const content = (
     <MenuItem
       active={selected === title}
       className={customClass}
@@ -33,7 +37,16 @@ const Item = ({ title, to, icon, selected, setSelected, customClass }) => {
       <Link to={to} />
     </MenuItem>
   );
+
+  return isCollapsed ? (
+    <Tooltip title={title} placement="right">
+      <Box>{content}</Box>
+    </Tooltip>
+  ) : (
+    content
+  );
 };
+
 const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -43,26 +56,49 @@ const Sidebar = () => {
   return (
     <Box
       sx={{
+        display: "flex",
+        flexDirection: "column",
+        "& .pro-sidebar": {
+          height: "100%",
+          color: `${colors.grey[700]} !important`,
+        },
         "& .pro-sidebar-inner": {
+          height: "100%",
           background: `${colors.primary[400]} !important`,
+        },
+        "& .pro-menu": {
+          height: "100%",
+        },
+        "& .pro-menu-item": {
+          height: "auto",
+          color: `${colors.grey[700]} !important`,
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
         },
+        "& .pro-icon": {
+          color: `${colors.grey[700]} !important`,
+        },
+        "& .pro-inner-item:hover .pro-icon": {
+          color: `${colors.orangeYellowAccent[500]} !important`,
+        },
+
         "& .pro-inner-item": {
           padding: "5px 35px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
+          backgroundColor: `${colors.primary[600]} !important`,
+          borderRadius: "8px",
+          color: `${colors.orangeYellowAccent[500]} !important`,
         },
         "& .pro-menu-item.active": {
-          color: "#6870fa !important",
+          color: `${colors.orangeYellowAccent[500]} !important`,
         },
-        "& .logout-menu .pro-inner-item:hover": {
+        "& .logout-menu .pro-inner-item": {
           color: "red !important",
-        },
-        "& .logout-menu .pro-inner-item:hover svg": {
-          color: "red !important",
+          "& svg": {
+            color: "red !important",
+          },
         },
       }}
     >
@@ -71,26 +107,29 @@ const Sidebar = () => {
           {/* LOGO AND TOGGLE ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={<MenuOutlinedIcon />}
+            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
-              color: colors.grey[400],
+              color: colors.grey[700],
             }}
           >
             {!isCollapsed && (
               <Box
                 display="flex"
-                justifyContent="space-between"
+                justifyContent="space-around"
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[700]}>
-                  Admin
+                <Typography variant="h3" color="white">
+                  Admins
                 </Typography>
+                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                   <MenuOutlinedIcon sx={{ color: "#fff" }} />
+                </IconButton>
               </Box>
             )}
           </MenuItem>
-          {/* MENU ITEMS */}
+
           {!isCollapsed && (
             <Box mb="25px">
               <Box display={"flex"} justifyContent="center" alignItems="center">
@@ -105,13 +144,16 @@ const Sidebar = () => {
               <Box textAlign={"center"}>
                 <Typography
                   variant="h4"
-                  color={colors.grey[600]}
+                  color="white"
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0 " }}
                 >
                   Mahboob Alam
                 </Typography>
-                <Typography variant="h6" color={colors.greenAccent[500]}>
+                <Typography
+                  variant="h6"
+                  sx={{ color: colors.orangeYellowAccent[500] }}
+                >
                   Full stack dev
                 </Typography>
               </Box>
@@ -122,59 +164,41 @@ const Sidebar = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
-              to="/"
+              to="/dashboard"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isCollapsed={isCollapsed}
             />
-            <Item
-              title="Partners"
-              to="/partner"
+            <SubMenu
+              title="Manage Partners"
               icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            {/* <Item
-                          title="Calendar"
-                          to="/calendar"
-                          icon={<CalendarTodayOutlinedIcon />}
-                          selected={selected}
-                          setSelected={setSelected}   
-                          />
-                          <Item
-                          title="Bar Chart"
-                          to="/bar"
-                          icon={<BarChartOutlinedIcon />}
-                          selected={selected}
-                          setSelected={setSelected}   
-                          />
-                          <Item
-                          title="Pie Chart"
-                          to="/pie"
-                          icon={<PieChartOutlineOutlinedIcon />}
-                          selected={selected}
-                          setSelected={setSelected}   
-                          />
-                          <Item
-                          title="Line Chart"
-                          to="/line"
-                          icon={<TimelineOutlinedIcon />}
-                          selected={selected}
-                          setSelected={setSelected}   
-                          />
-                          <Item
-                          title="Geography Chart"
-                          to="/geography"
-                          icon={<MapOutlinedIcon />}
-                          selected={selected}
-                          setSelected={setSelected}   
-                          /> */}
+              style={{ color: colors.grey[100] }}
+            >
+              <Item
+                title="Verified Partners"
+                to="/partners/Verified"
+                icon={<VerifiedOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+                isCollapsed={isCollapsed}
+              />
+              <Item
+                title="Unverified Partners"
+                to="/partners/Unverified"
+                icon={<NewReleasesOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+                isCollapsed={isCollapsed}
+              />
+            </SubMenu>
             <Item
               title="Profile"
               to="/profile"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isCollapsed={isCollapsed}
             />
             <Item
               title="Logout"
@@ -183,6 +207,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
               customClass="logout-menu"
+              isCollapsed={isCollapsed}
             />
           </Box>
         </Menu>
