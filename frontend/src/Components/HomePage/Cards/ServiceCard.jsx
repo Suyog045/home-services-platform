@@ -4,21 +4,9 @@ import { SharedButton } from "../../Shared/SharedButton";
 
 const ServiceCard = () => {
   return (
-    <div className="bg-primary w-68 h-100 rounded-xl shadow-2xl transition duration-500 hover:scale-102 cursor-pointer">
-      <div>
-        <img className="rounded bg-cover" src="/images/cleaning.jpg" alt="" />
-      </div>
-      <div className="bg-white rounded-br-[115px] rounded-bl-xl ">
-        <div className="text-primary p-3 flex flex-col gap-2">
-          <p className="text-2xl font-semibold">Washing And Flooring</p>
-          <p className="text-sm font-medium">
-            Subsidized housing programs, government schemes, and co-operative
-            housing societies often provide more affordable options
-          </p>
-        </div>
-        <div className="p-4">
-          <SharedButton label={"Book Now"} />
-        </div>
+    <div className='w-64 h-42 border border-gray-300 shadow-sm flex justify-center rounded-xl bg-white transition-all duration-300 '>
+      <div className=' text-primary text-center flex flex-col items-center gap-4 bg-cover'>
+        <img src="/images/cleaning.jpg" alt="" className="w-full h-full object-cover rounded-md" />
       </div>
     </div>
   );
