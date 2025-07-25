@@ -1,5 +1,6 @@
+import { Button } from "flowbite-react";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function PartnerLoginPage() {
   const [email, setEmail] = useState("");
@@ -64,7 +65,8 @@ export default function PartnerLoginPage() {
             </span>
           </div>
 
-          <button
+          <Link to={"/partner/dashboard"}>
+          <Button
             type="submit"
             disabled={!isFormValid}
             className={`w-full bg-yellow-500 text-white font-semibold py-2 rounded-md transition ${
@@ -74,7 +76,8 @@ export default function PartnerLoginPage() {
             }`}
           >
             Login
-          </button>
+          </Button>
+          </Link>
 
           <p className="mt-4 text-sm text-center text-gray-600">
             Not registered?{" "}
