@@ -10,7 +10,7 @@ import {
   ModalHeader,
   TextInput,
 } from "flowbite-react";
-import { useAuthModal } from "../../Providers/AuthModalProvider";
+import { useAuthModal } from "../../hooks/useAuthModal";
 
 const customTheme = createTheme({
   root: {
@@ -67,7 +67,7 @@ const customTheme = createTheme({
 });
 
 const UserRegister = () => {
-  const { isModalOpen, openModal, closeModal, modalType } = useAuthModal();
+  const { isModalOpen, closeModal, modalType } = useAuthModal();
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",

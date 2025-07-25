@@ -1,8 +1,8 @@
 import {Button} from "flowbite-react/components/Button"
-import { useAuthModal } from "../../Providers/AuthModalProvider";
+import { useAuthModal } from "../../hooks/useAuthModal";
 
 export const SharedButton = ({label}) => {
-  const { isModalOpen, openModal,setModalType } = useAuthModal();
+  const { openModal,setModalType } = useAuthModal();
 
   const handleAuthBtn=()=>{
     setModalType(label);
