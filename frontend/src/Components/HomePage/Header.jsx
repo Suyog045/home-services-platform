@@ -8,8 +8,8 @@ import {
   ThemeProvider,
 } from "flowbite-react";
 import { SharedButton } from "../Shared/SharedButton";
-import { NavLink } from "react-router-dom";
-import { useAuthModal } from "../../Providers/AuthModalProvider";
+import { Link, NavLink } from "react-router-dom";
+import { useAuthModal } from "../../hooks/useAuthModal";
 
 const customTheme = createTheme({
   navbar: {
@@ -27,7 +27,7 @@ const customTheme = createTheme({
   },
 });
 const Header = () => {
-  const { modalType, setModalType } = useAuthModal();
+  const { setModalType } = useAuthModal();
   const navLinkFilter = ["Home", "Services", "About-Us", "Contact-Us"];
 
   return (
@@ -54,14 +54,12 @@ const Header = () => {
               {navLink}
             </NavLink>
           ))}
-          <NavLink
-            to="/partner"
-            className="ml-0 md:ml-4 px-4 py-2 rounded-lg bg-primary text-white hover:bg-secondary transition-colors duration-200"
-          >
-            Partner
-          </NavLink>
         </div>
         <div className="mt-3 md:mt-0 gap-2 flex items-center flex-col md:flex-row">
+          <div className="flex flex-col gap-1">
+            <Link to={'/partner'} className="text-primary hover:text-secondary-hover">Login As A Partner</Link>
+            <div className="w-1/2 h-0.5 bg-secondary"/>
+          </div>
           <SharedButton setModalType={setModalType} label="Login" />
           <SharedButton setModalType={setModalType} label="Register" />
         </div>

@@ -37,6 +37,8 @@ const FootBar = () => {
             <Link to="/services">Services</Link>
             <Link to="/about-us">About Us</Link>
             <Link to="/contact-us">Contact Us</Link>
+            <Link to="/partner">Become a Partner</Link>
+
           </FooterLinkGroup>
         </div>
         <FooterDivider />

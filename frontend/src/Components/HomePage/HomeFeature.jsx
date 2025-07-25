@@ -14,7 +14,7 @@ const HomeFeature = () => {
         </h3>
         <div className="mb-2 flex flex-col md:items-start items-center ">
           <h2 className="md:text-wrap text-nowrap text-black text-3xl font-semibold mb-3 md:text-left text-center">
-            More affordable options <br /> than the open market. 
+            More affordable options <br /> than the open market.
           </h2>
           <div className="w-24 h-1 bg-secondary rounded-3xl" />
           <p className="md:text-wrap mt-3 text-center md:text-left ">
