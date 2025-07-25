@@ -54,6 +54,12 @@ const Header = () => {
               {navLink}
             </NavLink>
           ))}
+          <NavLink
+            to="/partner"
+            className="ml-0 md:ml-4 px-4 py-2 rounded-lg bg-primary text-white hover:bg-secondary transition-colors duration-200"
+          >
+            Partner
+          </NavLink>
         </div>
         <div className="mt-3 md:mt-0 gap-2 flex items-center flex-col md:flex-row">
           <div className="flex flex-col gap-1">

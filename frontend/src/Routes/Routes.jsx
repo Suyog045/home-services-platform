@@ -15,6 +15,12 @@ import PersonalInfo from '../Components/User/PersonalInfo';
 import Bookings from '../Components/User/Bookings';
 import Addresses from '../Components/User/Addresses';
 import ChangePassword from '../Components/User/ChangePassword';
+import PartnerDashBoard from '../pages/Partner/PartnerDashBoard'
+import PartnerLayout from '../Layout/PartnerLayout'
+import PartnerLogin from '../pages/Partner/PartnerLogin'
+import PartnerRegister from '../pages/Partner/PartnerRegister'
+import PartnerHome from '../pages/Partner/PartnerHome'
+import MyAddresses from '../Components/User/Addresses'
 
 const Routes = createBrowserRouter([
     {
@@ -57,18 +63,49 @@ const Routes = createBrowserRouter([
         path: '/user-profile',
         element: <UserProfileLayout />,
         children: [
-          { index: true, 
-            element: <PersonalInfo /> },
-          { path: 'mybookings', 
-            element: <Bookings /> },
-          { path: 'myaddresses', 
-            element: <Addresses /> },
-          { path: 'change-password', 
-            element: <ChangePassword /> },
+          {
+            index: true,
+            element: <PersonalInfo />
+          },
+          {
+            path: 'mybookings',
+            element: <Bookings />
+          },
+          {
+            path: 'myaddresses',
+            element: <MyAddresses />
+          },
+          {
+            path: 'change-password',
+            element: <ChangePassword />
+          },
         ],
       },
-        ]
-    }
+    ]
+  },
+  {
+    path: "/partner",
+    element: <PartnerLayout />,
+    children: [
+      {
+        index: true,
+        element: <PartnerHome />
+      },
+      {
+        path: "dashboard",
+        element: <PartnerDashBoard />
+      },
+      {
+        path: "login",
+        element: <PartnerLogin />
+      },
+      {
+        path: "register",
+        element: <PartnerRegister />
+      }
+    ]
+  }
 ])
+
 
 export default Routes;
