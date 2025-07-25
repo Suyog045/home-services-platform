@@ -33,7 +33,7 @@ const Header = () => {
   return (
     <Navbar
       theme={customTheme}
-      className="fixed w-full z-50 md:rounded-4xl transition-transform duration-300 md:mt-3 shadow-2xl "
+      className="fixed w-full z-50 transition-transform duration-300 rounded-b-md shadow-2xl "
     >
       <NavbarBrand className="text-2xl font-semibold text-center">
         Home<span className="text-secondary">Mate</span>
