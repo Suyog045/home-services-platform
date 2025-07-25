@@ -6,7 +6,7 @@ const HomeFeature = () => {
   return (
     <div className="mt-20 ml-5 mr-5 md:ml-10 md:mr-20 flex md:flex-row flex-col justify-around items-center md:gap-30 gap-4">
       <div>
-        <img src="/images/cleaning.jpg" alt="" className="rounded md:h-84" />
+        <img src="/images/cleaning.jpg" alt="" className="rounded md:h-94" />
       </div>
       <div className="flex flex-col gap-2 md:w-1/3">
         <h3 className="text-primary font-semibold text-center md:text-left">
