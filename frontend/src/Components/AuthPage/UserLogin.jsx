@@ -17,7 +17,7 @@ const customTheme = createTheme({
   root: {
     base: "fixed inset-x-0 top-0 z-50 h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
     show: {
-      on: "flex bg-gray-900/50 dark:bg-gray-900/80",
+      on: "flex bg-gray-900/30",
       off: "hidden",
     },
     sizes: {
