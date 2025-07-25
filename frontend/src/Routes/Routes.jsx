@@ -9,6 +9,12 @@ import ServiceListingPage from '../pages/ServicePages/ServiceListingPage'
 import ScheduleVisitPage from '../pages/ServicePages/ScheduleVisitPage/ScheduleVisitPage'
 import AddressFormPage from '../pages/ServicePages/ScheduleVisitPage/AddressFormPage'
 import CheckoutPage from '../pages/ServicePages/CheckoutPage/CheckoutPage'
+import UserProfileLayout from '../pages/User/UserProfileLayout';
+
+import PersonalInfo from '../Components/User/PersonalInfo';
+import Bookings from '../Components/User/Bookings';
+import Addresses from '../Components/User/Addresses';
+import ChangePassword from '../Components/User/ChangePassword';
 
 const Routes = createBrowserRouter([
     {
@@ -46,7 +52,21 @@ const Routes = createBrowserRouter([
             {
                 path:"/contact-us",
                 element:<ContactUs/>
-            }
+            },
+            {
+        path: '/user-profile',
+        element: <UserProfileLayout />,
+        children: [
+          { index: true, 
+            element: <PersonalInfo /> },
+          { path: 'mybookings', 
+            element: <Bookings /> },
+          { path: 'myaddresses', 
+            element: <Addresses /> },
+          { path: 'change-password', 
+            element: <ChangePassword /> },
+        ],
+      },
         ]
     }
 ])
