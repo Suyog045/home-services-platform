@@ -8,7 +8,7 @@ const ServiceListings = () => {
     const data = [
       {
         name: 'John Doe',
-        image: 'https://via.placeholder.com/150',
+        // image: 'https://via.placeholder.com/150',
         specialty: 'Cleaning Services, Plumbing',
         experience: 5,
         charges: 500,
@@ -17,7 +17,7 @@ const ServiceListings = () => {
       },
       {
         name: 'Jane Smith',
-        image: 'https://via.placeholder.com/150',
+        // image: 'https://via.placeholder.com/150',
         specialty: 'Cleaning & Maintenance',
         experience: 3,
         charges: 450,

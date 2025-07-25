@@ -10,7 +10,7 @@ import {
   ModalHeader,
   TextInput,
 } from "flowbite-react";
-import { useAuthModal } from "../../Providers/AuthModalProvider";
+import { useAuthModal } from "../../hooks/useAuthModal";
 import { Link } from "react-router-dom";
 
 const customTheme = createTheme({
@@ -67,7 +67,7 @@ const customTheme = createTheme({
   },
 });
 const UserLogin = () => {
-  const { isModalOpen, openModal, closeModal, modalType, setModalType } =
+  const { isModalOpen, closeModal, modalType, setModalType } =
     useAuthModal();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -138,7 +138,6 @@ const UserLogin = () => {
                 type="password"
                 onChange={(e) => {
                   setPassword(e.target.value);
-                  validatePassword(e);
                 }}
                 onBlur={() =>
                   setTouched((prev) => ({ ...prev, password: true }))

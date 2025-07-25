@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useAuthModal } from "../../../Providers/AuthModalProvider";
+import React from "react";
+import { useAuthModal } from "../../../hooks/useAuthModal";
 import UserLogin from "../UserLogin";
 import UserRegister from "../UserRegister";
 
