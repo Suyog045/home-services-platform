@@ -1,5 +1,47 @@
 package com.homeservices.entities;
 
-public class Partner {
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Entity
+@Table(name = "partner")
+@NoArgsConstructor
+@ToString(callSuper = true)
+@Getter
+@Setter
+public class Partner extends BaseEntity {
+	@Column(name = "first_name")
+	private String firstName;
+	@Column(name ="last_name")
+	private String lastName;
+	private String email;
+	@Column(name="phone_number")
+	private String phoneNumber;
+	private String city;
+	private String password;
+	@Column(name="birth_date")
+	private LocalDate birthDate;
+	private int experience;
+	@Column(name="is_verified")
+	private boolean isVerified;
+	private float rating;
+	@Column(name="no_of_orders")
+	private int noOfOrders;
+	@Column(name = "total_earning")
+	private double totalEarning;
+	@Column(name = "is_deleted")
+	private boolean isDeleted;
+	@Column(name = "deletedAt")
+	private LocalDateTime deletedAt;
+	
 
 }
