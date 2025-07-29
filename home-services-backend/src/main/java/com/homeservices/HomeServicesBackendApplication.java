@@ -15,7 +15,7 @@ public class HomeServicesBackendApplication {
 		
 	}
 	@Bean
-	public ModelMapper modelMapper() {
+	ModelMapper modelMapper() {
 		ModelMapper mapper = new ModelMapper();
 		mapper.getConfiguration()
 		.setMatchingStrategy(MatchingStrategies.STRICT)
