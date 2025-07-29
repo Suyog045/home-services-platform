@@ -1,5 +1,9 @@
 package com.homeservices.dao;
 
-public class PartnerDao {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.homeservices.entities.Partner;
+
+public interface PartnerDao extends JpaRepository<Partner, Long> {
 
 }

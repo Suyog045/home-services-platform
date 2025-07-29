@@ -1,5 +1,5 @@
 package com.homeservices.service;
 
-public class PartnerService {
+public interface PartnerService {
 
 }
