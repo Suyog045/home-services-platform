@@ -2,6 +2,8 @@ package com.homeservices.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +16,7 @@ import lombok.Setter;
 @Table(name = "user_address")
 
 public class UserAddress extends BaseEntity {
-	@Column(name = "user_id", nullable = false)
-	private Long userId;
+
 	@Column(name = "address", nullable = false, length = 255)
 	private String address;
 	@Column(name = "pincode", nullable = false, length = 8)
@@ -28,5 +29,9 @@ public class UserAddress extends BaseEntity {
 	private String country;
 	@Column(name = "is_deleted", nullable = false)
 	private boolean isDeleted;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
 }
