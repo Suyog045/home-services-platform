@@ -17,6 +17,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.homeservices.entities.UserAddress;
 
 @Entity
@@ -50,6 +52,10 @@ public class User extends BaseEntity {
 	private LocalDate authTokenExpiry;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private List<UserAddress> addresses = new ArrayList<>();
-
+	@OneToMany(mappedBy= "user",cascade = CascadeType.ALL,orphanRemoval = true)
+	@JsonIgnore
+	private List<Order> orders = new ArrayList<>();
+	
 }
