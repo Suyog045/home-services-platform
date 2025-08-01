@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 
 @Controller
 @AllArgsConstructor
-public class categoryController {
+public class CategoryController {
 	private final CategoryService categoryService; 
 	
 }
