@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.homeservices.entities.Partner;
 
 @Repository
-public interface PartnerDao extends JpaRepository<Partner, Long> {
+public interface PartnerRepository extends JpaRepository<Partner, Long> {
 
 }
