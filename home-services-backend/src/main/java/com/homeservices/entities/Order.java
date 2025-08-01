@@ -10,6 +10,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -24,15 +26,6 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class Order extends BaseEntity {
-	@Column(name = "partner_id")
-	@NotNull
-	private Long partnerId;
-	@NotNull
-	@Column(name = "user_id")
-	private Long userId;
-	@NotNull
-	@Column(name = "service_id")
-	private Long serviceId;
 	@NotNull
 	@Column(name = "service_date")
 	private LocalDate serviceDate;
@@ -49,4 +42,15 @@ public class Order extends BaseEntity {
 	@Column(name = "total_cost")
 	@NotNull
 	private BigDecimal totalCost;
+	@ManyToOne
+	@JoinColumn(name="partner_id")
+	private Partner partner;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+	@ManyToOne
+	@JoinColumn(name="service_id")
+	private Service service;
+	
 }
