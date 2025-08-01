@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,5 +35,6 @@ public class Category extends BaseEntity{
 	private LocalDate deletionAt;
 	
 	@OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)
+	@JsonIgnore
 	private List<Service> services = new ArrayList<>();
 }

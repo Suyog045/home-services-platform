@@ -2,12 +2,17 @@ package com.homeservices.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -45,18 +50,14 @@ public class Partner extends BaseEntity {
 	private boolean isDeleted;
 	@Column(name = "deletedAt")
 	private LocalDateTime deletedAt;
-	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="category_id")
 	private Category category;
-	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="address_id")
 	private PartnerAddress myAddress;
-	
-	
-	
-	
-	
+	@OneToMany(mappedBy= "partner",cascade = CascadeType.ALL,orphanRemoval = true)
+	@JsonIgnore
+	private List<Order> myOrders = new ArrayList<>();
 
 }
