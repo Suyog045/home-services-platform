@@ -1,4 +1,4 @@
-package com.homeservices.service;
+package com.homeservices.service.category;
 
 import java.util.List;
 

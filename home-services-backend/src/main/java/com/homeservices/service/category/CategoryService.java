@@ -1,4 +1,4 @@
-package com.homeservices.service;
+package com.homeservices.service.category;
 
 import java.util.List;
 
@@ -33,10 +33,4 @@ public interface CategoryService {
 
 	String deleteService(Long serviceId);
 	
-	
-
-
-
-
-
 }

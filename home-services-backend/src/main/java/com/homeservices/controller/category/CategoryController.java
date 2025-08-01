@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.homeservices.dto.request.CategoryRequestDto;
 import com.homeservices.dto.request.ServiceRequestDto;
 import com.homeservices.dto.response.CategoryResponse;
-import com.homeservices.service.CategoryService;
+import com.homeservices.service.category.CategoryService;
 
 import lombok.AllArgsConstructor;
 
