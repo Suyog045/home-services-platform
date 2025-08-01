@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,10 +23,12 @@ import lombok.ToString;
 @Entity
 @Table(name = "Orders")
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString(callSuper = true)
+@Data
 public class Order extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@NotNull
 	@Column(name = "service_date")
 	private LocalDate serviceDate;
