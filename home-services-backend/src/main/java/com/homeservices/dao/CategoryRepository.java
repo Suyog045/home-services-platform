@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.homeservices.entities.Category;
 
 @Repository
-public interface CategoryDao extends JpaRepository<Category, Long>{
+public interface CategoryRepository extends JpaRepository<Category, Long>{
 	
 }
