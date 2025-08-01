@@ -2,17 +2,22 @@ package com.homeservices.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import com.homeservices.entities.UserAddress;
 
 @Entity
 @Getter
@@ -21,7 +26,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @Table(name = "user")
 
-public class UserEntity extends BaseEntity {
+public class User extends BaseEntity {
 
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
@@ -43,5 +48,8 @@ public class UserEntity extends BaseEntity {
 	private String authToken;
 	@Column(name = "auth_token_expiry", nullable = false)
 	private LocalDate authTokenExpiry;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<UserAddress> addresses = new ArrayList<>();
 
 }
