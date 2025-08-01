@@ -4,8 +4,11 @@ import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +28,10 @@ public class Service extends BaseEntity{
 	private String name;
 	private String description;
 	private double price;
-	@Column(name = "category_id")
-	private int categoryId;
 	@Column(name = "is_active")
 	private boolean isActive;
+	
+	@JoinColumn(name = "category_id")
+	@ManyToOne
+	private Category category;
 }

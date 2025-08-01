@@ -1,11 +1,15 @@
 package com.homeservices.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +31,7 @@ public class Category extends BaseEntity{
 	@CreationTimestamp
 	@Column(name = "deleted_date")
 	private LocalDate deletionAt;
+	
+	@OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)
+	private List<Service> services = new ArrayList<>();
 }
