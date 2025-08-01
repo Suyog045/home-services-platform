@@ -1,103 +1,145 @@
-import { Button } from "flowbite-react";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Button } from "flowbite-react";
+import { auth } from "../../services/firebase-config"; // Adjust path if needed
+import {
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
 
 export default function PartnerLoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState(null);
+  const [step, setStep] = useState(1);
   const navigate = useNavigate();
 
-  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const isPasswordValid = password.length >= 6;
-  const isFormValid = isEmailValid && isPasswordValid;
+  const isPhoneValid = /^\d{10}$/.test(phone);
 
-  const handleLogin = (e) => {
+  const configureCaptcha = () => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response) => {
+            console.log("reCAPTCHA solved");
+          },
+        },
+        auth
+      );
+    }
+  };
+
+  const sendOtp = async (e) => {
     e.preventDefault();
-    
+
+    try {
+      configureCaptcha();
+
+      const appVerifier = window.recaptchaVerifier;
+
+      const confirmation = await signInWithPhoneNumber(
+        auth,
+        "+91" + phone,
+        appVerifier
+      );
+
+      setConfirmationResult(confirmation);
+      setStep(2);
+    } catch (err) {
+      console.error("OTP send error:", err);
+      alert("Failed to send OTP: " + err.message);
+    }
+  };
+
+  const verifyOtp = async (e) => {
+    e.preventDefault();
+
+    try {
+      await confirmationResult.confirm(otp);
+      const token = await auth.currentUser.getIdToken();
+
+      alert("Login successful!");
+      navigate("/partner/dashboard");
+    } catch (err) {
+      alert("Invalid OTP: " + err.message);
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#061b3a] flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         <h2 className="text-3xl font-bold text-center text-[#061b3a] mb-6">
-          Partner Login
+          Partner Login via OTP
         </h2>
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="partner@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:outline-none"
-              required
-            />
-            {!isEmailValid && email && (
-              <p className="text-red-500 text-sm mt-1">Enter a valid email address</p>
-            )}
-          </div>
 
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 font-semibold mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:outline-none"
-              required
-            />
-            {password.length > 0 && password.length < 6 && (
-              <p className="text-red-500 text-sm mt-1">Minimum 6 characters required</p>
-            )}
-          </div>
+        {step === 1 && (
+          <form onSubmit={sendOtp}>
+            <div className="mb-4">
+              <label htmlFor="phone" className="block text-gray-700 font-semibold mb-2">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                placeholder="Enter 10-digit mobile number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+                required
+              />
+              {!isPhoneValid && phone && (
+                <p className="text-red-500 text-sm mt-1">
+                  Enter a valid 10-digit phone number
+                </p>
+              )}
+            </div>
+            <Button
+              type="submit"
+              disabled={!isPhoneValid}
+              className="w-full bg-yellow-500 text-white font-semibold py-2 rounded-md hover:bg-yellow-600"
+            >
+              Send OTP
+            </Button>
+          </form>
+        )}
 
-          <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
-            <span className="hover:underline cursor-pointer">
-              Forgot Password?
-            </span>
-          </div>
+        {step === 2 && (
+          <form onSubmit={verifyOtp}>
+            <div className="mb-4">
+              <label htmlFor="otp" className="block text-gray-700 font-semibold mb-2">
+                Enter OTP
+              </label>
+              <input
+                type="text"
+                id="otp"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+                required
+              />
+            </div>
+            <Button
+              type="submit"
+              className="w-full bg-yellow-500 text-white font-semibold py-2 rounded-md hover:bg-yellow-600"
+            >
+              Verify OTP
+            </Button>
+          </form>
+        )}
 
-          <Link to={"/partner/dashboard"}>
-          <Button
-            type="submit"
-            disabled={!isFormValid}
-            className={`w-full bg-yellow-500 text-white font-semibold py-2 rounded-md transition ${
-              isFormValid
-                ? "hover:bg-yellow-600 cursor-pointer"
-                : "opacity-50 cursor-not-allowed"
-            }`}
+        <div id="recaptcha-container"></div>
+
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => navigate("/")}
+            className="text-sm text-blue-600 hover:underline cursor-pointer"
           >
-            Login
-          </Button>
-          </Link>
-
-          <p className="mt-4 text-sm text-center text-gray-600">
-            Not registered?{" "}
-            <span
-              onClick={() => navigate("/partner/register")}
-              className="text-blue-600 hover:underline cursor-pointer"
-            >
-              Register Now
-            </span>
-          </p>
-
-          <div className="mt-4 text-center">
-            <button
-              onClick={() => navigate("/")}
-              className="text-sm text-blue-600 hover:underline cursor-pointer"
-            >
-              Login as User
-            </button>
-          </div>
-        </form>
+            Login as User
+          </button>
+        </div>
       </div>
     </div>
   );
