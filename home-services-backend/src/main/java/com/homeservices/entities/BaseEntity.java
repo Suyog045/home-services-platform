@@ -1,5 +1,6 @@
 package com.homeservices.entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
