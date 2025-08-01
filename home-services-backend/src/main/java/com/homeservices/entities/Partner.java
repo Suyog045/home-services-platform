@@ -59,5 +59,4 @@ public class Partner extends BaseEntity {
 	@OneToMany(mappedBy= "partner",cascade = CascadeType.ALL,orphanRemoval = true)
 	@JsonIgnore
 	private List<Order> myOrders = new ArrayList<>();
-
 }
