@@ -30,8 +30,6 @@ public class UserAddress extends BaseEntity {
 	@Column(name = "is_deleted", nullable = false)
 	private boolean isDeleted;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+  
 
 }
