@@ -44,31 +44,7 @@ public class CategoryServiceImp implements CategoryService{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Override
-	public List<com.homeservices.entities.Service> getAllServices() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public String addNewService(CategoryRequestDto dto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public ServiceRequestDto getServiceById(Long serviceId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public String updateService(Long serviceId, ServiceRequestDto dto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public String deleteService(Long serviceId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 //	@Override
 //	public ApiResponse addNewCategory(CategoryDTO dto) {
