@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.homeservices.dto.request.AddPartnerDTO;
+import com.homeservices.dto.request.PartnerRequestDTO;
 import com.homeservices.dto.request.VerifyPartnerDTO;
 import com.homeservices.service.partner.PartnerService;
 
@@ -28,7 +28,7 @@ public class PartnerController {
 
 //	POST   /api/partners/register                → Register a new partner
 	@PostMapping
-	public ResponseEntity<?> addPartner(@RequestBody AddPartnerDTO partnerDTO) {
+	public ResponseEntity<?> addPartner(@RequestBody PartnerRequestDTO partnerDTO) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(partnerService.addPartner(partnerDTO));
 	}
 
@@ -40,7 +40,7 @@ public class PartnerController {
 
 //	PUT    /api/partners/{id}                    → Update partner profile
 	@PutMapping("/{partnerId}")
-	public ResponseEntity<?> updatePartner(@PathVariable Long partnerId, @RequestBody AddPartnerDTO partnerDTO) {
+	public ResponseEntity<?> updatePartner(@PathVariable Long partnerId, @RequestBody PartnerRequestDTO partnerDTO) {
 		return ResponseEntity.ok(partnerService.updatePartner(partnerId, partnerDTO));
 	}
 
