@@ -2,24 +2,43 @@ package com.homeservices.service.partner;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.homeservices.dto.request.AddPartnerDTO;
+import com.homeservices.dao.PartnerRepository;
+import com.homeservices.dto.request.PartnerRequestDTO;
 import com.homeservices.dto.request.VerifyPartnerDTO;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.PartnerOrderDTO;
 import com.homeservices.dto.response.PartnerResponseDTO;
 import com.homeservices.dto.response.PartnerServiceDTO;
+import com.homeservices.entities.Partner;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class PartnerServiceImpl implements PartnerService {
 
+	private final PartnerRepository partnerRepository;
+	private ModelMapper mapper;
+
 	@Override
-	public ApiResponse addPartner(AddPartnerDTO partner) {
-		// TODO Auto-generated method stub
-		return null;
+	public ApiResponse addPartner(PartnerRequestDTO partnerreq) {
+
+		if (partnerRepository.existsByEmail(partnerreq.getEmail())) {
+			return new ApiResponse("Email Already Registered");
+		}
+
+		if (partnerRepository.existsByPhoneNumber(partnerreq.getPhoneNumber())) {
+			return new ApiResponse("Phone Number Already Registered");
+		}
+
+		Partner partner = mapper.map(partnerreq, Partner.class);
+
+		return new ApiResponse("Partner Added with Id " + partnerRepository.save(partner).getId());
 	}
 
 	@Override
@@ -29,7 +48,7 @@ public class PartnerServiceImpl implements PartnerService {
 	}
 
 	@Override
-	public ApiResponse updatePartner(Long id, AddPartnerDTO partner) {
+	public ApiResponse updatePartner(Long id, PartnerRequestDTO partner) {
 		// TODO Auto-generated method stub
 		return null;
 	}
