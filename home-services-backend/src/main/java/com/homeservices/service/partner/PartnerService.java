@@ -2,12 +2,16 @@ package com.homeservices.service.partner;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.homeservices.dto.request.AddPartnerDTO;
 import com.homeservices.dto.request.VerifyPartnerDTO;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.PartnerOrderDTO;
 import com.homeservices.dto.response.PartnerResponseDTO;
 import com.homeservices.dto.response.PartnerServiceDTO;
+
 
 public interface PartnerService {
 	
