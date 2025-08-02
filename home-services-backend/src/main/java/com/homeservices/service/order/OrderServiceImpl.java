@@ -18,7 +18,10 @@ import com.homeservices.entities.Partner;
 import com.homeservices.entities.User;
 import com.homeservices.utils.OrderStatus;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
 	
 	private OrderRepository orderRepo;
@@ -27,15 +30,16 @@ public class OrderServiceImpl implements OrderService {
 	private ModelMapper modelMapper;
 	
 	@Override
-	public ApiResponse createOrder(OrderRequestDto dto) {
+	public ApiResponse createOrder(OrderRequestDto dto, Long serviceId) {
 		Order order = modelMapper.map(dto, Order.class);
-		User user = userRepo.findById(dto.userId()).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
-		Partner partner = partnerRepo.findById(dto.partnerId()).orElseThrow(()-> new ResourceNotFoundException("Partner Not Found"));
-		order.setUser(user);
-		order.setPartner(partner);
+		//Todo : getting userId from token
+		
+		
+//		order.setUser(user);
 		order.setOrderStatus(OrderStatus.PENDING);
 		order.setServiceDate(dto.serviceDate());
 		order.setServiceTime(dto.serviceTime());
+//		order.setTotalCost();
 		orderRepo.save(order);
 		return new ApiResponse("Order Created Successfully");
 	}

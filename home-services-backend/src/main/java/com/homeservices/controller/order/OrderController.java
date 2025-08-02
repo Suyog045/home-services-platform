@@ -2,6 +2,7 @@ package com.homeservices.controller.order;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,17 +19,20 @@ import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.entities.Order;
 import com.homeservices.service.order.OrderService;
 
+import lombok.AllArgsConstructor;
+
 
 
 @RestController
 @RequestMapping("/order")
+@AllArgsConstructor
 public class OrderController {
 	private OrderService orderService;
 	
 //	POST   /api/orders                           → Create a new order
-	@PostMapping
-	public ResponseEntity<ApiResponse> createOrder(@RequestBody OrderRequestDto dto){
-		return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto));
+	@PostMapping("/{id}")
+	public ResponseEntity<ApiResponse> createOrder(@RequestBody OrderRequestDto dto,@PathVariable("id") Long serviceId){
+		return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto,serviceId));
 	}
 	
 //	GET    /api/orders/{id}                      → Get order by ID
@@ -37,7 +41,7 @@ public class OrderController {
 		return ResponseEntity.ok(orderService.getOrderById(id));
 	}
 //	GET    /api/orders/user/{userId}             → Get all orders by user
-	@GetMapping("/user/id")
+	@GetMapping("/user/{id}")
 	public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long id){
 		return ResponseEntity.ok(orderService.getOrdersByUserId(id));
 	}

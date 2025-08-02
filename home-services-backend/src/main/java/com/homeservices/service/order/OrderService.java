@@ -8,7 +8,7 @@ import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.entities.Order;
 
 public interface OrderService {
-	ApiResponse createOrder(OrderRequestDto dto);
+	ApiResponse createOrder(OrderRequestDto dto,Long serviceId);
 
 	Order getOrderById(Long id);
 
