@@ -22,15 +22,5 @@ public interface CategoryService {
 
 	//todo
 	String deleteCatgory(Long categoryId);
-
-	List<Service> getAllServices();
-
-	String addNewService(CategoryRequestDto dto);
-
-	ServiceRequestDto getServiceById(Long serviceId);
-
-	String updateService(Long serviceId, ServiceRequestDto dto);
-
-	String deleteService(Long serviceId);
 	
 }
