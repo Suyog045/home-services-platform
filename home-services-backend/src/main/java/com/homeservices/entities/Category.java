@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class Category extends BaseEntity{
 	@Column(name = "deleted_date")
 	private LocalDate deletionAt;
 	
-	@OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<Service> services = new ArrayList<>();
 }

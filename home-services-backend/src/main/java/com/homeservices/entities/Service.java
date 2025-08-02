@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -25,7 +26,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @Entity
 @NoArgsConstructor
-
 @Table(name = "Service")
 public class Service extends BaseEntity{
 	@Column(name = "service_id")
@@ -36,9 +36,9 @@ public class Service extends BaseEntity{
 	@Column(name = "is_active")
 	private boolean isActive;
 	@JoinColumn(name = "category_id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Category category;
-	@OneToMany(mappedBy= "service",cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(mappedBy= "service",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<Order> orders = new ArrayList<>();
 }

@@ -1,6 +1,7 @@
 package com.homeservices.service.order;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,15 +20,16 @@ import com.homeservices.entities.User;
 import com.homeservices.utils.OrderStatus;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 	
-	private OrderRepository orderRepo;
-	private PartnerRepository partnerRepo;
-	private UserRepository userRepo;
-	private ModelMapper modelMapper;
+	private final OrderRepository orderRepo;
+	private final PartnerRepository partnerRepo;
+	private final UserRepository userRepo;
+	private final ModelMapper modelMapper;
 	
 	@Override
 	public ApiResponse createOrder(OrderRequestDto dto, Long serviceId) {
@@ -78,9 +80,10 @@ public class OrderServiceImpl implements OrderService {
 		if(order.getOrderStatus().equals(OrderStatus.PENDING)) {
 			order.setOrderStatus(OrderStatus.CONFIRMED);
 		}else if(order.getOrderStatus().equals(OrderStatus.CONFIRMED)) {
-			order.setOrderStatus(OrderStatus.IN_PROGRESS);
-		}else if(order.getOrderStatus().equals(OrderStatus.IN_PROGRESS)) {
+			order.setOrderStatus(OrderStatus.INPROGRESS);
+		}else if(order.getOrderStatus().equals(OrderStatus.INPROGRESS)) {
 			order.setOrderStatus(OrderStatus.COMPLETED);
+			order.setCompletionDate(LocalDate.now());
 		}
 		
 		orderRepo.save(order);
@@ -89,8 +92,10 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public ApiResponse cancelOrderById(Long id) {
+		System.out.println("Printing ID "+id);
 		Order order = orderRepo.findById(id).
 				orElseThrow(()-> new ResourceNotFoundException("Order Not Found"));
+		System.out.println("ORDER "+ order);
 		order.setOrderStatus(OrderStatus.CANCELLED);
 		orderRepo.save(order);
 		return new ApiResponse("Order Cancelled");

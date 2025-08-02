@@ -46,7 +46,7 @@ public class OrderController {
 		return ResponseEntity.ok(orderService.getOrdersByUserId(id));
 	}
 //	GET    /api/orders/partner/{partnerId}       → Get all orders by partner
-	@GetMapping("/partner/id")
+	@GetMapping("/partner/{id}")
 	public ResponseEntity<List<Order>> getOrdersByPartnerId(@PathVariable Long id){
 		return ResponseEntity.ok(orderService.getOrdersByPartnerId(id));
 	}
