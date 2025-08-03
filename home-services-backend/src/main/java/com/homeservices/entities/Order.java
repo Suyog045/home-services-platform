@@ -49,6 +49,6 @@ public class Order extends BaseEntity {
 	private Double totalCost;
 	@ManyToOne
 	@JoinColumn(name="service_id")
-	private providedService service;
+	private ProvidedService service;
 	
 }

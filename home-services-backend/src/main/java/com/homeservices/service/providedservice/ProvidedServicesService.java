@@ -6,7 +6,7 @@ import com.homeservices.dto.request.CategoryRequestDto;
 import com.homeservices.dto.request.ProvidedServiceRequestDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.ProvidedServiceResponseDTO;
-import com.homeservices.entities.providedService;
+import com.homeservices.entities.ProvidedService;
 
 
 public interface ProvidedServicesService {

@@ -24,7 +24,7 @@ import lombok.ToString;
 @Entity
 @NoArgsConstructor
 @Table(name = "Service")
-public class providedService extends BaseEntity{
+public class ProvidedService extends BaseEntity{
 	
 	private String name;
 	

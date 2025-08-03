@@ -13,7 +13,7 @@ import com.homeservices.dao.ServiceRepository;
 import com.homeservices.dto.request.ProvidedServiceRequestDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.ProvidedServiceResponseDTO;
-import com.homeservices.entities.providedService;
+import com.homeservices.entities.ProvidedService;
 
 import lombok.AllArgsConstructor;
 
@@ -41,25 +41,25 @@ public class ProvidedServicesServiceImp implements ProvidedServicesService{
 	public ApiResponse addNewService(ProvidedServiceRequestDto dto) {
 		if(serviceRepository.existsByName(dto.getName()))
 			throw new ApiException("Duplicate service name");
-		providedService service = modelMapper.map(dto, providedService.class);
-		providedService saved = serviceRepository.save(service);
+		ProvidedService service = modelMapper.map(dto, ProvidedService.class);
+		ProvidedService saved = serviceRepository.save(service);
 		return new ApiResponse("Service added " + saved.getId());
 	}
 	@Override
 	public ProvidedServiceResponseDTO getServiceById(Long serviceId) {
-		providedService service = serviceRepository.findById(serviceId)
+		ProvidedService service = serviceRepository.findById(serviceId)
 				.orElseThrow(() -> new ResourceNotFoundException("Service not found by ID " + serviceId));
 		return modelMapper.map(service, ProvidedServiceResponseDTO.class);
 	}
 	@Override
 	public ApiResponse updateService(Long serviceId, ProvidedServiceRequestDto dto) {
-		providedService service = serviceRepository.findById(serviceId).orElseThrow(() -> new ResourceNotFoundException("Service not found by id " + serviceId));
+		ProvidedService service = serviceRepository.findById(serviceId).orElseThrow(() -> new ResourceNotFoundException("Service not found by id " + serviceId));
 		modelMapper.map(dto,service);
 		return new ApiResponse("Updated successfully");
 	}
 	@Override
 	public ApiResponse deleteService(Long serviceId) {
-		providedService service = serviceRepository.findById(serviceId).orElseThrow(() -> new ResourceNotFoundException("Service not found by id " + serviceId));
+		ProvidedService service = serviceRepository.findById(serviceId).orElseThrow(() -> new ResourceNotFoundException("Service not found by id " + serviceId));
 		serviceRepository.delete(service);
 		return new ApiResponse("deleted successfully");
 	}
