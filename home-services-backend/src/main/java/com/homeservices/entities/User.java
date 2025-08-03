@@ -12,6 +12,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -41,21 +42,22 @@ public class User extends BaseEntity {
 	private String phone;
 	@Column(name = "pasword_hash", nullable = false)
 	private String password;
-	@Column(name = "profile_img", nullable = false)
+	@Column(name = "profile_img")
 	private String profileImg;
 	@Column(name = "birth_date", nullable = false)
 	private LocalDate birthDate;
-	@Column(name = "is_deleted", nullable = false)
+	@Column(name = "is_deleted")
 	private boolean isDeleted;
-	@Column(name = "auth_token", nullable = false)
+	@Column(name = "auth_token")
 	private String authToken;
-	@Column(name = "auth_token_expiry", nullable = false)
+	@Column(name = "auth_token_expiry")
 	private LocalDate authTokenExpiry;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
-	@JsonIgnore
+	@OneToMany( cascade = CascadeType.ALL)
+	@JoinColumn(name="user_id")
 	private List<UserAddress> addresses = new ArrayList<>();
-	@OneToMany(mappedBy= "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
+	
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
 	@JsonIgnore
 	private List<Order> orders = new ArrayList<>();
 	

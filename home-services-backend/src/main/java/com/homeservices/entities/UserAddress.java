@@ -30,9 +30,4 @@ public class UserAddress extends BaseEntity {
 	private String country;
 	@Column(name = "is_deleted", nullable = false)
 	private boolean isDeleted;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
-
 }
