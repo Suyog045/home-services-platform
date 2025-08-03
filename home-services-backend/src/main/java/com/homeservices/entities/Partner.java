@@ -54,8 +54,10 @@ public class Partner extends BaseEntity {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
 	private PartnerAddress myAddress;
-	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
+	
+	
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name="partner_id")
 	private List<Order> myOrders = new ArrayList<>();
 
 	private boolean status = true;

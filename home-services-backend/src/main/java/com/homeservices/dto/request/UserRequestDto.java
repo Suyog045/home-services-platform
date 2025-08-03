@@ -1,10 +1,14 @@
 package com.homeservices.dto.request;
 
+
+
 import java.time.LocalDate;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+
+
+@Data
 public class UserRequestDto {
 
 	private String firstName;
@@ -13,5 +17,4 @@ public class UserRequestDto {
 	private String phone;
 	private String password;
 	private LocalDate birthDate;
-
 }
