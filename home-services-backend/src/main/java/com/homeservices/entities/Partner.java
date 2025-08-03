@@ -55,11 +55,11 @@ public class Partner extends BaseEntity {
 	@JoinColumn(name="category_id")
 	private Category category;
 	
-	@OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="address_id")
 	private PartnerAddress myAddress;
 	
-	@OneToMany(mappedBy= "partner",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
-	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name="partner_id")
 	private List<Order> myOrders = new ArrayList<>();
 }

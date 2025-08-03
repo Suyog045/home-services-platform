@@ -7,10 +7,12 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.homeservices.custom_exceptions.ResourceNotFoundException;
 import com.homeservices.dao.OrderRepository;
 import com.homeservices.dao.PartnerRepository;
+import com.homeservices.dao.ServiceRepository;
 import com.homeservices.dao.UserRepository;
 import com.homeservices.dto.request.OrderRequestDto;
 import com.homeservices.dto.response.ApiResponse;
@@ -19,43 +21,54 @@ import com.homeservices.entities.Partner;
 import com.homeservices.entities.User;
 import com.homeservices.utils.OrderStatus;
 
+
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderServiceImpl implements OrderService {
 	
 	private final OrderRepository orderRepo;
 	private final PartnerRepository partnerRepo;
 	private final UserRepository userRepo;
+	private final ServiceRepository serviceRepo;
 	private final ModelMapper modelMapper;
 	
 	@Override
-	public ApiResponse createOrder(OrderRequestDto dto, Long serviceId) {
+	public ApiResponse createOrder(OrderRequestDto dto,Long userId, Long serviceId) {
+		com.homeservices.entities.Service service =serviceRepo.findById(serviceId).orElseThrow(()-> new ResourceNotFoundException("Service Not Found"));
 		Order order = modelMapper.map(dto, Order.class);
-		//Todo : getting userId from token
-		
-		
-//		order.setUser(user);
+		order.setTotalCost(service.getPrice());		
+
 		order.setOrderStatus(OrderStatus.PENDING);
 		order.setServiceDate(dto.serviceDate());
 		order.setServiceTime(dto.serviceTime());
-//		order.setTotalCost();
 		orderRepo.save(order);
 		return new ApiResponse("Order Created Successfully");
 	}
 
 	@Override
-	public Order getOrderById(Long id) {
-		Order order = orderRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Order Not Found"));
+	public Order getOrderById(Long orderId) {
+		Order order = orderRepo.findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order Not Found"));
 		return order;
 	}
 
 	@Override
-	public List<Order> getOrdersByUserId(Long id) {
-		User user = userRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
-		List<Order> orders = orderRepo.findByUser(user);
+	public List<Order> getOrdersByUserId(Long userId) {
+		User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
+		List<Order> orders = user.getOrders();
+		if(orders.isEmpty()) {
+			throw new ResourceNotFoundException("No Orders Found");
+		}
+		return orders;
+	}
+
+	@Override
+	public List<Order> getOrdersByPartnerId(Long partnerId) {
+		Partner partner = partnerRepo.findById(partnerId).orElseThrow(()-> new ResourceNotFoundException("Partner Not Found"));
+		List<Order> orders = partner.getMyOrders();
 		if(orders.isEmpty()) {
 			throw new ResourceNotFoundException("Orders Not Found");
 		}
@@ -63,18 +76,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Order> getOrdersByPartnerId(Long id) {
-		Partner partner = partnerRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Partner Not Found"));
-		List<Order> orders = orderRepo.findByPartner(partner);
-		if(orders.isEmpty()) {
-			throw new ResourceNotFoundException("Orders Not Found");
-		}
-		return orders;
-	}
-
-	@Override
-	public ApiResponse updateOrderStatus(Long id) {
-		Order order = orderRepo.findById(id).
+	public ApiResponse updateOrderStatus(Long orderId) {
+		Order order = orderRepo.findById(orderId).
 				orElseThrow(()-> new ResourceNotFoundException("Order Not Found"));
 		
 		if(order.getOrderStatus().equals(OrderStatus.PENDING)) {
@@ -91,11 +94,9 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public ApiResponse cancelOrderById(Long id) {
-		System.out.println("Printing ID "+id);
-		Order order = orderRepo.findById(id).
+	public ApiResponse cancelOrderById(Long orderId) {
+		Order order = orderRepo.findById(orderId).
 				orElseThrow(()-> new ResourceNotFoundException("Order Not Found"));
-		System.out.println("ORDER "+ order);
 		order.setOrderStatus(OrderStatus.CANCELLED);
 		orderRepo.save(order);
 		return new ApiResponse("Order Cancelled");

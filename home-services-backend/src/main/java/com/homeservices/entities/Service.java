@@ -28,17 +28,16 @@ import lombok.ToString;
 @NoArgsConstructor
 @Table(name = "Service")
 public class Service extends BaseEntity{
-	@Column(name = "service_id")
-	private int serviceId;
 	private String name;
 	private String description;
 	private double price;
 	@Column(name = "is_active")
 	private boolean isActive;
+	
 	@JoinColumn(name = "category_id")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Category category;
-	@OneToMany(mappedBy= "service",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "service",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Order> orders = new ArrayList<>();
 }

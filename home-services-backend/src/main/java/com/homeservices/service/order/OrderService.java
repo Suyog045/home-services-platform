@@ -8,15 +8,15 @@ import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.entities.Order;
 
 public interface OrderService {
-	ApiResponse createOrder(OrderRequestDto dto,Long serviceId);
+	ApiResponse createOrder(OrderRequestDto dto,Long userId, Long serviceId);
 
-	Order getOrderById(Long id);
+	Order getOrderById(Long orderId);
 
-	List<Order> getOrdersByUserId(Long id);
+	List<Order> getOrdersByUserId(Long userId);
 
-	List<Order> getOrdersByPartnerId(Long id);
+	List<Order> getOrdersByPartnerId(Long partnerId);
 
-	ApiResponse updateOrderStatus(Long id);
+	ApiResponse updateOrderStatus(Long orderId);
 
-	ApiResponse cancelOrderById(Long id);
+	ApiResponse cancelOrderById(Long orderId);
 }

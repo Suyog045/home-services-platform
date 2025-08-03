@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record OrderRequestDto(Long userId,
-		Long serviceId,
+public record OrderRequestDto(
 		LocalDate serviceDate,
-		LocalTime serviceTime,
-		BigDecimal totalCost) {
+		LocalTime serviceTime) {
 
 }

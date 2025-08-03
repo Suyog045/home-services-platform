@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.homeservices.utils.OrderStatus;
 
 import jakarta.persistence.Column;
@@ -45,17 +46,10 @@ public class Order extends BaseEntity {
 	private OrderStatus orderStatus;
 	@Column(name = "total_cost")
 
-	private BigDecimal totalCost;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="partner_id")
-	private Partner partner;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
-	private User user;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
+	private Double totalCost;
+	@ManyToOne
 	@JoinColumn(name="service_id")
+	@JsonIgnore
 	private Service service;
 	
 }

@@ -30,35 +30,35 @@ public class OrderController {
 	private OrderService orderService;
 	
 //	POST   /api/orders                           → Create a new order
-	@PostMapping("/{id}")
-	public ResponseEntity<ApiResponse> createOrder(@RequestBody OrderRequestDto dto,@PathVariable("id") Long serviceId){
-		return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto,serviceId));
+	@PostMapping("/user/{userId}/service/{serviceId}")
+	public ResponseEntity<ApiResponse> createOrder(@RequestBody OrderRequestDto dto,@PathVariable Long userId,@PathVariable Long serviceId){
+		return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto,userId,serviceId));
 	}
 	
 //	GET    /api/orders/{id}                      → Get order by ID
-	@GetMapping("/{id}")
-	public ResponseEntity<Order> getOrderById(@PathVariable Long id){
-		return ResponseEntity.ok(orderService.getOrderById(id));
+	@GetMapping("/{orderId}")
+	public ResponseEntity<Order> getOrderById(@PathVariable Long orderId){
+		return ResponseEntity.ok(orderService.getOrderById(orderId));
 	}
 //	GET    /api/orders/user/{userId}             → Get all orders by user
-	@GetMapping("/user/{id}")
-	public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long id){
-		return ResponseEntity.ok(orderService.getOrdersByUserId(id));
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId){
+		return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
 	}
 //	GET    /api/orders/partner/{partnerId}       → Get all orders by partner
-	@GetMapping("/partner/{id}")
-	public ResponseEntity<List<Order>> getOrdersByPartnerId(@PathVariable Long id){
-		return ResponseEntity.ok(orderService.getOrdersByPartnerId(id));
+	@GetMapping("/partner/{partnerId}")
+	public ResponseEntity<List<Order>> getOrdersByPartnerId(@PathVariable Long partnerId){
+		return ResponseEntity.ok(orderService.getOrdersByPartnerId(partnerId));
 	}
 //	PUT    /api/orders/{id}/status               → Update order status
-	@PutMapping("/{id}/status")
-	public ResponseEntity<ApiResponse> updateOrderStatus(@PathVariable Long id){
-		return ResponseEntity.ok(orderService.updateOrderStatus(id));
+	@PutMapping("/{orderId}/status")
+	public ResponseEntity<ApiResponse> updateOrderStatus(@PathVariable Long orderId){
+		return ResponseEntity.ok(orderService.updateOrderStatus(orderId));
 	}
 //	DELETE /api/orders/{id}                      → Cancel order
-	@DeleteMapping("/{id}")
-	public ResponseEntity<ApiResponse> cancelOrder(@PathVariable Long id){
-		return ResponseEntity.ok(orderService.cancelOrderById(id));
+	@DeleteMapping("/{orderId}")
+	public ResponseEntity<ApiResponse> cancelOrder(@PathVariable Long orderId){
+		return ResponseEntity.ok(orderService.cancelOrderById(orderId));
 	}
 
 
