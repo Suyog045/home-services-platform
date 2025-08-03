@@ -1,0 +1,11 @@
+package com.homeservices.dto.request;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public record OrderRequestDto(
+		LocalDate serviceDate,
+		LocalTime serviceTime) {
+
+}
