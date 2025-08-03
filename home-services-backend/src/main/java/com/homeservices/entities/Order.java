@@ -54,6 +54,6 @@ public class Order extends BaseEntity {
 	private User user;
 	@ManyToOne
 	@JoinColumn(name="service_id")
-	private Service service;
+	private providedService service;
 	
 }

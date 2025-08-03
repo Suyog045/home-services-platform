@@ -36,5 +36,5 @@ public class Category extends BaseEntity{
 	
 	@OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)
 	@JsonIgnore
-	private List<Service> services = new ArrayList<>();
+	private List<providedService> services = new ArrayList<>();
 }
