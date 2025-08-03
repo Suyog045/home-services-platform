@@ -62,13 +62,13 @@ public class Partner extends BaseEntity {
 
 	private boolean status = true;
 
-	public void addOrders(Order order) {
-		this.myOrders.add(order);
-		order.setPartner(this);
-	}
+//	public void addOrders(Order order) {
+//		this.myOrders.add(order);
+//		order.setPartner(this);
+//	}
 
-	public void cancelOrder(Order order) {
-		this.myOrders.remove(order);
-		order.setPartner(null);
-	}
+//	public void cancelOrder(Order order) {
+//		this.myOrders.remove(order);
+//		order.setPartner(null);
+//	}
 }
