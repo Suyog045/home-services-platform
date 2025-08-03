@@ -27,8 +27,4 @@ public class UserAddress extends BaseEntity {
 	private String country;
 	@Column(name = "is_deleted", nullable = false)
 	private boolean isDeleted;
-	
-
-  
-
 }

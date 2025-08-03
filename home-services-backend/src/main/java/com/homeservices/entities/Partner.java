@@ -50,13 +50,16 @@ public class Partner extends BaseEntity {
 	private boolean isDeleted;
 	@Column(name = "deletedAt")
 	private LocalDateTime deletedAt;
-	@OneToOne(cascade = CascadeType.ALL)
+	
+	@OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinColumn(name="category_id")
 	private Category category;
-	@OneToOne(cascade = CascadeType.ALL)
+	
+	@OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="address_id")
 	private PartnerAddress myAddress;
-	@OneToMany(mappedBy= "partner",cascade = CascadeType.ALL,orphanRemoval = true)
-	@JsonIgnore
+	
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name="partner_id")
 	private List<Order> myOrders = new ArrayList<>();
 }
