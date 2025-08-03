@@ -16,7 +16,6 @@ import Bookings from '../Components/User/Bookings';
 import Addresses from '../Components/User/Addresses';
 import ChangePassword from '../Components/User/ChangePassword';
 import PartnerDashBoard from '../pages/Partner/PartnerDashBoard'
-import PartnerLayout from '../Layout/PartnerLayout'
 import PartnerLogin from '../pages/Partner/PartnerLogin'
 import PartnerRegister from '../pages/Partner/PartnerRegister'
 import PartnerHome from '../pages/Partner/PartnerHome'
@@ -36,19 +35,11 @@ const Routes = createBrowserRouter([
                 element:<Services/>
             },
             {
-                path:"/services/:serviceType",
-                element:<ServiceListingPage/>
-            },
-            {
-                path:"/services/:serviceType/book-appointment/:id",
-                element:<ScheduleVisitPage/>
-            },
-            {
-                path:"/services/:serviceType/book-appointment/:id/add-address",
+                path:"/services/add-address",
                 element:<AddressFormPage/>
             },
             {
-                path:"/services/:serviceType/book-appointment/:id/add-address/checkout",
+                path:"/services/checkout",
                 element:<CheckoutPage/>
             },
             {
@@ -81,31 +72,26 @@ const Routes = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "/partner",
+            element: <PartnerHome />
+          },
     ]
   },
-  {
-    path: "/partner",
-    element: <PartnerLayout />,
-    children: [
-      {
-        index: true,
-        element: <PartnerHome />
-      },
-      {
-        path: "dashboard",
-        element: <PartnerDashBoard />
-      },
-      {
-        path: "login",
-        element: <PartnerLogin />
-      },
-      {
-        path: "register",
-        element: <PartnerRegister />
-      }
+      // {
+      //   path: "dashboard",
+      //   element: <PartnerDashBoard />
+      // },
+      // {
+      //   path: "login",
+      //   element: <PartnerLogin />
+      // },
+      // {
+      //   path: "register",
+      //   element: <PartnerRegister />
+      // }
     ]
-  }
-])
+)
 
 
 export default Routes;

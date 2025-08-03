@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import ServicePageCard from "./ServicePageCard";
+import ServicePageCard from "./Card/ServicePageCard";
 import { fetchServices } from "../../api/Services";
 import { MdCleaningServices, MdDesignServices, MdElectricalServices, MdOutlineMiscellaneousServices, MdPestControl } from "react-icons/md";
 import { GrCompliance, GrShieldSecurity, GrUpgrade } from "react-icons/gr";
 import { GiAutoRepair } from "react-icons/gi";
 import { SiRenovate } from "react-icons/si";
 import {Link} from "react-router-dom"
+import ShowMoreCard from "./Card/ShowMoreCard";
 
 const MultiServiceSection = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAll,setShowAll] = useState(false)
 
   const slugify = (str) => str.toLowerCase().replace(/\s+/g, '-');
 
@@ -23,6 +25,8 @@ const MultiServiceSection = () => {
       "Home Improvement Services":<GrUpgrade className="text-5xl" />
       ,"Miscellaneous Services":<MdOutlineMiscellaneousServices className="text-5xl" />};
 
+    const visibleServices = showAll ? services : services.slice(0,5)
+
   useEffect(() => {
     const loadServices = async () => {
       const data = await fetchServices();
@@ -34,20 +38,13 @@ const MultiServiceSection = () => {
   }, []);
 
   return (
-    <div className="w-full">
-      <div className="flex flex-col gap-2 items-center mt-10">
-        <div className="text-center flex flex-col justify-center items-center md:items-start gap-2">
-          <h2 className="text-black text-3xl font-semibold mb-1 whitespace-normal">
-            Browse By Category
-          </h2>
-          <div className="w-24 h-1 bg-secondary rounded-3xl" />
-        </div>
-
+    <div className="sticky top-20 self-start w-95">
+      <div className="flex flex-col gap-2 items-start mb-10">
         {loading ? (
           <p className="text-gray-600 mt-4">Loading services...</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:grid-cols-4 p-4">
-            {services.map((service, index) => (
+          <div className="flex flex-wrap gap-3 p-2 border border-gray-200 rounded justify-start">
+            {visibleServices.map((service, index) => (
               <Link to={`/services/${slugify(service.category)}`} key={index}>
                 <ServicePageCard
                   category={service.category}
@@ -55,6 +52,11 @@ const MultiServiceSection = () => {
                 />
               </Link>
             ))}
+            {
+              !showAll && <div onClick={()=> setShowAll(true)}>
+              <ShowMoreCard/>
+            </div>
+            }
           </div>
         )}
       </div>
