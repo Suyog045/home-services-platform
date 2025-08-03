@@ -1,5 +1,5 @@
 import React from "react";
-import ServiceCard from "./Cards/ServiceCard";
+import ServiceCard from "./Cards/CategoryCard";
 import { Button, Carousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 import TestinomialCard from "./Cards/TestimonialCard";

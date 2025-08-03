@@ -8,7 +8,7 @@ import {
   ThemeProvider,
 } from "flowbite-react";
 import { SharedButton } from "../Shared/SharedButton";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuthModal } from "../../hooks/useAuthModal";
 
 const customTheme = createTheme({
@@ -29,19 +29,20 @@ const customTheme = createTheme({
 const Header = () => {
   const { setModalType } = useAuthModal();
   const navLinkFilter = ["Home", "Services", "About-Us", "Contact-Us"];
+  const location = useLocation()
 
   return (
     <Navbar
       theme={customTheme}
-      className="fixed w-full z-50 md:rounded-4xl transition-transform duration-300 md:mt-3 shadow-2xl "
+      className="fixed w-full z-50 transition-transform duration-300 rounded-b-md shadow-2xl "
     >
       <NavbarBrand className="text-2xl font-semibold text-center">
-        Home<span className="text-secondary">Mate</span>
+        Home<span className="text-secondary">Mate</span> {location.pathname.startsWith("/partner") && <sup className="text-sm mx-2">Partner</sup>}
       </NavbarBrand>
       <NavbarToggle />
       <NavbarCollapse>
         <div className="mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium items-center">
-          {navLinkFilter.map((navLink) => (
+          { navLinkFilter.map((navLink) => (
             <NavLink
               key={navLink}
               to={navLink == "Home" ? "/" : `/${navLink.toLowerCase()}`}
@@ -56,10 +57,10 @@ const Header = () => {
           ))}
         </div>
         <div className="mt-3 md:mt-0 gap-2 flex items-center flex-col md:flex-row">
-          <div className="flex flex-col gap-1">
+          {!location.pathname.startsWith("/partner") && <div className="flex flex-col gap-1">
             <Link to={'/partner'} className="text-primary hover:text-secondary-hover">Login As A Partner</Link>
             <div className="w-1/2 h-0.5 bg-secondary"/>
-          </div>
+          </div>}
           <SharedButton setModalType={setModalType} label="Login" />
           <SharedButton setModalType={setModalType} label="Register" />
         </div>
