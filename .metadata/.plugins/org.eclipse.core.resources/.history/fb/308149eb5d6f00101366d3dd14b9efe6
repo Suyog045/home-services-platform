@@ -1,0 +1,52 @@
+package com.homeservices.service.order;
+
+import java.net.URI;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.homeservices.custom_exceptions.ResourceNotFoundException;
+import com.homeservices.dao.OrderRepository;
+import com.homeservices.dto.request.OrderRequestDto;
+import com.homeservices.entities.Order;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+	
+	private OrderRepository orderRepo;
+
+	public Order createOrder(OrderRequestDto dto) {
+		return null;
+	}
+
+	@Override
+	public Optional<Order> getOrderById(int id) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
+	}
+
+	@Override
+	public Optional<Order> getOrderByUserId(int id) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
+	}
+
+	@Override
+	public Optional<Order> getOrdersByPartnerId(int id) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
+	}
+
+	@Override
+	public String updateOrderStatus(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String cancelOrder(Long id) {
+		Order order = orderRepo.findById(id).orElseThrow(new ResourceNotFoundException("Order Not Found"));
+		return null;
+	}
+	
+}
