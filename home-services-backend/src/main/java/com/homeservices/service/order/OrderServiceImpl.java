@@ -106,4 +106,24 @@ public class OrderServiceImpl implements OrderService {
 		return new ApiResponse("Order Cancelled");
 	}
 	
+
+	@Override
+	public List<Order> getAllOrders() {
+		List<Order> orders =orderRepo.findAll();
+		if(orders.isEmpty()) {
+			throw new ResourceNotFoundException("Orders Not Found");
+		}
+		return orders;
+	}
+
+	@Override
+	public List<Order> getOrdersByStatus(String status) {
+		OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
+		List<Order> orders=orderRepo.findByOrderStatus(orderStatus);
+		if(orders.isEmpty()) {
+			throw new ResourceNotFoundException("Orders Not Found By Status : "+status);
+		}
+		return orders;
+	}
+	
 }
