@@ -1,6 +1,6 @@
 import React from 'react'
 import PartnerProfileSummary from './PartnerProfileSummary'
-import BookSlot from './BookSlot'
+import BookSlot from '../../BookSlot';
 
 const ScheduleVisitPageLayout = () => {
     const dummyServiceProvider = {
