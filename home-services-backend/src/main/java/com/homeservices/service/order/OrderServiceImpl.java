@@ -19,6 +19,7 @@ import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.entities.Order;
 import com.homeservices.entities.Partner;
 import com.homeservices.entities.User;
+import com.homeservices.entities.ProvidedService;
 import com.homeservices.utils.OrderStatus;
 
 
@@ -38,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	public ApiResponse createOrder(OrderRequestDto dto,Long userId, Long serviceId) {
-		com.homeservices.entities.Service service =serviceRepo.findById(serviceId).orElseThrow(()-> new ResourceNotFoundException("Service Not Found"));
+		ProvidedService service =serviceRepo.findById(serviceId).orElseThrow(()-> new ResourceNotFoundException("Service Not Found"));
 		User user =userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
 		Order order = modelMapper.map(dto, Order.class);
 		order.setTotalCost(service.getPrice());		
