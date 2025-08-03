@@ -29,7 +29,6 @@ import com.homeservices.entities.UserAddress;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @Table(name = "user")
-
 public class User extends BaseEntity {
 
 	@Column(name = "first_name", nullable = false)
@@ -57,8 +56,9 @@ public class User extends BaseEntity {
 	@JoinColumn(name="user_id")
 	private List<UserAddress> addresses = new ArrayList<>();
 	
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
 	@JsonIgnore
+	@JoinColumn(name = "user_id")
 	private List<Order> orders = new ArrayList<>();
 	
 }

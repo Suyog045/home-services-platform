@@ -39,12 +39,15 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ApiResponse createOrder(OrderRequestDto dto,Long userId, Long serviceId) {
 		com.homeservices.entities.Service service =serviceRepo.findById(serviceId).orElseThrow(()-> new ResourceNotFoundException("Service Not Found"));
+		User user =userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
 		Order order = modelMapper.map(dto, Order.class);
 		order.setTotalCost(service.getPrice());		
 
 		order.setOrderStatus(OrderStatus.PENDING);
 		order.setServiceDate(dto.serviceDate());
 		order.setServiceTime(dto.serviceTime());
+		user.getOrders().add(order);
+		order.setService(service);
 		orderRepo.save(order);
 		return new ApiResponse("Order Created Successfully");
 	}
