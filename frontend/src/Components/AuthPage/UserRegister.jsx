@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import userRegistration from "../../api/UserRegistration";
 import {
   Button,
   Checkbox,
@@ -11,6 +12,10 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useAuthModal } from "../../hooks/useAuthModal";
+
+const handleRegister = () => {
+  userRegistration(userData, closeModal);
+};
 
 const customTheme = createTheme({
   root: {
@@ -322,6 +327,7 @@ const UserRegister = () => {
               <Button
                 disabled={stateChange.disabled}
                 className="bg-secondary hover:bg-secondary cursor-pointer"
+                onClick={handleRegister}
               >
                 Register
               </Button>
