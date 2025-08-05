@@ -16,16 +16,14 @@ import lombok.ToString;
 @ToString
 public class UserAddress extends BaseEntity {
 
-	@Column(name = "address", nullable = false, length = 255)
+	@Column(name = "address")
 	private String address;
-	@Column(name = "pincode", nullable = false, length = 8)
+	@Column(name = "pincode")
 	private String pincode;
-	@Column(name = "city", nullable = false, length = 50)
+	@Column(name = "city")
 	private String city;
-	@Column(name = "state", nullable = false, length = 50)
+	@Column(name = "state")
 	private String state;
-	@Column(name = "country", nullable = false, length = 50)
-	private String country;
-	@Column(name = "is_deleted", nullable = false)
+	@Column(name = "is_deleted")
 	private boolean isDeleted;
 }
