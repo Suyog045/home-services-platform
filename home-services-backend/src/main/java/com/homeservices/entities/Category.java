@@ -30,8 +30,6 @@ import lombok.ToString;
 public class Category extends BaseEntity{
 	private String name;
 	private String description;
-	@Column(name = "no_of_partners")
-	private int noOfPartners;
 	@CreationTimestamp
 	@Column(name = "deleted_date")
 	private LocalDate deletionAt;
