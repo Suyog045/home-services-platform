@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/service")
-@CrossOrigin
 public class ProvidedServiceController {
 	private final ProvidedServicesService servicesService; 
 //	GET /api/services - List all services 
