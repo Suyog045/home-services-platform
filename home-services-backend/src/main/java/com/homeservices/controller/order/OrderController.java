@@ -27,7 +27,6 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/order")
 @AllArgsConstructor
-@CrossOrigin
 public class OrderController {
 	private OrderService orderService;
 	

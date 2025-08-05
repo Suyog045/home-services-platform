@@ -25,7 +25,6 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin
 @RequestMapping("/categories")
 public class CategoryController {
 	private final CategoryService categoryService; 
