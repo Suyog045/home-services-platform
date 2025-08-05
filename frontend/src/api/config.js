@@ -11,3 +11,10 @@ export const GET_SERVICE_BY_ID = (id) => `${BASE_URL}/service/${id}`;
 export const CREATE_SERVICE = `${BASE_URL}/service`;
 export const UPDATE_SERVICE = (id) => `${BASE_URL}/service/${id}`;
 export const DELETE_SERVICE = (id) => `${BASE_URL}/service/${id}`;
+export const REGISTER_USER = `${BASE_URL}/user/register`;
+export const LOGIN_USER = `${BASE_URL}/user/login`;
+export const UPDATE_USER = (id) => `${BASE_URL}/user/${id}`;
+export const UPDATE_ADDRESS = (userId, addressId) => `${BASE_URL}/users/${userId}/addresses/${addressId}`;
+export const GET_USER_ADDRESSES = (userId) => `${BASE_URL}/users/${userId}/addresses`;
+
+

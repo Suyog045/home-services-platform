@@ -1,11 +1,13 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../Providers/AuthContext';
 
 const UserMenu = () => {
+  const { user } = useAuth();
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-6">Hi ! Rutvik</h2>
+      <h2 className="text-lg font-semibold mb-6">Hi! {user?.firstName || "User"}</h2>
       <ul className="space-y-2">
         <li>
           <NavLink 
@@ -50,6 +52,17 @@ const UserMenu = () => {
               }`
             }>
             Change Password
+          </NavLink>
+        </li>
+        <li>
+          <NavLink 
+            to="change-address"
+            className={({ isActive }) =>
+              `block px-3 py-2 rounded cursor-pointer ${
+                isActive ? 'bg-secondary text-white' : 'hover:bg-primary'
+              }`
+            }>
+            Change Address
           </NavLink>
         </li>
       </ul>

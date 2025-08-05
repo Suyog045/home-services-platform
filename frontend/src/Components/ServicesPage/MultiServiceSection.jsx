@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ServicePageCard from "./Card/ServicePageCard";
-import { fetchServices } from "../../api/Services";
 import { MdCleaningServices, MdDesignServices, MdElectricalServices, MdOutlineMiscellaneousServices, MdPestControl } from "react-icons/md";
 import { GrCompliance, GrShieldSecurity, GrUpgrade } from "react-icons/gr";
 import { GiAutoRepair } from "react-icons/gi";
@@ -27,15 +26,15 @@ const MultiServiceSection = () => {
 
     const visibleServices = showAll ? services : services.slice(0,5)
 
-  useEffect(() => {
-    const loadServices = async () => {
-      const data = await fetchServices();
-      setServices(data);
-      setLoading(false);
-    };
+  // useEffect(() => {
+  //   const loadServices = async () => {
+  //     const data = await fetchServices();
+  //     setServices(data);
+  //     setLoading(false);
+  //   };
 
-    loadServices();
-  }, []);
+  //   loadServices();
+  // }, []);
 
   return (
     <div className="sticky top-20 self-start w-95">

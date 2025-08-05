@@ -1,42 +1,60 @@
-import React, { useState } from 'react';
-import profileImg from '../../../public/images/profile.png'; // adjust path if needed
-import { Button } from 'flowbite-react';
-
-const initialData = {
-  firstName: 'Rutvik',
-  lastName: 'Patel',
-  email: 'rutvik@example.com',
-  phone: '9876543210',
-  city: 'Mumbai',
-  state: 'Maharashtra',
-};
+import React, { useEffect, useState } from "react";
+import profileImg from "../../../public/images/profile.png"; // adjust path if needed
+import { Button } from "flowbite-react";
+import axios from "axios";
+import { useAuth } from "../../Providers/AuthContext";
+import { UPDATE_USER } from "../../api/config";
+import { toast } from "react-toastify";
 
 const PersonalInfo = () => {
-    const [formData, setFormData] = useState(initialData);
-    const [editable, setEditable] = useState(false);
-    const handleEditButton = () => {
-    if (editable) {
-      setFormData(initialData);
+  const { user, login } = useAuth();
+  console.log(user);
+  const [formData, setFormData] = useState({ ...user });
+  const [editable, setEditable] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const handleEditButton = () => {
+    setEditable((prev) => !prev);
+    if (!editable) {
+      // Reset to latest user info on cancel
+      setFormData({ ...user });
     }
-    setEditable(!editable);
   };
 
-    const [UpdateButton, setUpdateButton] = useState(false);
-    const handleUpdateButton = () => {
-        if (editable) {
-            console.log('User information updated:', formData);
-        }
-        setEditable(false);
-    }
+ const handleUpdateButton = async () => {
+  if (!user?.id) {
+    toast.error("User ID is missing. Please re-login.");
+    return;
+  }
 
+  setIsUpdating(true);
+  try {
+    const { firstName, lastName, email, phone } = formData;
+    const userPayload = { firstName, lastName, email, phone };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    }
+    const response = await axios.put(UPDATE_USER(user.id), userPayload);
+
+    login({ ...user, ...response.data });
+    setFormData(response.data);
+    setEditable(false);
+    toast.success("Profile updated successfully");
+  } catch (error) {
+    console.error("Update failed", error);
+    toast.error("Update failed");
+  } finally {
+    setIsUpdating(false);
+  }
+};
+
+      
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   return (
     <div className="bg-white p-6 rounded shadow-md w-3/5">
@@ -56,73 +74,72 @@ const PersonalInfo = () => {
             type="text"
             value={formData.firstName}
             readOnly={!editable}
-            name='firstName'
-            onChange={(e)=>handleChange(e)}
+            name="firstName"
+            placeholder="First Name"
+            onChange={(e) => handleChange(e)}
             className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
           />
           <input
             type="text"
             value={formData.lastName}
             readOnly={!editable}
-            name='lastName'
-            onChange={(e)=>handleChange(e)}
+            name="lastName"
+            placeholder="Last Name"
+            onChange={(e) => handleChange(e)}
             className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
           />
           <input
             type="email"
             value={formData.email}
             readOnly={!editable}
-            name='email'
-            onChange={(e)=>handleChange(e)}
+            name="email"
+            placeholder="Email"
+            onChange={(e) => handleChange(e)}
             className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
           />
           <input
             type="tel"
             value={formData.phone}
             readOnly={!editable}
-            name='phone'
-            onChange={(e)=>handleChange(e)}
+            name="phone"
+            placeholder="Phone"
+            onChange={(e) => handleChange(e)}
             className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
           />
-          <input
-            type="text"
-            value={formData.city}
-            readOnly={!editable}
-            name='city'
-            onChange={(e)=>handleChange(e)}
-            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
-          />
-          <input
-            type="text"
-            value={formData.state}
-            readOnly={!editable}
-            name='state'
-            onChange={(e)=>handleChange(e)}
-            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
-          />
+         
         </div>
       </div>
 
       {/* Update Button */}
       <div className="col-span-2 mt-6 flex justify-end">
         <div className="mt-6 flex justify-end mr-2">
-        <Button
-          className={`${editable? "bg-red-500 hover:bg-red-600":"bg-blue-500 hover:bg-blue-600"} text-white px-6 py-2 rounded-4xl  transition cursor-pointer`}
-          onClick={handleEditButton}
-          
-        >
-          {editable ? 'Cancel' : 'Edit'}
-        </Button>
-      </div>
+          <Button
+            className={`${
+              editable
+                ? "bg-red-500 hover:bg-red-600"
+                : "bg-blue-500 hover:bg-blue-600"
+            } text-white px-6 py-2 rounded-4xl  transition cursor-pointer`}
+            onClick={handleEditButton}
+          >
+            {editable ? "Cancel" : "Edit"}
+          </Button>
+        </div>
 
-            <div className="mt-6 flex justify-end">
-        <button
-          className="bg-secondary text-white px-6 py-2 rounded-4xl hover:bg-yellow-600 transition cursor-pointer"
-          onClick={handleUpdateButton}
-        >
-          Update
-        </button>
-      </div>
+        {editable && (
+          <div className="mt-6 flex justify-end">
+            <button
+              disabled={isUpdating}
+              className={`${
+                isUpdating
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-secondary hover:bg-yellow-600"
+              } text-white px-6 py-2 rounded-4xl transition cursor-pointer`}
+              onClick={handleUpdateButton}
+            >
+              {isUpdating ? "Updating..." : "Update"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

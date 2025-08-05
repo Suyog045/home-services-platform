@@ -11,7 +11,11 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useAuthModal } from "../../hooks/useAuthModal";
-import { Link } from "react-router-dom";
+import { useAuth } from "../../Providers/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { LOGIN_USER } from "../../api/config";
 
 const customTheme = createTheme({
   root: {
@@ -67,13 +71,12 @@ const customTheme = createTheme({
   },
 });
 const UserLogin = () => {
-  const { isModalOpen, closeModal, modalType, setModalType } =
-    useAuthModal();
+  const { isModalOpen, closeModal, modalType, setModalType } = useAuthModal();
+  const { login } = useAuth();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [disableRegister, setDisableRegister] = useState(true);
-
 
   const [touched, setTouched] = useState({
     email: false,
@@ -85,11 +88,25 @@ const UserLogin = () => {
     setIsEmailValid(regex.test(e.target.value));
   };
 
-  useEffect(()=>{
-    if(isEmailValid && password){
-      setDisableRegister(false)
+ const handleLogin = async () => {
+  try {
+    const res = await axios.post(LOGIN_USER, { email, password });
+    login(res.data); // ⬅ saves user & addresses in context
+    toast.success("Login successful!");
+    setTimeout(() => closeModal(), 300);
+    closeModal();
+  } catch (err) {
+    console.error("Login failed", err);
+    toast.error("Login failed. Check credentials.");
+  }
+};
+
+
+  useEffect(() => {
+    if (isEmailValid && password) {
+      setDisableRegister(false);
     }
-  },[isEmailValid,password])
+  }, [isEmailValid, password]);
   return (
     <>
       <Modal
@@ -142,17 +159,13 @@ const UserLogin = () => {
                 onBlur={() =>
                   setTouched((prev) => ({ ...prev, password: true }))
                 }
-                color={
-                  touched.password && !password ? "failure" : undefined
-                }
+                color={touched.password && !password ? "failure" : undefined}
                 autoComplete="off"
                 required
               />
-              {touched.password && (!password) && (
+              {touched.password && !password && (
                 <HelperText>
-                  <p className="text-red-600 text-sm mt-1">
-                    Password Required
-                  </p>
+                  <p className="text-red-600 text-sm mt-1">Password Required</p>
                 </HelperText>
               )}
             </div>
@@ -165,7 +178,11 @@ const UserLogin = () => {
               </a>
             </div>
             <div className="w-full flex justify-center">
-              <Button disabled={disableRegister} className="cursor-pointer bg-secondary hover:bg-secondary">
+              <Button
+                disabled={disableRegister}
+                onClick={handleLogin}
+                className="cursor-pointer bg-secondary hover:bg-secondary"
+              >
                 Log in to your account
               </Button>
             </div>

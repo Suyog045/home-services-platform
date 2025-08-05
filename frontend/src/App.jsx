@@ -1,4 +1,5 @@
 import { RouterProvider } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 import Routes from "./Routes/Routes";
 import { ThemeConfig } from "flowbite-react";
 import { ModalWrapper } from "./Components/AuthPage/Wrapper/ModalWrapper";
@@ -17,6 +18,15 @@ function App() {
     <>
       <ThemeConfig dark={false} />
       <RouterProvider router={Routes} />
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
     </>
   );
 }

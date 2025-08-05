@@ -8,8 +8,10 @@ import {
   ThemeProvider,
 } from "flowbite-react";
 import { SharedButton } from "../Shared/SharedButton";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation , useNavigate } from "react-router-dom";
 import { useAuthModal } from "../../hooks/useAuthModal";
+import { useAuth } from "../../Providers/AuthContext";
+
 
 const customTheme = createTheme({
   navbar: {
@@ -29,20 +31,30 @@ const customTheme = createTheme({
 const Header = () => {
   const { setModalType } = useAuthModal();
   const navLinkFilter = ["Home", "Services", "About-Us", "Contact-Us"];
-  const location = useLocation()
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  
+  const handleLogout = () => {
+    logout();
+    navigate("/"); 
+  }
   return (
     <Navbar
       theme={customTheme}
       className="fixed w-full z-50 transition-transform duration-300 rounded-b-md shadow-2xl "
     >
       <NavbarBrand className="text-2xl font-semibold text-center">
-        Home<span className="text-secondary">Mate</span> {location.pathname.startsWith("/partner") && <sup className="text-sm mx-2">Partner</sup>}
+        Home<span className="text-secondary">Mate</span>{" "}
+        {location.pathname.startsWith("/partner") && (
+          <sup className="text-sm mx-2">Partner</sup>
+        )}
       </NavbarBrand>
       <NavbarToggle />
       <NavbarCollapse>
         <div className="mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium items-center">
-          { navLinkFilter.map((navLink) => (
+          {navLinkFilter.map((navLink) => (
             <NavLink
               key={navLink}
               to={navLink == "Home" ? "/" : `/${navLink.toLowerCase()}`}
@@ -57,12 +69,38 @@ const Header = () => {
           ))}
         </div>
         <div className="mt-3 md:mt-0 gap-2 flex items-center flex-col md:flex-row">
-          {!location.pathname.startsWith("/partner") && <div className="flex flex-col gap-1">
-            <Link to={'/partner'} className="text-primary hover:text-secondary-hover">Login As A Partner</Link>
-            <div className="w-1/2 h-0.5 bg-secondary"/>
-          </div>}
-          <SharedButton setModalType={setModalType} label="Login" />
-          <SharedButton setModalType={setModalType} label="Register" />
+          {!location.pathname.startsWith("/partner")&&!user && (
+            <div className="flex flex-col gap-1">
+              <Link
+                to={"/partner"}
+                className="text-primary hover:text-secondary-hover"
+              >
+                Login As A Partner
+              </Link>
+              <div className="w-1/2 h-0.5 bg-secondary" />
+            </div>
+          )}
+          {user ? (
+            <>
+              <Link
+                to="/user-profile"
+                className="text-primary font-medium hover:text-secondary transition"
+              >
+                Profile
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-red-500 font-medium hover:text-red-700 transition"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <SharedButton setModalType={setModalType} label="Login" />
+              <SharedButton setModalType={setModalType} label="Register" />
+            </>
+          )}
         </div>
       </NavbarCollapse>
     </Navbar>

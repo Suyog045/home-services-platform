@@ -1,5 +1,6 @@
 package com.homeservices.dto.request;
 
+
 import lombok.Data;
 
 @Data
@@ -9,4 +10,5 @@ public class UserRequestDto {
 	private String phone;
 	private String email;
 	private String password;
+
 }

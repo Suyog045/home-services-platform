@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ServiceCard from "./Cards/ServiceCard";
 import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { fetchServices } from "../../api/Services";
 import { AiOutlineCaretRight } from "react-icons/ai";
 import {
   MdCleaningServices,
@@ -35,14 +34,14 @@ const Services = () => {
     ),
   };
 
-  useEffect(() => {
-    const loadServices = async () => {
-      const data = await fetchServices();
-      setServices(data);
-    };
+  // useEffect(() => {
+  //   const loadServices = async () => {
+  //     const data = await fetchServices();
+  //     setServices(data);
+  //   };
 
-    loadServices();
-  }, []);
+  //   loadServices();
+  // }, []);
 
   return (
     <div className="mt-10 md:ml-30 md:mr-30 flex flex-col justify-around items-center overflow-hidden">

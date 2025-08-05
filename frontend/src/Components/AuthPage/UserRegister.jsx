@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import userRegistration from "../../api/UserRegistration";
+import { useAuth } from "../../Providers/AuthContext";
 import {
   Button,
   Checkbox,
@@ -13,9 +14,6 @@ import {
 } from "flowbite-react";
 import { useAuthModal } from "../../hooks/useAuthModal";
 
-const handleRegister = () => {
-  userRegistration(userData, closeModal);
-};
 
 const customTheme = createTheme({
   root: {
@@ -72,11 +70,12 @@ const customTheme = createTheme({
 });
 
 const UserRegister = () => {
+
   const { isModalOpen, closeModal, modalType } = useAuthModal();
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
-    contact: "",
+    phone: "",
     email: "",
     password: "",
   });
@@ -84,7 +83,7 @@ const UserRegister = () => {
   const [touched, setTouched] = useState({
     firstName: false,
     lastName: false,
-    contact: false,
+    phone: false,
     email: false,
     password: false,
     confirmPassword: false,
@@ -121,6 +120,12 @@ const UserRegister = () => {
   const handleTermsAndConditions = ()=>{
     setStateChange((prev)=> ({...prev, termsAccepted:true}))
   }
+
+
+  const handleRegister = () => {
+  userRegistration(userData, closeModal);
+};
+
 
   useEffect(()=>{
     if(userData.lastName && userData.lastName && isPhoneValid && isPasswordValid && isEmailValid && confirmPasswordMatch && stateChange.termsAccepted){
@@ -200,30 +205,30 @@ const UserRegister = () => {
             </div>
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="contact">Contact Number</Label>
+                <Label htmlFor="phone">Phone Number</Label>
               </div>
               <TextInput
-                name="contact"
-                value={userData.contact}
-                id="contact"
+                name="phone"
+                value={userData.phone}
+                id="phone"
                 type="number"
                 onChange={(e) => {
                   handleFieldChange(e);
                   setIsPhoneValid(/^[6-9]\d{9}$/.test(e.target.value));
                 }}
                 onBlur={() =>
-                  setTouched((prev) => ({ ...prev, contact: true }))
+                  setTouched((prev) => ({ ...prev, phone: true }))
                 }
                 color={
-                  touched.contact && !userData.contact ? "failure" : undefined
+                  touched.phone && !userData.phone ? "failure" : undefined
                 }
                 autoComplete="off"
                 required
               />
-                {touched.contact && (!userData.contact || !isPhoneValid) && (
+                {touched.phone && (!userData.phone || !isPhoneValid) && (
                   <HelperText>
                     <p className="text-red-600 text-sm mt-1">
-                      Enter a valid contact number
+                      Enter a valid phone number
                     </p>
                   </HelperText>
                 )}

@@ -4,10 +4,13 @@ import "./index.css";
 import App from "./App";
 import AuthModalProvider from "./Providers/AuthModalProvider";
 import { ModalWrapper } from "./Components/AuthPage/Wrapper/ModalWrapper";
+import { AuthProvider } from "./Providers/AuthContext";
 
 createRoot(document.getElementById("root")).render(
-  <AuthModalProvider>
-    <ModalWrapper />
-    <App />
-  </AuthModalProvider>
+  <AuthProvider>
+    <AuthModalProvider>
+      <ModalWrapper />
+      <App />
+    </AuthModalProvider>
+  </AuthProvider>
 );

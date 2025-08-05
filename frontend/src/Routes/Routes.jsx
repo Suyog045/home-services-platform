@@ -20,6 +20,7 @@ import PartnerLogin from '../pages/Partner/PartnerLogin'
 import PartnerRegister from '../pages/Partner/PartnerRegister'
 import PartnerHome from '../pages/Partner/PartnerHome'
 import MyAddresses from '../Components/User/Addresses'
+import ChangeAddress from '../Components/User/ChangeAddress'
 
 const Routes = createBrowserRouter([
     {
@@ -69,6 +70,10 @@ const Routes = createBrowserRouter([
           {
             path: 'change-password',
             element: <ChangePassword />
+          },
+          {
+            path: 'change-address',
+            element: <ChangeAddress />
           },
         ],
       },

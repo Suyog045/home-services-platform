@@ -43,14 +43,20 @@ public class User extends BaseEntity {
 	private String password;
 	@Column(name = "profile_img")
 	private String profileImg;
-	@Column(name = "birth_date", nullable = false)
+	@Column(name = "birth_date")
 	private LocalDate birthDate;
 	@Column(name = "is_deleted")
 	private boolean isDeleted;
 	@Column(name = "auth_token")
 	private String authToken;
 	@Column(name = "auth_token_expiry")
-	private LocalDate authTokenExpiry;
+	private LocalDateTime authTokenExpiry;
+	@Column(name="is_verified")
+	private boolean isVerified;
+	@Column(name = "verify_token")
+	private String verifyToken;
+	@Column(name = "verify_token_expiry")
+	private LocalDateTime verifyTokenExpiry;
 
 	@OneToMany( cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id")
