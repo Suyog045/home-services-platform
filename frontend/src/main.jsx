@@ -8,12 +8,15 @@ import { AuthProvider } from "./Providers/AuthContext";
 import { BookingProvider } from "./Providers/BookingContextProvider";
 
 createRoot(document.getElementById("root")).render(
-  <AuthModalProvider>
-    <AuthProvider>
-      <BookingProvider>
-        <ModalWrapper />
-        <App />
-      </BookingProvider>
-    </AuthProvider>
-  </AuthModalProvider>
+ 
+    
+      <AuthModalProvider>
+        <AuthProvider>
+          <BookingProvider>
+            <ModalWrapper />
+            <App />
+          </BookingProvider>
+        </AuthProvider>
+      </AuthModalProvider>
+
 );

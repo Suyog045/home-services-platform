@@ -13,9 +13,10 @@ import {
 import { useAuthModal } from "../../hooks/useAuthModal";
 import { useAuth } from "../../Providers/AuthContext";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { LOGIN_USER } from "../../api/config";
+import { userLogin } from "../../api/User";
+
 
 const customTheme = createTheme({
   root: {
@@ -88,19 +89,25 @@ const UserLogin = () => {
     setIsEmailValid(regex.test(e.target.value));
   };
 
- const handleLogin = async () => {
-  try {
-    const res = await axios.post(LOGIN_USER, { email, password });
-    login(res.data); // ⬅ saves user & addresses in context
-    toast.success("Login successful!");
-    setTimeout(() => closeModal(), 300);
-    closeModal();
-  } catch (err) {
-    console.error("Login failed", err);
-    toast.error("Login failed. Check credentials.");
-  }
-};
 
+  const handleLogin = async () => {
+      
+      try {
+        const res = await userLogin({ email, password });
+        console.log("Login response:", res);
+        if (res) {
+          login(res);
+          closeModal();
+          toast.success("Login successful!");
+         
+        }
+      } catch (error) {
+        console.error("Login failed:", error);
+        toast.error("Login failed. Please check your credentials.");
+      }
+      
+    
+  };
 
   useEffect(() => {
     if (isEmailValid && password) {

@@ -23,13 +23,13 @@ const UserMenu = () => {
         </li>
         <li>
           <NavLink 
-            to="mybookings"
+            to="myorders"
             className={({ isActive }) =>
               `block px-3 py-2 rounded cursor-pointer ${
                 isActive ? 'bg-secondary text-white' : 'hover:bg-primary'
               }`
             }>
-            My Bookings
+            My Orders
           </NavLink>
         </li>
         <li>
@@ -55,15 +55,7 @@ const UserMenu = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink 
-            to="change-address"
-            className={({ isActive }) =>
-              `block px-3 py-2 rounded cursor-pointer ${
-                isActive ? 'bg-secondary text-white' : 'hover:bg-primary'
-              }`
-            }>
-            Change Address
-          </NavLink>
+          
         </li>
       </ul>
     </div>

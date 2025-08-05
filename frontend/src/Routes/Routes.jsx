@@ -8,17 +8,15 @@ import ContactUs from "../pages/ContactUs";
 import CheckoutPage from "../pages/ServicePages/CheckoutPage/CheckoutPage";
 import UserProfileLayout from "../pages/User/UserProfileLayout";
 import PersonalInfo from '../Components/User/PersonalInfo';
-import Bookings from '../Components/User/Bookings';
+import Orders from '../Components/User/Orders';
 import ChangePassword from '../Components/User/ChangePassword';
 import PartnerDashBoard from '../pages/Partner/PartnerDashBoard'
 import PartnerLogin from '../pages/Partner/PartnerLogin'
 import PartnerRegister from '../pages/Partner/PartnerRegister'
-import PartnerHome from '../pages/Partner/PartnerHome'
+
 import MyAddresses from '../Components/User/Addresses'
 
-import PartnerDashBoard from "../pages/Partner/PartnerDashBoard";
-import PartnerLogin from "../pages/Partner/PartnerLogin";
-import PartnerRegister from "../pages/Partner/PartnerRegister";
+
 import PartnerHome from "../pages/Partner/PartnerHome";
 import ServiceListings from "../Components/ServicesPage/ServiceListings";
 import OrderSuccess from "../Components/ServicesPage/Pages/OrderSuccess/OrderSuccess";
@@ -71,8 +69,8 @@ const Routes = createBrowserRouter([
             element: <PersonalInfo />,
           },
           {
-            path: "mybookings",
-            element: <Bookings />,
+            path: "myorders",
+            element: <Orders />,
           },
           {
             path: "myaddresses",

@@ -47,10 +47,9 @@ public class UserController {
 	// user address
 
 	@PostMapping("/{userid}/addresses") // add User Address
-	public ResponseEntity<ApiResponse> addAddress(@RequestBody AddressRequestDto dto, @PathVariable("userid") Long id) {
+	public ResponseEntity<AddressResponseDto> addAddress(@RequestBody AddressRequestDto dto, @PathVariable("userid") Long id) {
 		userAddressService.addAddress(id, dto);
-		ApiResponse response = new ApiResponse("address added Successfully");
-		return ResponseEntity.ok(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(userAddressService.addAddress(id, dto));
 	}
 
 	@GetMapping("/{userid}/addresses") // get User Address

@@ -9,7 +9,7 @@ import com.homeservices.dto.response.ApiResponse;
 
 public interface UserAddressService {
 
-	ApiResponse addAddress(Long id, AddressRequestDto dto);
+	AddressResponseDto addAddress(Long id, AddressRequestDto dto);
 
 	List<AddressResponseDto> getUserAddresses(Long id);
 

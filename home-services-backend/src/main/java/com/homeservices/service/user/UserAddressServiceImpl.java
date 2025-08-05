@@ -30,13 +30,13 @@ public class UserAddressServiceImpl implements UserAddressService {
 	private final ModelMapper addressMapper;
 
 	@Override
-	public ApiResponse addAddress(Long userId, AddressRequestDto dto) {
+	public AddressResponseDto addAddress(Long userId, AddressRequestDto dto) {
 		User user = userRepository.findByIdAndIsDeletedFalse(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("user not found "));
 		UserAddress userAddress = addressMapper.map(dto, UserAddress.class);
 		user.getAddresses().add(userAddress);
-		userRepository.save(user);
-		return new ApiResponse("address added !!");
+		
+		return addressMapper.map(userAddressRepository.save(userAddress),AddressResponseDto.class);
 	}
 
 	@Override

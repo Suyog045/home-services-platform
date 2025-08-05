@@ -57,19 +57,19 @@ const PersonalInfo = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-md w-3/5">
-      <h2 className="text-lg font-semibold mb-6">Personal Information</h2>
+    <div className="bg-white p-4 sm:p-6 rounded shadow-md w-full max-w-3xl mx-auto">
+      <h2 className="text-lg font-semibold mb-6 text-center sm:text-left">Personal Information</h2>
 
-      <div className="flex items-start space-x-6">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-6 gap-y-4">
         <div className="flex-shrink-0">
           <img
             src={profileImg}
             alt="Profile"
-            className="w-28 h-28 rounded-full object-cover"
+            className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover mx-auto sm:mx-0"
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4 flex-grow">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
           <input
             type="text"
             value={formData.firstName}
@@ -77,7 +77,7 @@ const PersonalInfo = () => {
             name="firstName"
             placeholder="First Name"
             onChange={(e) => handleChange(e)}
-            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
+            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100 w-full"
           />
           <input
             type="text"
@@ -86,7 +86,7 @@ const PersonalInfo = () => {
             name="lastName"
             placeholder="Last Name"
             onChange={(e) => handleChange(e)}
-            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
+            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100 w-full"
           />
           <input
             type="email"
@@ -95,7 +95,7 @@ const PersonalInfo = () => {
             name="email"
             placeholder="Email"
             onChange={(e) => handleChange(e)}
-            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
+            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100 w-full"
           />
           <input
             type="tel"
@@ -104,14 +104,14 @@ const PersonalInfo = () => {
             name="phone"
             placeholder="Phone"
             onChange={(e) => handleChange(e)}
-            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100"
+            className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100 w-full"
           />
          
         </div>
       </div>
 
       {/* Update Button */}
-      <div className="col-span-2 mt-6 flex justify-end">
+      <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3">
         <div className="mt-6 flex justify-end mr-2">
           <Button
             className={`${
