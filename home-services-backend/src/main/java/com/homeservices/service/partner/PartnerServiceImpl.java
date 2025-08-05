@@ -6,16 +6,20 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.homeservices.custom_exceptions.ApiException;
 import com.homeservices.custom_exceptions.ResourceNotFoundException;
 import com.homeservices.dao.CategoryRepository;
+import com.homeservices.dao.OrderRepository;
 import com.homeservices.dao.PartnerRepository;
 import com.homeservices.dto.request.PartnerRequestDTO;
 import com.homeservices.dto.request.UpdatePartnerDTO;
 import com.homeservices.dto.response.ApiResponse;
+import com.homeservices.dto.response.OrderResponse;
 import com.homeservices.dto.response.PartnerOrderDTO;
 import com.homeservices.dto.response.PartnerResponseDTO;
 import com.homeservices.dto.response.PartnerServiceDTO;
 import com.homeservices.entities.Category;
+import com.homeservices.entities.Order;
 import com.homeservices.entities.Partner;
 import com.homeservices.entities.PartnerAddress;
 
@@ -28,6 +32,7 @@ public class PartnerServiceImpl implements PartnerService {
 
 	private final PartnerRepository partnerRepository;
 	private final CategoryRepository categoryRepository;
+	private final OrderRepository orderRepository;
 	private ModelMapper mapper;
 
 	@Override
@@ -123,8 +128,59 @@ public class PartnerServiceImpl implements PartnerService {
 	public ApiResponse verifyPartner(Long id) {
 		Partner partner = partnerRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Partner ID"));
+		if (partner.isVerified() == true) {
+			throw new ApiException("Partner Already Verified");
+		}
 		partner.setVerified(true);
-		return new ApiResponse("");
+		return new ApiResponse("Partner Verified Successfully");
+	}
+
+	@Override
+	public ApiResponse assignOrderToPartner(Long partnerId, Long orderId) {
+		Partner partner = partnerRepository.findById(partnerId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Partner ID"));
+
+		Order order = orderRepository.findById(orderId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Order  ID"));
+
+		if (partner.getMyOrders().contains(order)) {
+			throw new ApiException("Order Already Assigned to this Partner");
+		}
+
+		partner.getMyOrders().add(order);
+		partnerRepository.save(partner);
+		return new ApiResponse("Order with Id " + orderId + " Assigned to Partner " + partnerId);
+
+	}
+
+	@Override
+	public List<PartnerResponseDTO> getAllPartners() {
+		List<PartnerResponseDTO> list = partnerRepository.findAll().stream()
+				.map(partner -> mapper.map(partner, PartnerResponseDTO.class)).toList();
+		if (list.isEmpty()) {
+			throw new ApiException("No Parteners to show");
+		}
+		return list;
+	}
+
+	@Override
+	public List<PartnerResponseDTO> getByVerificationStatusTrue() {
+		List<PartnerResponseDTO> list = partnerRepository.findByIsVerifiedTrue().stream()
+				.map(partner -> mapper.map(partner, PartnerResponseDTO.class)).toList();
+		if (list.isEmpty()) {
+			throw new ApiException("No Parteners to show");
+		}
+		return list;
+	}
+
+	@Override
+	public List<PartnerResponseDTO> getByVerificationStatusFalse() {
+		List<PartnerResponseDTO> list = partnerRepository.findByIsVerifiedFalse().stream()
+				.map(partner -> mapper.map(partner, PartnerResponseDTO.class)).toList();
+		if (list.isEmpty()) {
+			throw new ApiException("No Parteners to show");
+		}
+		return list;
 	}
 
 }
