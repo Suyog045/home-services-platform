@@ -163,4 +163,24 @@ public class PartnerServiceImpl implements PartnerService {
 		return list;
 	}
 
+	@Override
+	public List<PartnerResponseDTO> getByVerificationStatusTrue() {
+		List<PartnerResponseDTO> list = partnerRepository.findByIsVerifiedTrue().stream()
+				.map(partner -> mapper.map(partner, PartnerResponseDTO.class)).toList();
+		if (list.isEmpty()) {
+			throw new ApiException("No Parteners to show");
+		}
+		return list;
+	}
+
+	@Override
+	public List<PartnerResponseDTO> getByVerificationStatusFalse() {
+		List<PartnerResponseDTO> list = partnerRepository.findByIsVerifiedFalse().stream()
+				.map(partner -> mapper.map(partner, PartnerResponseDTO.class)).toList();
+		if (list.isEmpty()) {
+			throw new ApiException("No Parteners to show");
+		}
+		return list;
+	}
+
 }

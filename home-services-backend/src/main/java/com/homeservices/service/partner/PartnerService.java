@@ -41,4 +41,8 @@ public interface PartnerService {
 
 	List<PartnerResponseDTO> getAllPartners();
 
+	List<PartnerResponseDTO> getByVerificationStatusTrue();
+
+	List<PartnerResponseDTO> getByVerificationStatusFalse();
+
 }
