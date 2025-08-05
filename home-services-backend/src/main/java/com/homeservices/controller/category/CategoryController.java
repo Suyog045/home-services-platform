@@ -1,8 +1,11 @@
 package com.homeservices.controller.category;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,13 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.homeservices.dto.request.CategoryRequestDto;
 import com.homeservices.dto.request.ProvidedServiceRequestDto;
 import com.homeservices.dto.response.CategoryResponseDTO;
+import com.homeservices.entities.ProvidedService;
 import com.homeservices.service.category.CategoryService;
 
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/categories")
+@CrossOrigin
+@RequestMapping("/categories")
 public class CategoryController {
 	private final CategoryService categoryService; 
 	
@@ -42,6 +47,11 @@ public class CategoryController {
 	@GetMapping("/{categoryId}")
 	public ResponseEntity<?> getCategoryById(@PathVariable Long categoryId){
 		return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
+	}
+	
+	@GetMapping("/{categoryId}/services")
+	public ResponseEntity<List<ProvidedService>> getServicesByCategoryId(@PathVariable Long categoryId){
+		return ResponseEntity.ok(categoryService.getServicesByCategoryId(categoryId));
 	}
 		
 //	PUT /api/categories/{id} - Update category  

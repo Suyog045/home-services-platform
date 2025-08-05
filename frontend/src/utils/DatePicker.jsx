@@ -85,9 +85,9 @@ const customTheme = createTheme(
   }
 }
 )
-const DatePicker = () => {
+const DatePicker = ({value,onChange}) => {
   return (
-    <Datepicker theme={customTheme} inline/>
+    <Datepicker value={value} onChange={(date)=> onChange(date)} theme={customTheme} inline/>
   )
 }
 
