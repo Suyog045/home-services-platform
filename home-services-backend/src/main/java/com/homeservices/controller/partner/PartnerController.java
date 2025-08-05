@@ -26,6 +26,11 @@ import lombok.AllArgsConstructor;
 
 public class PartnerController {
 	private final PartnerService partnerService;
+	@GetMapping
+	public ResponseEntity<?> getAllPartners() {
+		return ResponseEntity.ok(partnerService.getAllPartners());
+	}
+	
 
 //	POST   /api/partners/register                → Register a new partner
 	@PostMapping
@@ -74,5 +79,10 @@ public class PartnerController {
 	@PutMapping("/{partnerId}/verify")
 	public ResponseEntity<?> verifyPartner(@PathVariable Long partnerId) {
 		return ResponseEntity.ok(partnerService.verifyPartner(partnerId));
+	}
+
+	@PutMapping("/{partnerId}/orders/{orderId}")
+	public ResponseEntity<?> assignOrderToPartner(@PathVariable Long partnerId, @PathVariable Long orderId) {
+		return ResponseEntity.ok(partnerService.assignOrderToPartner(partnerId, orderId));
 	}
 }
