@@ -52,4 +52,9 @@ public class Order extends BaseEntity {
 	@JsonIgnore
 	private ProvidedService service;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id")
+	@JsonIgnore
+	private UserAddress address;
+	
 }
