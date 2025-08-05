@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CREATE_ORDER } from "./config";
+import { CREATE_ORDER, GET_ORDERS_BY_USER_ID } from "./config";
 
 
 export const placeOrder = async (userId, orderData) => {
@@ -11,3 +11,13 @@ export const placeOrder = async (userId, orderData) => {
     throw error;
   }
 };
+
+export const getOrdersByUserId = async (userId) => {
+  try {
+    const response = await axios.get(GET_ORDERS_BY_USER_ID(userId));
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching orders by user ID", error);
+    throw error;
+  }
+}

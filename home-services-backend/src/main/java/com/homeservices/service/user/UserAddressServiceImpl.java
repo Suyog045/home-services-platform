@@ -7,10 +7,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.homeservices.custom_exceptions.ApiException;
 import com.homeservices.custom_exceptions.ResourceNotFoundException;
 import com.homeservices.dao.UserAddressRepository;
 import com.homeservices.dao.UserRepository;
 import com.homeservices.dto.request.AddressRequestDto;
+import com.homeservices.dto.request.UpdateAddressDto;
 import com.homeservices.dto.response.AddressResponseDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.entities.User;
@@ -28,13 +30,13 @@ public class UserAddressServiceImpl implements UserAddressService {
 	private final ModelMapper addressMapper;
 
 	@Override
-	public ApiResponse addAddress(Long userId, AddressRequestDto dto) {
+	public AddressResponseDto addAddress(Long userId, AddressRequestDto dto) {
 		User user = userRepository.findByIdAndIsDeletedFalse(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("user not found "));
 		UserAddress userAddress = addressMapper.map(dto, UserAddress.class);
 		user.getAddresses().add(userAddress);
-		userRepository.save(user);
-		return new ApiResponse("address added !!");
+		
+		return addressMapper.map(userAddressRepository.save(userAddress),AddressResponseDto.class);
 	}
 
 	@Override
@@ -49,29 +51,22 @@ public class UserAddressServiceImpl implements UserAddressService {
 	}
 
 	@Override
-	public AddressResponseDto updateAddress(Long userId, AddressRequestDto dto, Long addressId) {
+	public AddressResponseDto updateAddress( Long userId,UpdateAddressDto dto, Long addressId) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user not found"));
+		UserAddress address = userAddressRepository.findById(addressId)
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+		  boolean belongsToUser = user.getAddresses().stream()
+	                .anyMatch(addr -> addr.getId().equals(addressId) && !addr.isDeleted());
 
-		List<UserAddress> addresses = user.getAddresses();
-		for (UserAddress address : addresses) {
-			if (address.getId().equals(addressId)) {
-				address.setAddress(dto.getAddress());
-				address.setCity(dto.getCity());
-				address.setCountry(dto.getCountry());
-				address.setPincode(dto.getPincode());
-				address.setState(dto.getState());
-				break;
-			}
-		}
-	
-         User updatedUser = userRepository.save(user);
-         
-          UserAddress userAddress = updatedUser.getAddresses().stream()
-        		  .filter(upUser-> upUser.getId().equals(addressId))
-        		  .findFirst()
-        		  .orElseThrow(()-> new ResourceNotFoundException("user address not found"));
-          
-		return addressMapper.map(userAddress, AddressResponseDto.class);
+	        if (!belongsToUser) {
+	            throw new ApiException("Address does not belong to the user");
+	        }
+	        address.setAddress(dto.getAddress());
+	        address.setCity(dto.getCity());
+	        address.setState(dto.getState());
+	        address.setPincode(dto.getPincode());
+
+		return addressMapper.map(userAddressRepository.save(address), AddressResponseDto.class);
 	}
 
 	@Override

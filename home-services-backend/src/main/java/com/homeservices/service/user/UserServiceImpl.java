@@ -1,5 +1,7 @@
 package com.homeservices.service.user;
 
+
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +14,9 @@ import com.homeservices.dto.request.UserLoginDto;
 import com.homeservices.dto.request.UserRequestDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.UserResponseDto;
+
 import com.homeservices.entities.User;
+import com.homeservices.entities.UserAddress;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,15 +35,13 @@ public class UserServiceImpl implements UserService {
 			throw new ApiException("Email id or phone number already registered");
 		}
 		User newUser = userMapper.map(dto, User.class);
+		newUser.setVerified(false);
+		newUser.setDeleted(false);
+
 		return userMapper.map(userRepository.save(newUser), UserResponseDto.class);
 	}
 
-	@Override
-	public UserResponseDto getUserById(Long id) {
-		User userFound = userRepository.findByIdAndIsDeletedFalse(id)
-				.orElseThrow(() -> new ResourceNotFoundException("user Not Found !!"));
-		return userMapper.map(userFound, UserResponseDto.class);
-	}
+
 
 	@Override
 	public UserResponseDto userLogin(UserLoginDto dto) {
@@ -56,9 +58,21 @@ public class UserServiceImpl implements UserService {
 		oldUser.setLastName(dto.getLastName());
 		oldUser.setEmail(dto.getEmail());
 		oldUser.setPhone(dto.getPhone());
-		oldUser.setPassword(dto.getPassword());
 		oldUser.setProfileImg(dto.getProfileImg());
-		oldUser.setBirthDate(dto.getBirthDate());
+
+		if (oldUser.getAddresses() != null && !oldUser.getAddresses().isEmpty()) {
+	        UserAddress address = oldUser.getAddresses().stream()
+	            .filter(a -> !a.isDeleted())
+	            .findFirst()
+	            .orElse(null);
+
+	        if (address != null) {
+	            address.setCity(dto.getCity());
+	            address.setState(dto.getState());
+	            address.setPincode(dto.getPincode());
+	        }
+	    }
+
 		return userMapper.map(userRepository.save(oldUser), UserResponseDto.class);
 	}
 

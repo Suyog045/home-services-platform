@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 @RequiredArgsConstructor
 public class UserController {
 	private final UserService userService;
@@ -23,6 +24,7 @@ public class UserController {
 
 	@PostMapping("/register") // Register a new user
 	public ResponseEntity<UserResponseDto> registerUser(@RequestBody UserRequestDto dto) {
+		System.out.println(dto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(dto));
 	}
 
@@ -30,11 +32,7 @@ public class UserController {
 	public ResponseEntity<UserResponseDto> userLogin(@RequestBody UserLoginDto dto) {
 		return ResponseEntity.ok(userService.userLogin(dto));
 	}
-
-	@GetMapping("/{id}") // Get user by ID
-	public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
-		return ResponseEntity.ok(userService.getUserById(id));
-	}
+	
 
 	@PutMapping("/{id}") // Update user profile
 	public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserDto dto, @PathVariable Long id) {
@@ -49,10 +47,9 @@ public class UserController {
 	// user address
 
 	@PostMapping("/{userid}/addresses") // add User Address
-	public ResponseEntity<ApiResponse> addAddress(@RequestBody AddressRequestDto dto, @PathVariable("userid") Long id) {
+	public ResponseEntity<AddressResponseDto> addAddress(@RequestBody AddressRequestDto dto, @PathVariable("userid") Long id) {
 		userAddressService.addAddress(id, dto);
-		ApiResponse response = new ApiResponse("address added Successfully");
-		return ResponseEntity.ok(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(userAddressService.addAddress(id, dto));
 	}
 
 	@GetMapping("/{userid}/addresses") // get User Address
@@ -61,8 +58,8 @@ public class UserController {
 	}
 
 	@PutMapping("/{userid}/addresses/{addressid}") // update User Address
-	public ResponseEntity<AddressResponseDto> updateAddress(@RequestBody AddressRequestDto dto, @PathVariable("userid") Long userId , @PathVariable("addressid") Long addressId ) {
-		return ResponseEntity.ok(userAddressService.updateAddress(userId, dto,addressId));
+	public ResponseEntity<AddressResponseDto> updateAddress(@PathVariable("userid") Long userId ,@RequestBody UpdateAddressDto dto,  @PathVariable("addressid") Long addressId ) {
+		return ResponseEntity.ok(userAddressService.updateAddress(userId,dto, addressId));
 	}
 
 	@DeleteMapping("/{userId}/addresses/{addressId}") // delete user address
