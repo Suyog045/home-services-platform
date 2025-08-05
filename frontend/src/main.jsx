@@ -5,12 +5,15 @@ import App from "./App";
 import AuthModalProvider from "./Providers/AuthModalProvider";
 import { ModalWrapper } from "./Components/AuthPage/Wrapper/ModalWrapper";
 import { AuthProvider } from "./Providers/AuthContext";
+import { BookingProvider } from "./Providers/BookingContextProvider";
 
 createRoot(document.getElementById("root")).render(
-  <AuthProvider>
-    <AuthModalProvider>
-      <ModalWrapper />
-      <App />
-    </AuthModalProvider>
-  </AuthProvider>
+  <AuthModalProvider>
+    <AuthProvider>
+      <BookingProvider>
+        <ModalWrapper />
+        <App />
+      </BookingProvider>
+    </AuthProvider>
+  </AuthModalProvider>
 );

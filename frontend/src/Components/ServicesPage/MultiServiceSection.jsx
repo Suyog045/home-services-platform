@@ -6,13 +6,12 @@ import { GiAutoRepair } from "react-icons/gi";
 import { SiRenovate } from "react-icons/si";
 import {Link} from "react-router-dom"
 import ShowMoreCard from "./Card/ShowMoreCard";
+import { getAllCategories } from "../../api/CatalogService";
 
 const MultiServiceSection = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAll,setShowAll] = useState(false)
-
-  const slugify = (str) => str.toLowerCase().replace(/\s+/g, '-');
 
   const serviceIcon = 
     {"Cleaning Services":<MdCleaningServices className="text-5xl" />,"Electrical Services" : <MdElectricalServices className="text-5xl" />
@@ -26,15 +25,15 @@ const MultiServiceSection = () => {
 
     const visibleServices = showAll ? services : services.slice(0,5)
 
-  // useEffect(() => {
-  //   const loadServices = async () => {
-  //     const data = await fetchServices();
-  //     setServices(data);
-  //     setLoading(false);
-  //   };
+  useEffect(() => {
+    const loadServices = async () => {
+      const data = await getAllCategories();
+      setServices(data);
+      setLoading(false);
+    };
 
-  //   loadServices();
-  // }, []);
+    loadServices();
+  }, []);
 
   return (
     <div className="sticky top-20 self-start w-95">
@@ -44,10 +43,10 @@ const MultiServiceSection = () => {
         ) : (
           <div className="flex flex-wrap gap-3 p-2 border border-gray-200 rounded justify-start">
             {visibleServices.map((service, index) => (
-              <Link to={`/services/${slugify(service.category)}`} key={index}>
+              <Link to={`/services/${service.id}`} key={index}>
                 <ServicePageCard
-                  category={service.category}
-                  serviceIcon={serviceIcon[service.category]}
+                  category={service.name}
+                  serviceIcon={serviceIcon[service.name]}
                 />
               </Link>
             ))}

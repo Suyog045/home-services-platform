@@ -13,6 +13,7 @@ import {
 import { GrCompliance, GrShieldSecurity, GrUpgrade } from "react-icons/gr";
 import { GiAutoRepair } from "react-icons/gi";
 import { SiRenovate } from "react-icons/si";
+import { getAllCategories } from "../../api/CatalogService";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -34,14 +35,14 @@ const Services = () => {
     ),
   };
 
-  // useEffect(() => {
-  //   const loadServices = async () => {
-  //     const data = await fetchServices();
-  //     setServices(data);
-  //   };
+  useEffect(() => {
+    const loadServices = async () => {
+      const data = await getAllCategories();
+      setServices(data);
+    };
 
-  //   loadServices();
-  // }, []);
+    loadServices();
+  }, []);
 
   return (
     <div className="mt-10 md:ml-30 md:mr-30 flex flex-col justify-around items-center overflow-hidden">

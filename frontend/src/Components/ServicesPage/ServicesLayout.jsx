@@ -3,6 +3,7 @@ import ServiceHeroSection from "./ServiceHeroSection";
 import MultiServiceSection from "./MultiServiceSection";
 import ServiceListings from "./ServiceListings";
 import BookSlot from "./BookSlot";
+import { BookingProvider } from "../../Providers/BookingContextProvider";
 
 const ServicesLayout = () => {
   return (
