@@ -37,4 +37,12 @@ public interface PartnerService {
 //	PUT    /api/partners/{id}/verify             → Mark partner as verified
 	ApiResponse verifyPartner(Long id);
 
+	ApiResponse assignOrderToPartner(Long partnerId, Long orderId);
+
+	List<PartnerResponseDTO> getAllPartners();
+
+	List<PartnerResponseDTO> getByVerificationStatusTrue();
+
+	List<PartnerResponseDTO> getByVerificationStatusFalse();
+
 }
