@@ -1,8 +1,20 @@
 import { Button } from 'flowbite-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useBooking } from '../../../hooks/useBooking';
 
-const ServiceProfileCard = ({ name, specialty, experience, charges, availability, userId }) => {
+const ServiceProfileCard = ({service}) => {
+  const { bookingDetails, addServiceId } = useBooking();
+
+  const isAdded = bookingDetails.serviceIds.includes(service.id);
+
+  console.log(bookingDetails)
+  const handleAddService = () => {
+    if (!isAdded) {
+      addServiceId(service.id);
+    }
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-3xl flex items-center gap-6">
       {/* <img
@@ -11,20 +23,17 @@ const ServiceProfileCard = ({ name, specialty, experience, charges, availability
         className="w-20 h-20 rounded-full object-cover"
       /> */}
       <div className="flex-1">
-        <h2 className="text-xl font-semibold">{name}</h2>
+        <h2 className="text-xl font-semibold">{service.name}</h2>
         <p className="text-gray-600 text-sm">
-          Specialty: {specialty} <br />
-          Years of Experience: {experience}+ <br />
-          Charges: ₹{charges}/-
+          {service.description} <br />
+          Charges: ₹{service.price}/-
         </p>
       </div>
       <div className="text-center flex flex-col items-center">
-        <p className="text-green-600 font-semibold mb-2">{availability}</p>
-        <Link to={`book-appointment/${userId}`}>
-          <Button className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-secondary-hover cursor-pointer">
-            Book Visit
+        <p className="text-green-600 font-semibold mb-2">Available</p>
+          <Button onClick={handleAddService} disabled={isAdded} className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-secondary-hover cursor-pointer">
+            {isAdded? "Added" : "Add"}
           </Button>
-        </Link>
       </div>
     </div>
   )
