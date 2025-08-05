@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../Providers/AuthContext";
 import {
   Button,
   Checkbox,
@@ -11,6 +12,8 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useAuthModal } from "../../hooks/useAuthModal";
+import { userRegistration } from "./../../api/User";
+import { toast } from "react-toastify";
 
 const customTheme = createTheme({
   root: {
@@ -71,7 +74,7 @@ const UserRegister = () => {
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
-    contact: "",
+    phone: "",
     email: "",
     password: "",
   });
@@ -79,7 +82,7 @@ const UserRegister = () => {
   const [touched, setTouched] = useState({
     firstName: false,
     lastName: false,
-    contact: false,
+    phone: false,
     email: false,
     password: false,
     confirmPassword: false,
@@ -94,8 +97,8 @@ const UserRegister = () => {
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [confirmPassword,setConfirmPassword] = useState()
-  const [confirmPasswordMatch,setConfirmPasswordMatch] = useState(false)
+  const [confirmPassword, setConfirmPassword] = useState();
+  const [confirmPasswordMatch, setConfirmPasswordMatch] = useState(false);
   // const [termAndConditionAccepted,setTermsAndConditionsAccepted] = useState(false)
 
   const handleFieldChange = (e) => {
@@ -103,25 +106,55 @@ const UserRegister = () => {
     setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validateEmail = (e)=>{
-    const regex = /^\S+@\S+\.\S+$/
-    setIsEmailValid(regex.test(e.target.value))
-  }
+  const validateEmail = (e) => {
+    const regex = /^\S+@\S+\.\S+$/;
+    setIsEmailValid(regex.test(e.target.value));
+  };
 
-  const validatePassword = (e)=>{
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    setIsPasswordValid(passwordRegex.test(e.target.value))
-  }
+  const validatePassword = (e) => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    setIsPasswordValid(passwordRegex.test(e.target.value));
+  };
 
-  const handleTermsAndConditions = ()=>{
-    setStateChange((prev)=> ({...prev, termsAccepted:true}))
-  }
+  const handleTermsAndConditions = () => {
+    setStateChange((prev) => ({ ...prev, termsAccepted: true }));
+  };
 
-  useEffect(()=>{
-    if(userData.lastName && userData.lastName && isPhoneValid && isPasswordValid && isEmailValid && confirmPasswordMatch && stateChange.termsAccepted){
-      setStateChange((prev)=> ({...prev,disabled:false}))
+  const handleRegister = async () => {
+    try {
+      const data = await userRegistration(userData);
+      console.log("Registration response:", data);
+      if (data) {
+        closeModal();
+        toast.success("Registration successful!");
+      }
+    } catch (error) {
+      console.error("Registration failed:", error);
+      toast.error("email or phone already registered ");
     }
-  },[userData,isPhoneValid , isPasswordValid, isEmailValid, confirmPasswordMatch,stateChange.termsAccepted])
+  };
+
+  useEffect(() => {
+    if (
+      userData.lastName &&
+      userData.lastName &&
+      isPhoneValid &&
+      isPasswordValid &&
+      isEmailValid &&
+      confirmPasswordMatch &&
+      stateChange.termsAccepted
+    ) {
+      setStateChange((prev) => ({ ...prev, disabled: false }));
+    }
+  }, [
+    userData,
+    isPhoneValid,
+    isPasswordValid,
+    isEmailValid,
+    confirmPasswordMatch,
+    stateChange.termsAccepted,
+  ]);
   return (
     <>
       <Modal
@@ -195,33 +228,29 @@ const UserRegister = () => {
             </div>
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="contact">Contact Number</Label>
+                <Label htmlFor="phone">Phone Number</Label>
               </div>
               <TextInput
-                name="contact"
-                value={userData.contact}
-                id="contact"
+                name="phone"
+                value={userData.phone}
+                id="phone"
                 type="number"
                 onChange={(e) => {
                   handleFieldChange(e);
                   setIsPhoneValid(/^[6-9]\d{9}$/.test(e.target.value));
                 }}
-                onBlur={() =>
-                  setTouched((prev) => ({ ...prev, contact: true }))
-                }
-                color={
-                  touched.contact && !userData.contact ? "failure" : undefined
-                }
+                onBlur={() => setTouched((prev) => ({ ...prev, phone: true }))}
+                color={touched.phone && !userData.phone ? "failure" : undefined}
                 autoComplete="off"
                 required
               />
-                {touched.contact && (!userData.contact || !isPhoneValid) && (
-                  <HelperText>
-                    <p className="text-red-600 text-sm mt-1">
-                      Enter a valid contact number
-                    </p>
-                  </HelperText>
-                )}
+              {touched.phone && (!userData.phone || !isPhoneValid) && (
+                <HelperText>
+                  <p className="text-red-600 text-sm mt-1">
+                    Enter a valid phone number
+                  </p>
+                </HelperText>
+              )}
             </div>
             <div>
               <div className="mb-2 block">
@@ -232,26 +261,22 @@ const UserRegister = () => {
                 placeholder="name@company.com"
                 name="email"
                 value={userData.email}
-                onChange={(e)=>{
-                  handleFieldChange(e)
-                  validateEmail(e)
+                onChange={(e) => {
+                  handleFieldChange(e);
+                  validateEmail(e);
                 }}
-                onBlur={() =>
-                  setTouched((prev) => ({ ...prev, email: true }))
-                }
-                color={
-                  touched.email && !userData.email ? "failure" : undefined
-                }
+                onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
+                color={touched.email && !userData.email ? "failure" : undefined}
                 autoComplete="off"
                 required
               />
-                {touched.email && (!userData.email || !isEmailValid) && (
-                  <HelperText>
-                    <p className="text-red-600 text-sm mt-1">
-                      Enter a valid Email
-                    </p>
-                  </HelperText>
-                )}
+              {touched.email && (!userData.email || !isEmailValid) && (
+                <HelperText>
+                  <p className="text-red-600 text-sm mt-1">
+                    Enter a valid Email
+                  </p>
+                </HelperText>
+              )}
             </div>
             <div>
               <div className="mb-2 block">
@@ -262,9 +287,9 @@ const UserRegister = () => {
                 value={userData.password}
                 id="password"
                 type="password"
-                onChange={(e)=>{
-                  handleFieldChange(e)
-                  validatePassword(e)
+                onChange={(e) => {
+                  handleFieldChange(e);
+                  validatePassword(e);
                 }}
                 onBlur={() =>
                   setTouched((prev) => ({ ...prev, password: true }))
@@ -276,11 +301,12 @@ const UserRegister = () => {
                 required
               />
               {touched.password && (!userData.password || !isPasswordValid) && (
-                  <HelperText>
-                    <p className="text-red-600 text-sm mt-1">
-                      Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.
-                    </p>
-                  </HelperText>
+                <HelperText>
+                  <p className="text-red-600 text-sm mt-1">
+                    Password must be at least 8 characters long and include
+                    uppercase, lowercase, number, and special character.
+                  </p>
+                </HelperText>
               )}
             </div>
             <div>
@@ -292,7 +318,7 @@ const UserRegister = () => {
                 value={confirmPassword}
                 id="confirm-password"
                 type="password"
-                onChange={(e)=>{
+                onChange={(e) => {
                   const value = e.target.value;
                   setConfirmPassword(value);
                   setConfirmPasswordMatch(value === userData.password);
@@ -301,27 +327,35 @@ const UserRegister = () => {
                   setTouched((prev) => ({ ...prev, confirmPassword: true }))
                 }
                 color={
-                  touched.confirmPassword && !confirmPassword ? "failure" : undefined
+                  touched.confirmPassword && !confirmPassword
+                    ? "failure"
+                    : undefined
                 }
                 autoComplete="off"
                 required
               />
-              {touched.confirmPassword && (!confirmPassword || !confirmPasswordMatch) && (
+              {touched.confirmPassword &&
+                (!confirmPassword || !confirmPasswordMatch) && (
                   <HelperText>
                     <p className="text-red-600 text-sm mt-1">
                       Password do not match
                     </p>
                   </HelperText>
-              )}
+                )}
             </div>
             <div className="flex items-center gap-2">
-              <Checkbox id="remember" className="cursor-pointer" onClick={handleTermsAndConditions} />
+              <Checkbox
+                id="remember"
+                className="cursor-pointer"
+                onClick={handleTermsAndConditions}
+              />
               <Label htmlFor="remember">I agree terms and conditions</Label>
             </div>
             <div className="w-full flex justify-center">
               <Button
                 disabled={stateChange.disabled}
                 className="bg-secondary hover:bg-secondary cursor-pointer"
+                onClick={handleRegister}
               >
                 Register
               </Button>
