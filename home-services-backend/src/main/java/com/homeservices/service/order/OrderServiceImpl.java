@@ -2,6 +2,7 @@ package com.homeservices.service.order;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,18 +39,21 @@ public class OrderServiceImpl implements OrderService {
 	private final ModelMapper modelMapper;
 	
 	@Override
-	public ApiResponse createOrder(OrderRequestDto dto,Long userId, Long serviceId) {
-		ProvidedService service =serviceRepo.findById(serviceId).orElseThrow(()-> new ResourceNotFoundException("Service Not Found"));
+	public ApiResponse createOrder(OrderRequestDto dto,Long userId) {
 		User user =userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
-		Order order = modelMapper.map(dto, Order.class);
-		order.setTotalCost(service.getPrice());		
-
-		order.setOrderStatus(OrderStatus.PENDING);
-		order.setServiceDate(dto.serviceDate());
-		order.setServiceTime(dto.serviceTime());
-		user.getOrders().add(order);
-		order.setService(service);
-		orderRepo.save(order);
+		List<ProvidedService> services = serviceRepo.findAllById(dto.serviceIds());
+		List<Order> newOrders = new ArrayList<>();
+		for (ProvidedService providedService : services) {
+			Order order = new Order();
+			order.setServiceDate(dto.serviceDate());
+			order.setServiceTime(dto.serviceTime());
+			order.setService(providedService);
+			order.setOrderStatus(OrderStatus.PENDING);
+			order.setTotalCost(providedService.getPrice());
+			newOrders.add(order);
+			user.getOrders().add(order);
+		}
+		orderRepo.saveAll(newOrders);
 		return new ApiResponse("Order Created Successfully");
 	}
 

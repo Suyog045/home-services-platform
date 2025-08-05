@@ -63,4 +63,10 @@ public class ProvidedServicesServiceImp implements ProvidedServicesService{
 		serviceRepository.delete(service);
 		return new ApiResponse("deleted successfully");
 	}
+
+	@Override
+	public List<ProvidedServiceResponseDTO> getAllServicesByIds(List<Long> serviceIds) {
+		return serviceRepository.findAllById(serviceIds).stream().map((service)-> modelMapper.map(service, ProvidedServiceResponseDTO.class)).toList();
+		 
+	}
 }

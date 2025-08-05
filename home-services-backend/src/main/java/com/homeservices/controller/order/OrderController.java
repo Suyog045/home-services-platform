@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,13 +27,15 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/order")
 @AllArgsConstructor
+@CrossOrigin
 public class OrderController {
 	private OrderService orderService;
 	
 //	POST   /api/orders                           → Create a new order
-	@PostMapping("/user/{userId}/service/{serviceId}")
-	public ResponseEntity<ApiResponse> createOrder(@RequestBody OrderRequestDto dto,@PathVariable Long userId,@PathVariable Long serviceId){
-		return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto,userId,serviceId));
+	@PostMapping("/user/{userId}/service")
+	public ResponseEntity<ApiResponse> createOrder(@RequestBody OrderRequestDto dto,@PathVariable Long userId){
+		System.out.println(dto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto,userId));
 	}
 	@GetMapping
 	public ResponseEntity<List<Order>> getAllOrders(){
