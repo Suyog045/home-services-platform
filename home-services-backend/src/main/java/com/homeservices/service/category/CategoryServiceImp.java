@@ -12,6 +12,7 @@ import com.homeservices.dto.request.CategoryRequestDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.CategoryResponseDTO;
 import com.homeservices.entities.Category;
+import com.homeservices.entities.ProvidedService;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -69,5 +70,16 @@ public class CategoryServiceImp implements CategoryService{
 			
 		categoryRepository.delete(category);
 		return new ApiResponse("Category deleted by Id");
+	}
+
+
+	@Override
+	public List<ProvidedService> getServicesByCategoryId(Long categoryId) {
+		Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category Not Found"));
+		List<ProvidedService> services = category.getServices();
+		if(services.isEmpty()) {
+			throw new ResourceNotFoundException("No Services Found");
+		}
+		return services;
 	}
 }

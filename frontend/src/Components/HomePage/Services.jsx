@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ServiceCard from "./Cards/ServiceCard";
 import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { fetchServices } from "../../api/Services";
 import { AiOutlineCaretRight } from "react-icons/ai";
 import {
   MdCleaningServices,
@@ -14,6 +13,7 @@ import {
 import { GrCompliance, GrShieldSecurity, GrUpgrade } from "react-icons/gr";
 import { GiAutoRepair } from "react-icons/gi";
 import { SiRenovate } from "react-icons/si";
+import { getAllCategories } from "../../api/CatalogService";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -37,7 +37,7 @@ const Services = () => {
 
   useEffect(() => {
     const loadServices = async () => {
-      const data = await fetchServices();
+      const data = await getAllCategories();
       setServices(data);
     };
 

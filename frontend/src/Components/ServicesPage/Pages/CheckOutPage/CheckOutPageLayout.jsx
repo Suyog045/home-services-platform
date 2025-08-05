@@ -1,36 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OrderSummary from "./OrderSummary";
 import CheckOutOrder from "./CheckOutOrder";
+import AddressForm from "./AddressForm";
+import { useBooking } from "../../../../hooks/useBooking";
+import { getServicesByIds } from "../../../../api/CatalogService";
 
 const CheckOutPageLayout = () => {
-    const orderData = {
-  serviceName: "AC Repair",
-  category: "Home Appliance",
-  description: "General service of split AC unit",
-  price: 799,
-  preferredDate: "2025-07-25",
-  preferredTime: "15:30",
-  status: "Scheduled",
-  addressLine1: "123, MG Road",
-  addressLine2: "Near Big Bazaar",
-  city: "Mumbai",
-  state: "Maharashtra",
-  pincode: "400001",
-  landmark: "Opposite Metro Station"
-};
+  const { bookingDetails } = useBooking();
+  const [services, setServices] = useState([]);
 
-const priceDetails = {
-  serviceName: "AC Gas Refill",
-  basePrice: 1500,
-  discount: 200,
-  tax: 100,
-  totalAmount: 1400
-};
+  useEffect(() => {
+    const loadServices = async () => {
+      if (bookingDetails?.serviceIds?.length > 0) {
+        const data = await getServicesByIds(bookingDetails.serviceIds);
+        setServices(data);
+      } else {
+        setServices([]);
+      }
+    };
+    loadServices();
+  }, [bookingDetails]);
+
   return (
     <div className="flex">
-      <div className='mt-32 h-screen flex items-start w-full mx-8 gap-6'>
-        <OrderSummary orderData={orderData} />
-        <CheckOutOrder priceDetails={priceDetails} />
+      <div className="mt-36 mb-10 flex items-start justify-center w-full mx-8 gap-6">
+        <div className="flex flex-col-reverse shadow">
+          <AddressForm />
+          <OrderSummary services={services} />
+        </div>
+        <CheckOutOrder services={services} />
       </div>
     </div>
   );

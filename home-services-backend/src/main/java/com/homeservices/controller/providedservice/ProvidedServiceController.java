@@ -1,7 +1,10 @@
 package com.homeservices.controller.providedservice;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.homeservices.dto.request.CategoryRequestDto;
 import com.homeservices.dto.request.ProvidedServiceRequestDto;
 import com.homeservices.dto.response.ApiResponse;
+import com.homeservices.dto.response.ProvidedServiceResponseDTO;
 import com.homeservices.service.category.CategoryService;
 import com.homeservices.service.providedservice.ProvidedServicesService;
 
@@ -22,6 +26,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/service")
+@CrossOrigin
 public class ProvidedServiceController {
 	private final ProvidedServicesService servicesService; 
 //	GET /api/services - List all services 
@@ -34,11 +39,16 @@ public class ProvidedServiceController {
     public ResponseEntity<?> addNewService(ProvidedServiceRequestDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(servicesService.addNewService(dto));
     }
+	@PostMapping("/getByIds")
+	public ResponseEntity<List<ProvidedServiceResponseDTO>> getAllServicesByIds(@RequestBody List<Long> serviceIds) {
+		return ResponseEntity.ok(servicesService.getAllServicesByIds(serviceIds));
+	}
 //	GET /api/services/{id} - Get specific service 
 	@GetMapping(path = "/{serviceId}")
 	public ResponseEntity<?> getServiceById(@PathVariable Long serviceId){
 		return ResponseEntity.ok(servicesService.getServiceById(serviceId));
 	}
+	
 //	PUT /api/services/{id} - Update service  
 	@PutMapping(path = "/{serviceId}")
 	public ResponseEntity<?> updateService(@PathVariable Long serviceId,@RequestBody ProvidedServiceRequestDto dto){
@@ -49,4 +59,5 @@ public class ProvidedServiceController {
 	public ResponseEntity<?> deleteService(Long serviceId){
 		return ResponseEntity.ok(servicesService.deleteService(serviceId));
 	}
+	
 }

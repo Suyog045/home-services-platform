@@ -23,5 +23,7 @@ public interface CategoryService {
 
 	//todo
 	ApiResponse deleteCatgory(Long categoryId);
+
+	List<ProvidedService> getServicesByCategoryId(Long categoryId);
 	
 }

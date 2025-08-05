@@ -19,4 +19,6 @@ public interface ProvidedServicesService {
 	ApiResponse updateService(Long serviceId, ProvidedServiceRequestDto dto);
 
 	ApiResponse deleteService(Long serviceId);
+
+	List<ProvidedServiceResponseDTO> getAllServicesByIds(List<Long> serviceIds);
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ServiceCard from "./Cards/CategoryCard";
 import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { fetchServices } from "../../api/Services";
 import { AiOutlineCaretRight } from "react-icons/ai";
 import { HiChevronRight } from "react-icons/hi";
 import {
@@ -16,12 +15,11 @@ import { GrCompliance, GrShieldSecurity, GrUpgrade } from "react-icons/gr";
 import { GiAutoRepair } from "react-icons/gi";
 import { SiRenovate } from "react-icons/si";
 import CategoryCard from "./Cards/CategoryCard";
+import { getAllCategories } from "../../api/CatalogService";
 
 const OurServiceSection = () => {
   const [services, setServices] = useState([]);
-
-  const slugify = (str) => str.toLowerCase().replace(/\s+/g, "-");
-
+  
   const serviceIcon = {
     "Cleaning Services": <MdCleaningServices className="text-5xl" />,
     "Electrical Services": <MdElectricalServices className="text-5xl" />,
@@ -39,7 +37,7 @@ const OurServiceSection = () => {
 
   useEffect(() => {
     const loadServices = async () => {
-      const data = await fetchServices();
+      const data = await getAllCategories();
       setServices(data);
     };
 
@@ -59,11 +57,11 @@ const OurServiceSection = () => {
       </div>
         <div className="mt-5 flex overflow-x-auto no-scrollbar whitespace-nowrap w-full py-5 mx-5">
           {services.map((service, index) => (
-            <Link to={`/services/${slugify(service.category)}`}>
+            <Link to={`/services/${service.id}`}>
             <div key={index} className="min-w-[250px]">
               <CategoryCard
-                category={service.category}
-                serviceIcon={serviceIcon[service.category]}
+                category={service.name}
+                serviceIcon={serviceIcon[service.name]}
               />
             </div>
             </Link>
