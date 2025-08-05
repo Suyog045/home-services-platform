@@ -5,12 +5,13 @@ import java.util.Optional;
 
 import com.homeservices.dto.request.OrderRequestDto;
 import com.homeservices.dto.response.ApiResponse;
+import com.homeservices.dto.response.OrderResponse;
 import com.homeservices.entities.Order;
 
 public interface OrderService {
 	ApiResponse createOrder(OrderRequestDto dto,Long userId);
 
-	Order getOrderById(Long orderId);
+	OrderResponse getOrderById(Long orderId);
 
 	List<Order> getOrdersByUserId(Long userId);
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.homeservices.dto.request.OrderRequestDto;
 import com.homeservices.dto.response.ApiResponse;
+import com.homeservices.dto.response.OrderResponse;
 import com.homeservices.entities.Order;
 import com.homeservices.service.order.OrderService;
 
@@ -48,7 +49,7 @@ public class OrderController {
 	
 //	GET    /api/orders/{id}                      → Get order by ID
 	@GetMapping("/{orderId}")
-	public ResponseEntity<Order> getOrderById(@PathVariable Long orderId){
+	public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long orderId){
 		return ResponseEntity.ok(orderService.getOrderById(orderId));
 	}
 //	GET    /api/orders/user/{userId}             → Get all orders by user

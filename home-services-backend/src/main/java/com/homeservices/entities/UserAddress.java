@@ -6,13 +6,14 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "user_address")
-
+@ToString
 public class UserAddress extends BaseEntity {
 
 	@Column(name = "address", nullable = false, length = 255)
