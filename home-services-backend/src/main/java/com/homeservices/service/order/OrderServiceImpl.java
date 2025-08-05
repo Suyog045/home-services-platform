@@ -17,12 +17,13 @@ import com.homeservices.dao.ServiceRepository;
 import com.homeservices.dao.UserRepository;
 import com.homeservices.dto.request.OrderRequestDto;
 import com.homeservices.dto.response.ApiResponse;
+import com.homeservices.dto.response.OrderResponse;
 import com.homeservices.entities.Order;
 import com.homeservices.entities.Partner;
 import com.homeservices.entities.User;
+import com.homeservices.entities.UserAddress;
 import com.homeservices.entities.ProvidedService;
 import com.homeservices.utils.OrderStatus;
-
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +32,47 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 public class OrderServiceImpl implements OrderService {
-	
+
 	private final OrderRepository orderRepo;
 	private final PartnerRepository partnerRepo;
 	private final UserRepository userRepo;
 	private final ServiceRepository serviceRepo;
 	private final ModelMapper modelMapper;
-	
+
+	private UserAddress getOrAddAddress(User user, OrderRequestDto dto) {
+		// Check for matching address
+		Optional<UserAddress> matchingAddress = user.getAddresses().stream()
+				.filter(addr -> addr.getAddress().equalsIgnoreCase(dto.address().getAddress())
+						&& addr.getCity().equalsIgnoreCase(dto.address().getCity())
+						&& addr.getState().equalsIgnoreCase(dto.address().getState())
+						&& addr.getCountry().equalsIgnoreCase(dto.address().getCountry())
+						&& addr.getPincode().equalsIgnoreCase(dto.address().getPincode()))
+				.findFirst();
+
+		if (matchingAddress.isPresent()) {
+			return matchingAddress.get();
+		}
+
+		UserAddress newAddress = new UserAddress();
+		newAddress.setAddress(dto.address().getAddress());
+		newAddress.setCity(dto.address().getCity());
+		newAddress.setState(dto.address().getState());
+		newAddress.setCountry(dto.address().getCountry());
+		newAddress.setPincode(dto.address().getPincode());
+		newAddress.setDeleted(false);
+
+		user.getAddresses().add(newAddress);
+		userRepo.save(user);
+
+		return newAddress;
+	}
+
 	@Override
-	public ApiResponse createOrder(OrderRequestDto dto,Long userId) {
-		User user =userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
+	public ApiResponse createOrder(OrderRequestDto dto, Long userId) {
+		User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+
+		UserAddress selectedAddress = getOrAddAddress(user, dto);
+
 		List<ProvidedService> services = serviceRepo.findAllById(dto.serviceIds());
 		List<Order> newOrders = new ArrayList<>();
 		for (ProvidedService providedService : services) {
@@ -50,6 +82,7 @@ public class OrderServiceImpl implements OrderService {
 			order.setService(providedService);
 			order.setOrderStatus(OrderStatus.PENDING);
 			order.setTotalCost(providedService.getPrice());
+			order.setAddress(selectedAddress);
 			newOrders.add(order);
 			user.getOrders().add(order);
 		}
@@ -58,16 +91,18 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order getOrderById(Long orderId) {
-		Order order = orderRepo.findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order Not Found"));
-		return order;
+	public OrderResponse getOrderById(Long orderId) {
+		Order order = orderRepo.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order Not Found"));
+		String serviceName = order.getService().getName();
+		String address = order.getAddress().getAddress()+" "+order.getAddress().getCity()+" "+order.getAddress().getState()+" "+order.getAddress().getCountry()+" "+order.getAddress().getPincode();
+		return new OrderResponse(order.getServiceDate(), order.getServiceTime(), order.getCompletionDate(), order.getOrderStatus(), order.getTotalCost(), serviceName, address);
 	}
 
 	@Override
 	public List<Order> getOrdersByUserId(Long userId) {
-		User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
+		User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 		List<Order> orders = user.getOrders();
-		if(orders.isEmpty()) {
+		if (orders.isEmpty()) {
 			throw new ResourceNotFoundException("No Orders Found");
 		}
 		return orders;
@@ -75,9 +110,10 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getOrdersByPartnerId(Long partnerId) {
-		Partner partner = partnerRepo.findById(partnerId).orElseThrow(()-> new ResourceNotFoundException("Partner Not Found"));
+		Partner partner = partnerRepo.findById(partnerId)
+				.orElseThrow(() -> new ResourceNotFoundException("Partner Not Found"));
 		List<Order> orders = partner.getMyOrders();
-		if(orders.isEmpty()) {
+		if (orders.isEmpty()) {
 			throw new ResourceNotFoundException("Orders Not Found");
 		}
 		return orders;
@@ -85,36 +121,33 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public ApiResponse updateOrderStatus(Long orderId) {
-		Order order = orderRepo.findById(orderId).
-				orElseThrow(()-> new ResourceNotFoundException("Order Not Found"));
-		
-		if(order.getOrderStatus().equals(OrderStatus.PENDING)) {
+		Order order = orderRepo.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order Not Found"));
+
+		if (order.getOrderStatus().equals(OrderStatus.PENDING)) {
 			order.setOrderStatus(OrderStatus.CONFIRMED);
-		}else if(order.getOrderStatus().equals(OrderStatus.CONFIRMED)) {
+		} else if (order.getOrderStatus().equals(OrderStatus.CONFIRMED)) {
 			order.setOrderStatus(OrderStatus.INPROGRESS);
-		}else if(order.getOrderStatus().equals(OrderStatus.INPROGRESS)) {
+		} else if (order.getOrderStatus().equals(OrderStatus.INPROGRESS)) {
 			order.setOrderStatus(OrderStatus.COMPLETED);
 			order.setCompletionDate(LocalDate.now());
 		}
-		
+
 		orderRepo.save(order);
 		return new ApiResponse("Order Status Updated");
 	}
 
 	@Override
 	public ApiResponse cancelOrderById(Long orderId) {
-		Order order = orderRepo.findById(orderId).
-				orElseThrow(()-> new ResourceNotFoundException("Order Not Found"));
+		Order order = orderRepo.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order Not Found"));
 		order.setOrderStatus(OrderStatus.CANCELLED);
 		orderRepo.save(order);
 		return new ApiResponse("Order Cancelled");
 	}
-	
 
 	@Override
 	public List<Order> getAllOrders() {
-		List<Order> orders =orderRepo.findAll();
-		if(orders.isEmpty()) {
+		List<Order> orders = orderRepo.findAll();
+		if (orders.isEmpty()) {
 			throw new ResourceNotFoundException("Orders Not Found");
 		}
 		return orders;
@@ -123,11 +156,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<Order> getOrdersByStatus(String status) {
 		OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
-		List<Order> orders=orderRepo.findByOrderStatus(orderStatus);
-		if(orders.isEmpty()) {
-			throw new ResourceNotFoundException("Orders Not Found By Status : "+status);
+		List<Order> orders = orderRepo.findByOrderStatus(orderStatus);
+		if (orders.isEmpty()) {
+			throw new ResourceNotFoundException("Orders Not Found By Status : " + status);
 		}
 		return orders;
 	}
-	
+
 }
