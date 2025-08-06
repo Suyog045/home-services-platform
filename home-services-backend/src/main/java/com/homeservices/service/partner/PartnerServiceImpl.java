@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.homeservices.custom_exceptions.ApiException;
 import com.homeservices.custom_exceptions.ResourceNotFoundException;
+import com.homeservices.dao.AppUserRepository;
 import com.homeservices.dao.CategoryRepository;
 import com.homeservices.dao.OrderRepository;
 import com.homeservices.dao.PartnerRepository;
@@ -18,10 +19,12 @@ import com.homeservices.dto.response.OrderResponse;
 import com.homeservices.dto.response.PartnerOrderDTO;
 import com.homeservices.dto.response.PartnerResponseDTO;
 import com.homeservices.dto.response.PartnerServiceDTO;
+import com.homeservices.entities.AppUser;
 import com.homeservices.entities.Category;
 import com.homeservices.entities.Order;
 import com.homeservices.entities.Partner;
 import com.homeservices.entities.PartnerAddress;
+import com.homeservices.utils.Role;
 
 import lombok.AllArgsConstructor;
 
@@ -33,6 +36,7 @@ public class PartnerServiceImpl implements PartnerService {
 	private final PartnerRepository partnerRepository;
 	private final CategoryRepository categoryRepository;
 	private final OrderRepository orderRepository;
+	private final AppUserRepository appUserRepository;
 	private ModelMapper mapper;
 
 	@Override
@@ -48,7 +52,14 @@ public class PartnerServiceImpl implements PartnerService {
 
 		Partner partner = mapper.map(partnerreq, Partner.class);
 
-		return new ApiResponse("Partner Added with Id " + partnerRepository.save(partner).getId());
+		Partner savedPartner = partnerRepository.save(partner);
+		AppUser appUser = AppUser.builder().email(savedPartner.getEmail()).password(savedPartner.getPassword()) // already
+																												// encoded
+				.role(Role.PARTNER).referenceId(savedPartner.getId()).entityType("PARTNER").build();
+		appUserRepository.save(appUser);
+
+		return new ApiResponse("Partner Added with Id " + savedPartner.getId());
+
 	}
 
 	@Override
