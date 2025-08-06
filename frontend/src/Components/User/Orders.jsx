@@ -16,7 +16,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await getOrdersByUserId(user.id);
+        const response = await getOrdersByUserId(user.id,user.token);
         console.log("Fetched orders:", response);
         setOrders(response);
         if (response.length === 0) {
@@ -40,7 +40,7 @@ const Orders = () => {
     if (!confirm) return;
 
     try {
-      const response = await cancelOrder(orderId);
+      const response = await cancelOrder(orderId,user.token);
       if (!response) {
         toast.error("Order cancellation failed.");
         return;
@@ -57,10 +57,94 @@ const Orders = () => {
       toast.error("Something went wrong while cancelling the order.");
     }
   };
-   const indexOfLastOrder = currentPage * ordersPerPage;
-  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
-  const totalPages = Math.ceil(orders.length / ordersPerPage);
+
+  const handlePayment = async (orderId) => {
+  try {
+    const selectedOrder = orders.find((order) => order.id === orderId);
+    const amount = selectedOrder.totalCost;
+
+    const res = await fetch("http://localhost:8080/payment/create-payment-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({ amount }),
+    });
+
+    const { orderId: razorpayOrderId } = await res.json();
+
+    const options = {
+      key: "rzp_test_wrOmk2JCVPRQZo",
+      amount: amount * 100,
+      currency: "INR",
+      name: "Home Services",
+      description: "Service Payment",
+      order_id: razorpayOrderId,
+      handler: async function (response) {
+        const verificationRes = await fetch("http://localhost:8080/payment/verify", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+            orderId,
+          }),
+        });
+
+        if (verificationRes.ok) {
+          alert("Payment successful!");
+          setOrders((prevOrders) =>
+            prevOrders.map((o) =>
+              o.id === orderId ? { ...o, orderStatus: "PAID" } : o
+            )
+          );
+        } else {
+          alert("Payment verification failed!");
+        }
+      },
+      prefill: {
+        name: user.fullName,
+        email: user.email,
+        contact: "9999999999",
+      },
+      theme: {
+        color: "#4CAF50",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  } catch (error) {
+    console.error("Payment failed:", error);
+    alert("Something went wrong during payment!");
+  }
+};
+
+
+  const statusPriority = {
+    COMPLETED: 1,
+    IN_PROGRESS: 2,
+    CONFIRMED: 3,
+    PENDING: 4,
+    PAID: 5,
+    CANCELLED: 6,
+  };
+
+  const sortedOrders = [...orders].sort((a, b) => {
+    const priorityA = statusPriority[a.orderStatus] || 5;
+    const priorityB = statusPriority[b.orderStatus] || 5;
+    return priorityA - priorityB;
+  });
+
+  const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
+  const indexOfLast = currentPage * ordersPerPage;
+  const indexOfFirst = indexOfLast - ordersPerPage;
+  const currentOrders = sortedOrders.slice(indexOfFirst, indexOfLast);
 
   return (
     <div className="bg-white p-6 rounded w-full max-w-2xl mx-auto">
@@ -91,6 +175,8 @@ const Orders = () => {
                         ? "bg-red-100 text-red-700"
                         : order.orderStatus === "COMPLETED"
                         ? "bg-blue-100 text-blue-700"
+                        : order.orderStatus === "PAID"
+                        ? "bg-purple-100 text-primary"
                         : "bg-gray-100 text-gray-700"
                     }`}
                   >

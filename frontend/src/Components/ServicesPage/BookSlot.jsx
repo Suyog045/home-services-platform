@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import DatePicker from "../../utils/DatePicker";
 import { Button, Label } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useBooking } from "../../hooks/useBooking";
+import { useAuthModal } from "../../hooks/useAuthModal";
+import { useAuth } from "../../Providers/AuthContext";
 
 const BookSlot = () => {
   const { bookingDetails, setServiceDate, setServiceTime } = useBooking();
   const [selectedDate, setSelectedDate] = useState();
+  const { openModal, setModalType } = useAuthModal();
+  const { user } = useAuth(); 
+  const navigate = useNavigate();
 
   const handleTimeChange = (e) => {
     setServiceTime(e.target.value);
@@ -19,6 +24,16 @@ const BookSlot = () => {
   };
 
   const isButtonDisabled = !selectedDate || !bookingDetails.serviceTime || bookingDetails.serviceIds.length == 0;
+
+  const handleContinue = () => {
+  if (!user) {
+    setModalType("Login");
+    openModal();
+    return;
+  }
+
+  navigate("checkout");
+};
 
   return (
     <div className="flex flex-col items-center mb-5 sticky top-20 self-start">
@@ -50,11 +65,9 @@ const BookSlot = () => {
                 Continue
               </Button>
             ) : (
-              <Link to="checkout" className="w-full">
-                <Button className="w-full bg-secondary hover:bg-secondary-hover cursor-pointer">
+                <Button onClick={handleContinue} className="w-full bg-secondary hover:bg-secondary-hover cursor-pointer">
                   Continue
                 </Button>
-              </Link>
             )}
           </div>
         </div>
