@@ -36,6 +36,9 @@ public class SecurityConfiguration {
 						.requestMatchers("/api/admin/**").permitAll()
 						.requestMatchers("/partner/**").permitAll()
 						.requestMatchers("/order/**").permitAll()
+						 .requestMatchers(HttpMethod.PUT, "/partner/*/orders/*/status").permitAll()
+						.requestMatchers(HttpMethod.PUT, "/partners/{partnerId}/orders/{orderId}/status").permitAll()
+						.requestMatchers(HttpMethod.GET, "/partner/**").permitAll()
 						.requestMatchers(HttpMethod.GET,
                                 "/categories",                  
                                 "/order/service",               

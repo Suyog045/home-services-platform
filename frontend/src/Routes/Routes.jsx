@@ -10,9 +10,9 @@ import UserProfileLayout from "../pages/User/UserProfileLayout";
 import PersonalInfo from '../Components/User/PersonalInfo';
 import Orders from '../Components/User/Orders';
 import ChangePassword from '../Components/User/ChangePassword';
-import PartnerDashBoard from '../pages/Partner/PartnerDashBoard'
 import PartnerLogin from '../pages/Partner/PartnerLogin'
 import PartnerRegister from '../pages/Partner/PartnerRegister'
+import PartnerDashboard from "../Components/Partner/PartnerDashBoard";
 
 import MyAddresses from '../Components/User/Addresses'
 
@@ -20,6 +20,7 @@ import MyAddresses from '../Components/User/Addresses'
 import PartnerHome from "../pages/Partner/PartnerHome";
 import ServiceListings from "../Components/ServicesPage/ServiceListings";
 import OrderSuccess from "../Components/ServicesPage/Pages/OrderSuccess/OrderSuccess";
+
 
 const Routes = createBrowserRouter([
   {
@@ -80,7 +81,7 @@ const Routes = createBrowserRouter([
             path: "change-password",
             element: <ChangePassword />,
           },
-         
+
         ],
       },
       {
@@ -93,7 +94,7 @@ const Routes = createBrowserRouter([
   },
   {
     path: "/partner/dashboard",
-    element: <PartnerDashBoard />
+    element: <PartnerDashboard />
   },
     ],
   },

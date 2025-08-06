@@ -39,6 +39,14 @@ const Header = () => {
   const location = useLocation();
 
   const isPartnerRoute = location.pathname.startsWith("/partner");
+    
+
+  // List of routes where Header should be hidden
+  const hideHeaderRoutes = ["/partner/dashboard"];
+
+  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
+
+  if(shouldHideHeader) return null;
 
   const handleLogout = () => {
     if (partner) {
