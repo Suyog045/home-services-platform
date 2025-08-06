@@ -25,6 +25,7 @@ public class UserController {
 	@PostMapping("/register") // Register a new user
 	public ResponseEntity<UserResponseDto> registerUser(@RequestBody UserRequestDto dto) {
 		System.out.println(dto);
+		System.out.println("endpoint hit");
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(dto));
 	}
 

@@ -3,6 +3,7 @@ package com.homeservices.service.partner;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,7 @@ public class PartnerServiceImpl implements PartnerService {
 	private final CategoryRepository categoryRepository;
 	private final OrderRepository orderRepository;
 	private final AppUserRepository appUserRepository;
+	private final PasswordEncoder passwordEncoder;
 	private ModelMapper mapper;
 
 	@Override
@@ -51,10 +53,12 @@ public class PartnerServiceImpl implements PartnerService {
 		}
 
 		Partner partner = mapper.map(partnerreq, Partner.class);
+		String encodedPassowrd = passwordEncoder.encode(partner.getPassword());
+		partner.setPassword(encodedPassowrd);
 
 		Partner savedPartner = partnerRepository.save(partner);
-		AppUser appUser = AppUser.builder().email(savedPartner.getEmail()).password(savedPartner.getPassword()) // already
-																												// encoded
+		AppUser appUser = AppUser.builder().email(savedPartner.getEmail()).password(savedPartner.getPassword())
+
 				.role(Role.PARTNER).referenceId(savedPartner.getId()).entityType("PARTNER").build();
 		appUserRepository.save(appUser);
 

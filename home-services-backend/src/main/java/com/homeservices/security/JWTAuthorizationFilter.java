@@ -24,9 +24,14 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 		String authHeader = request.getHeader("Authorization");
 
-		if (authHeader != null && authHeader.startsWith("Bearer ")) {
-			String token = authHeader.substring(7);
+		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 
+		String token = authHeader.substring(7);
+
+		try {
 			if (jwtUtil.validateToken(token)) {
 				String username = jwtUtil.extractUsername(token);
 
@@ -36,7 +41,13 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 						userDetails, null, userDetails.getAuthorities());
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
+			} else {
+				// Explicitly clear the context on invalid token
+				SecurityContextHolder.clearContext();
 			}
+		} catch (Exception e) {
+			// Or if any error occurs during token processing
+			SecurityContextHolder.clearContext();
 		}
 
 		filterChain.doFilter(request, response);

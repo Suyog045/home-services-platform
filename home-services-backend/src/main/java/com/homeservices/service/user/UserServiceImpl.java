@@ -1,7 +1,7 @@
 package com.homeservices.service.user;
 
 import org.modelmapper.ModelMapper;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,7 +9,6 @@ import com.homeservices.custom_exceptions.ApiException;
 import com.homeservices.custom_exceptions.ResourceNotFoundException;
 import com.homeservices.dao.AppUserRepository;
 import com.homeservices.dao.UserRepository;
-
 import com.homeservices.dto.request.UpdateUserDto;
 import com.homeservices.dto.request.UserLoginDto;
 import com.homeservices.dto.request.UserRequestDto;
@@ -31,6 +30,7 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final ModelMapper userMapper;
 	private final AppUserRepository appUserRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserResponseDto registerUser(UserRequestDto dto) {
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 		}
 		User newUser = userMapper.map(dto, User.class);
 
-		newUser.setPassword(dto.getPassword());
+		newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
 		newUser.setVerified(false);
 		newUser.setDeleted(false);
 

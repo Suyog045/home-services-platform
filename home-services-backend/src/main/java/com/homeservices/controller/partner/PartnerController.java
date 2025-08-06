@@ -43,7 +43,7 @@ public class PartnerController {
 	}
 
 //	POST   /api/partners/register                → Register a new partner
-	@PostMapping
+	@PostMapping("/register")
 	public ResponseEntity<?> addPartner(@RequestBody PartnerRequestDTO partnerDTO) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(partnerService.addPartner(partnerDTO));
 	}

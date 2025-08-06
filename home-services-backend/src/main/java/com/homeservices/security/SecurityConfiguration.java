@@ -36,16 +36,18 @@ public class SecurityConfiguration {
 
 	private final JWTAuthorizationFilter jwtAuthorizationFilter;
 
+	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/auth/login", "user/register", "/partner/register").permitAll()
+						.requestMatchers("/auth/login", "/user/register", "/partner/register").permitAll()
 						.requestMatchers("/admin/**").hasRole("ADMIN")
 						.requestMatchers("/partner/**").hasRole("PARTNER")
 						.requestMatchers("/user/**").hasRole("USER")
 						.anyRequest().authenticated())
-				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class).build();
+				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+				.build();
 
 	}
 
