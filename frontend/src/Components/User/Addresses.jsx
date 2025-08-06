@@ -92,7 +92,7 @@ const MyAddresses = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-md  w-full max-w-2xl mx-auto">
+    <div className="bg-white p-6 rounded  w-full max-w-2xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-lg font-semibold">My Addresses</h2>
         <button
