@@ -57,6 +57,10 @@ const Orders = () => {
       toast.error("Something went wrong while cancelling the order.");
     }
   };
+   const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const totalPages = Math.ceil(orders.length / ordersPerPage);
 
   return (
     <div className="bg-white p-6 rounded w-full max-w-2xl mx-auto">
