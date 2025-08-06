@@ -54,7 +54,7 @@ public class OrderController {
 	}
 //	GET    /api/orders/user/{userId}             → Get all orders by user
 	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId){
+	public ResponseEntity<List<OrderResponse>> getOrdersByUserId(@PathVariable Long userId){
 		return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
 	}
 //	GET    /api/orders/partner/{partnerId}       → Get all orders by partner
