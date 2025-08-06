@@ -1,13 +1,15 @@
 package com.homeservices.dto.response;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class AddressResponseDto {
-	private Long id;
-	private String address;
-	private String pincode;
-	private String city;
-	private String state;
-
+    private Long id;
+    private String address;
+    private String city;
+    private String state;
+    private String country;
+    private String pincode;
 }

@@ -54,9 +54,6 @@ public class Order extends BaseEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "address_id")
-
-	
-
 	@JsonIgnore
 	private UserAddress address;
 

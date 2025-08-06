@@ -10,10 +10,12 @@ export const GET_SERVICES_BY_CATEGORY_ID = (id) => `${BASE_URL}/categories/${id}
 export const REGISTER_USER = `${BASE_URL}/user/register`;
 export const LOGIN_USER = `${BASE_URL}/user/login`;
 export const UPDATE_USER = (id) => `${BASE_URL}/user/${id}`;
+
 export const GET_USER_ADDRESSES = (userId) => `${BASE_URL}/user/${userId}/addresses`;
 export const DELETE_USER_ADDRESS = (userId, addressId) => `${BASE_URL}/user/${userId}/addresses/${addressId}`;
 export const UPDATE_USER_ADDRESS = (userId, addressId) => `${BASE_URL}/user/${userId}/addresses/${addressId}`;
 export const CREATE_USER_ADDRESS = (userId) => `${BASE_URL}/user/${userId}/addresses`;
+export const UPDATE_USER_PASSWORD = (userId) => `${BASE_URL}/user/${userId}/password`;
 
 export const GET_ALL_SERVICES = `${BASE_URL}/order/service`;
 export const GET_ALL_SERVICES_BY_IDS = `${BASE_URL}/service/getByIds`;

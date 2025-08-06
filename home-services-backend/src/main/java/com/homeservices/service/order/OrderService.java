@@ -1,8 +1,6 @@
 package com.homeservices.service.order;
 
 import java.util.List;
-import java.util.Optional;
-
 import com.homeservices.dto.request.OrderRequestDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.OrderResponse;
@@ -13,7 +11,7 @@ public interface OrderService {
 
 	OrderResponse getOrderById(Long orderId);
 
-	List<Order> getOrdersByUserId(Long userId);
+	List<OrderResponse> getOrdersByUserId(Long userId);
 
 	List<Order> getOrdersByPartnerId(Long partnerId);
 

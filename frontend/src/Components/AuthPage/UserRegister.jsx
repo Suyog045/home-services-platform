@@ -13,7 +13,7 @@ import {
 } from "flowbite-react";
 import { useAuthModal } from "../../hooks/useAuthModal";
 import { userRegistration } from "./../../api/User";
-import { toast } from "react-toastify";
+
 
 const customTheme = createTheme({
   root: {
@@ -127,11 +127,11 @@ const UserRegister = () => {
       console.log("Registration response:", data);
       if (data) {
         closeModal();
-        toast.success("Registration successful!");
+    
       }
     } catch (error) {
       console.error("Registration failed:", error);
-      toast.error("email or phone already registered ");
+   
     }
   };
 

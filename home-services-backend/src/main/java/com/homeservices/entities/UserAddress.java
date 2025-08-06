@@ -2,6 +2,9 @@ package com.homeservices.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +16,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Table(name = "user_address")
-@ToString
+
 public class UserAddress extends BaseEntity {
 
 	@Column(name = "address")
@@ -24,6 +27,10 @@ public class UserAddress extends BaseEntity {
 	private String city;
 	@Column(name = "state")
 	private String state;
+	@Column(name = "country")
+	private String country;
 	@Column(name = "is_deleted")
 	private boolean isDeleted;
+
+  
 }

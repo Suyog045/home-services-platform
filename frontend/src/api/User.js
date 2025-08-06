@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CREATE_USER_ADDRESS, GET_USER_ADDRESSES, LOGIN_USER, REGISTER_USER } from "./config";
+import { CREATE_USER_ADDRESS, DELETE_USER_ADDRESS, GET_USER_ADDRESSES, LOGIN_USER, REGISTER_USER, UPDATE_USER_ADDRESS } from "./config";
  
 export const userRegistration = async (userData, ) => {
   try {
@@ -39,7 +39,30 @@ export const addUserAddress = async (userId, addressData) => {
     console.error("Error adding address:", error.response?.data || error.message);
     throw error;
   }
-}
+};
+
+export const updateUserAddress = async (userId, addressId, addressData) => {
+  try {
+    const response = await axios.put(UPDATE_USER_ADDRESS(userId, addressId), addressData);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating address:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const deleteUserAddress = async (userId, addressId) => {
+  try {
+    const response = await axios.delete(DELETE_USER_ADDRESS(userId, addressId));
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting address:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+
 
 
 
