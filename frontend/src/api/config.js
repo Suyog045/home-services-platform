@@ -47,8 +47,12 @@ export const DELETE_PARTNER = (partnerId) => `${BASE_URL}/partner/${partnerId}`;
 export const GET_PARTNER_ORDERS = (partnerId) => `${BASE_URL}/partner/${partnerId}/orders`;
 export const GET_PARTNER_EARNINGS = (partnerId) => `${BASE_URL}/partner/${partnerId}/earnings`;
 export const GET_PARTNER_SERVICES = (partnerId) => `${BASE_URL}/partner/${partnerId}/services`;
+export const UPDATE_ORDER_STATUS_PARTNER=(partnerId, orderId)=> `${BASE_URL}/partner/${partnerId}/orders/${orderId}/status`;
 
 export const VERIFY_PARTNER = (partnerId) => `${BASE_URL}/partner/${partnerId}/verify`;
 export const ASSIGN_ORDER_TO_PARTNER = (partnerId, orderId) =>
   `${BASE_URL}/partner/${partnerId}/orders/${orderId}`;
+
+
+
 
