@@ -59,70 +59,72 @@ const Orders = () => {
   };
 
   const handlePayment = async (orderId) => {
-    try {
-      const selectedOrder = orders.find((order) => order.id === orderId);
-      const amount = selectedOrder.totalCost;
+  try {
+    const selectedOrder = orders.find((order) => order.id === orderId);
+    const amount = selectedOrder.totalCost;
 
-      const res = await fetch(
-        "http://localhost:8080/payment/create-payment-order",
-        {
+    const res = await fetch("http://localhost:8080/payment/create-payment-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({ amount }),
+    });
+
+    const { orderId: razorpayOrderId } = await res.json();
+
+    const options = {
+      key: "rzp_test_wrOmk2JCVPRQZo",
+      amount: amount * 100,
+      currency: "INR",
+      name: "Home Services",
+      description: "Service Payment",
+      order_id: razorpayOrderId,
+      handler: async function (response) {
+        const verificationRes = await fetch("http://localhost:8080/payment/verify", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount }),
-        }
-      );
-      const { orderId: razorpayOrderId } = await res.json();
-      const options = {
-        key: "rzp_test_wrOmk2JCVPRQZo",
-        amount: amount * 100,
-        currency: "INR",
-        name: "Home Services",
-        description: "Service Payment",
-        order_id: razorpayOrderId,
-        handler: async function (response) {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+            orderId,
+          }),
+        });
 
-          const verificationRes = await fetch(
-            "http://localhost:8080/payment/verify",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpayOrderId: response.razorpay_order_id,
-                razorpaySignature: response.razorpay_signature,
-                orderId,
-              }),
-            }
+        if (verificationRes.ok) {
+          alert("Payment successful!");
+          setOrders((prevOrders) =>
+            prevOrders.map((o) =>
+              o.id === orderId ? { ...o, orderStatus: "PAID" } : o
+            )
           );
+        } else {
+          alert("Payment verification failed!");
+        }
+      },
+      prefill: {
+        name: user.fullName,
+        email: user.email,
+        contact: "9999999999",
+      },
+      theme: {
+        color: "#4CAF50",
+      },
+    };
 
-          if (verificationRes.ok) {
-            alert("Payment successful!");
-            setOrders((prevOrders) =>
-              prevOrders.map((o) =>
-                o.id === orderId ? { ...o, orderStatus: "PAID" } : o
-              )
-            );
-          } else {
-            alert("Payment verification failed!");
-          }
-        },
-        prefill: {
-          name: user.fullName,
-          email: user.email,
-          contact: "9999999999",
-        },
-        theme: {
-          color: "#4CAF50",
-        },
-      };
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  } catch (error) {
+    console.error("Payment failed:", error);
+    alert("Something went wrong during payment!");
+  }
+};
 
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (error) {
-      console.error("Payment failed:", error);
-      alert("Something went wrong during payment!");
-    }
-  };
 
   const statusPriority = {
     COMPLETED: 1,
