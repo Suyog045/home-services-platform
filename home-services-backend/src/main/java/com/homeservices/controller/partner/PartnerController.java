@@ -27,6 +27,21 @@ import lombok.AllArgsConstructor;
 public class PartnerController {
 	private final PartnerService partnerService;
 
+	@GetMapping
+	public ResponseEntity<?> getAllPartners() {
+		return ResponseEntity.ok(partnerService.getAllPartners());
+	}
+
+	@GetMapping("/verified")
+	public ResponseEntity<?> getByVerificationStatusTrue() {
+		return ResponseEntity.ok(partnerService.getByVerificationStatusTrue());
+	}
+
+	@GetMapping("/unverified")
+	public ResponseEntity<?> getByVerificationStatusFalse() {
+		return ResponseEntity.ok(partnerService.getByVerificationStatusFalse());
+	}
+
 //	POST   /api/partners/register                → Register a new partner
 	@PostMapping
 	public ResponseEntity<?> addPartner(@RequestBody PartnerRequestDTO partnerDTO) {
@@ -75,4 +90,10 @@ public class PartnerController {
 	public ResponseEntity<?> verifyPartner(@PathVariable Long partnerId) {
 		return ResponseEntity.ok(partnerService.verifyPartner(partnerId));
 	}
+
+	@PutMapping("/{partnerId}/orders/{orderId}")
+	public ResponseEntity<?> assignOrderToPartner(@PathVariable Long partnerId, @PathVariable Long orderId) {
+		return ResponseEntity.ok(partnerService.assignOrderToPartner(partnerId, orderId));
+	}
+
 }
