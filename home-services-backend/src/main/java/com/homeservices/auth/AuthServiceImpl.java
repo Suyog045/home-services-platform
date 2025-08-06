@@ -27,13 +27,14 @@ public class AuthServiceImpl implements AuthService {
 		AppUser appUser = appUserRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 		
-		String token = jwtUtil.generateToken(request.getEmail());
+		String token = jwtUtil.generateToken(appUser);
 
 		// TODO Auto-generated method stub
 		return AuthResponseDTO.builder()
                 .token(token)
                 .role(appUser.getRole().name())
                 .entityType(appUser.getEntityType())
+                .id(appUser.getReferenceId())
                 .build();
 	}
 
