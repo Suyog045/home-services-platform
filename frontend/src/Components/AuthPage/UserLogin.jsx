@@ -12,9 +12,8 @@ import {
 } from "flowbite-react";
 import { useAuthModal } from "../../hooks/useAuthModal";
 import { useAuth } from "../../Providers/AuthContext";
-import { toast } from "react-toastify";
+
 import axios from "axios";
-import { LOGIN_USER } from "../../api/config";
 import { userLogin } from "../../api/User";
 
 
@@ -91,22 +90,18 @@ const UserLogin = () => {
 
 
   const handleLogin = async () => {
-      
       try {
         const res = await userLogin({ email, password });
         console.log("Login response:", res);
         if (res) {
           login(res);
           closeModal();
-          toast.success("Login successful!");
-         
+          
         }
       } catch (error) {
         console.error("Login failed:", error);
-        toast.error("Login failed. Please check your credentials.");
+
       }
-      
-    
   };
 
   useEffect(() => {

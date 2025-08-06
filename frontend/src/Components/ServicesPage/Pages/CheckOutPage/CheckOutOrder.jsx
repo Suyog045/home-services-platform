@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { placeOrder } from "../../../../api/Order";
 import { useBooking } from "../../../../hooks/useBooking";
+import { useAuth } from "../../../../Providers/AuthContext";
 
 const CheckOutOrder = ({ services }) => {
   const [basePrice, setBasePrice] = useState(0);
@@ -11,6 +12,7 @@ const CheckOutOrder = ({ services }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const {bookingDetails} = useBooking();
+  const {user} = useAuth();
 
   useEffect(() => {
     const calculatedBase = services.reduce((acc, service) => acc + service.price, 0);
@@ -25,7 +27,7 @@ const CheckOutOrder = ({ services }) => {
   }, [services]);
 
   const handlePayOnVisit = async() => {
-    await placeOrder(1,bookingDetails)
+    await placeOrder(user.id,bookingDetails)
     navigate("/services/order-success?payment=visit");
   };
 

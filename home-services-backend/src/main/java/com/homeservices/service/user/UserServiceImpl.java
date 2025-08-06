@@ -3,12 +3,14 @@ package com.homeservices.service.user;
 
 
 import org.modelmapper.ModelMapper;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.homeservices.custom_exceptions.ApiException;
 import com.homeservices.custom_exceptions.ResourceNotFoundException;
 import com.homeservices.dao.UserRepository;
+
 import com.homeservices.dto.request.UpdateUserDto;
 import com.homeservices.dto.request.UserLoginDto;
 import com.homeservices.dto.request.UserRequestDto;
@@ -29,12 +31,15 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final ModelMapper userMapper;
 
+
 	@Override
 	public UserResponseDto registerUser(UserRequestDto dto) {
 		if (userRepository.existsByEmailOrPhone(dto.getEmail(), dto.getPhone())) {
 			throw new ApiException("Email id or phone number already registered");
 		}
 		User newUser = userMapper.map(dto, User.class);
+
+		    newUser.setPassword(dto.getPassword());
 		newUser.setVerified(false);
 		newUser.setDeleted(false);
 
@@ -84,5 +89,7 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(deletedUser);
 		return new ApiResponse("user deleted");
 	}
+
+
 
 }

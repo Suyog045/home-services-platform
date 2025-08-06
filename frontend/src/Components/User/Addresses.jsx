@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../Providers/AuthContext";
 import axios from "axios";
-import {  ToastContainer,toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { getUserAddresses } from "../../api/User";
-import { CREATE_USER_ADDRESS, UPDATE_USER_ADDRESS, DELETE_USER_ADDRESS } from "../../api/config";
+import { deleteUserAddress, getUserAddresses, updateUserAddress , addUserAddress } from "../../api/User";
+
 
 const MyAddresses = () => {
   const { user } = useAuth();
@@ -16,6 +14,7 @@ const MyAddresses = () => {
     pincode: "",
     city: "",
     state: "",
+    country: "",
   });
 
   const fetchAddresses = async () => {
@@ -25,7 +24,7 @@ const MyAddresses = () => {
       setAddresses(res);
     } catch (err) {
       console.error("Error fetching addresses", err);
-      toast.error("Failed to fetch addresses.");
+  
     }
   };
 
@@ -39,27 +38,26 @@ const MyAddresses = () => {
   };
 
   const handleSubmit = async () => {
-    const { address, pincode, city, state } = newAddress;
-    if (!address || !pincode || !city || !state) {
-      toast.warn("Please fill in all fields.");
+    console.log("Submitting address:", newAddress);
+    const { address, pincode, city, state,country } = newAddress;
+    if (!address || !pincode || !city || !state || !country) {
+ 
       return;
     }
 
     try {
       if (editingAddressId) {
-        await axios.put(UPDATE_USER_ADDRESS(user.id, editingAddressId), newAddress);
-        toast.success("Address updated successfully!");
+        await updateUserAddress(user.id, editingAddressId, newAddress);
       } else {
-        await axios.post(CREATE_USER_ADDRESS(user.id), newAddress);
-        toast.success("Address added successfully!");
+        await addUserAddress(user.id, newAddress);
+   
       }
-      setNewAddress({ address: "", pincode: "", city: "", state: "" });
+      setNewAddress({ address: "", pincode: "", city: "", state: "", country: "" });
       setEditingAddressId(null);
       setShowForm(false);
       fetchAddresses();
     } catch (error) {
       console.error("Error saving address:", error);
-      toast.error("Failed to save address.");
     }
   };
 
@@ -71,24 +69,21 @@ const MyAddresses = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(DELETE_USER_ADDRESS(user.id, id));
-      toast.success("Address deleted successfully!");
+      await deleteUserAddress(user.id, id);
       fetchAddresses();
     } catch (err) {
       console.error("Error deleting address", err);
-      toast.error("Failed to delete address.");
     }
   };
 
   return (
     <div className="bg-white p-6 rounded shadow-md  w-full max-w-2xl mx-auto">
-      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-lg font-semibold">My Addresses</h2>
         <button
           className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-secondary-hover cursor-pointer transition"
           onClick={() => {
-            setNewAddress({ address: "", pincode: "", city: "", state: "" });
+            setNewAddress({ address: "", pincode: "", city: "", state: "",country:"" });
             setEditingAddressId(null);
             setShowForm(true);
           }}
@@ -127,6 +122,13 @@ const MyAddresses = () => {
             onChange={handleInputChange}
             className="w-full p-2 border rounded"
           />
+          <input
+            name="country"
+            placeholder="Country"
+            value={newAddress.country}
+            onChange={handleInputChange}
+            className="w-full p-2 border rounded"
+          />
           <button
             className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-secondary-hover cursor-pointer"
             onClick={handleSubmit}
@@ -147,6 +149,7 @@ const MyAddresses = () => {
               <p className="text-sm text-gray-600">📮 {addr.pincode}</p>
               <p className="text-sm text-gray-600">🏙️ {addr.city}</p>
               <p className="text-sm text-gray-600">🗺️ {addr.state}</p>
+              <p className="text-sm text-gray-600">🗺️ {addr.country}</p>
               <div className="flex gap-2 mt-2">
                 <button
                   className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full cursor-pointer"

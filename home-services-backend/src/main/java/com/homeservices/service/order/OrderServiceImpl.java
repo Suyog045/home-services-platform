@@ -14,6 +14,7 @@ import com.homeservices.custom_exceptions.ResourceNotFoundException;
 import com.homeservices.dao.OrderRepository;
 import com.homeservices.dao.PartnerRepository;
 import com.homeservices.dao.ServiceRepository;
+import com.homeservices.dao.UserAddressRepository;
 import com.homeservices.dao.UserRepository;
 import com.homeservices.dto.request.OrderRequestDto;
 import com.homeservices.dto.response.ApiResponse;
@@ -38,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
 	private final UserRepository userRepo;
 	private final ServiceRepository serviceRepo;
 	private final ModelMapper modelMapper;
+	private final UserAddressRepository userAddressRepo;
 
 	private UserAddress getOrAddAddress(User user, OrderRequestDto dto) {
 		// Check for matching address
@@ -61,7 +63,9 @@ public class OrderServiceImpl implements OrderService {
 		newAddress.setPincode(dto.address().getPincode());
 		newAddress.setDeleted(false);
 
-		user.getAddresses().add(newAddress);
+		UserAddress savedAddress = userAddressRepo.save(newAddress);
+
+		user.getAddresses().add(savedAddress);
 		userRepo.save(user);
 
 		return newAddress;
@@ -94,18 +98,49 @@ public class OrderServiceImpl implements OrderService {
 	public OrderResponse getOrderById(Long orderId) {
 		Order order = orderRepo.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order Not Found"));
 		String serviceName = order.getService().getName();
-		String address = order.getAddress().getAddress()+" "+order.getAddress().getCity()+" "+order.getAddress().getState()+" "+order.getAddress().getCountry()+" "+order.getAddress().getPincode();
-		return new OrderResponse(order.getServiceDate(), order.getServiceTime(), order.getCompletionDate(), order.getOrderStatus(), order.getTotalCost(), serviceName, address);
+		String address = order.getAddress().getAddress() + " " + order.getAddress().getCity() + " "
+				+ order.getAddress().getState() + " " + order.getAddress().getCountry() + " "
+				+ order.getAddress().getPincode();
+		return new OrderResponse(
+				order.getId(), 
+				order.getServiceDate(),
+				order.getServiceTime(), 
+				order.getCompletionDate(),
+				order.getOrderStatus(), 
+				order.getTotalCost(), 
+				serviceName, 
+				address);
 	}
 
 	@Override
-	public List<Order> getOrdersByUserId(Long userId) {
+	public List<OrderResponse> getOrdersByUserId(Long userId) {
 		User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 		List<Order> orders = user.getOrders();
 		if (orders.isEmpty()) {
 			throw new ResourceNotFoundException("No Orders Found");
 		}
-		return orders;
+		List<OrderResponse> response = new ArrayList<>();
+		for (Order order : orders) {
+			String serviceName = order.getService().getName();
+			String fullAddress = "No Address Provided";
+			if (order.getAddress() != null) {
+				UserAddress addr = order.getAddress();
+				fullAddress = addr.getAddress() + ", " + addr.getCity() + ", " + addr.getState() + ", "
+						+ addr.getCountry() + " - " + addr.getPincode();
+			}
+			OrderResponse dto = new OrderResponse(
+					order.getId(),
+					order.getServiceDate(),
+					order.getServiceTime(),
+					order.getCompletionDate(), 
+					order.getOrderStatus(),
+					order.getTotalCost(),
+					serviceName, 
+					fullAddress);
+			response.add(dto);
+			
+		}
+		return response;
 	}
 
 	@Override
