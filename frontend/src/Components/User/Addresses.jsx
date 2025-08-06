@@ -25,7 +25,7 @@ const MyAddresses = () => {
   const fetchAddresses = async () => {
     if (!user?.id) return;
     try {
-      const res = await getUserAddresses(user.id);
+      const res = await getUserAddresses(user.id,user.token);
       setAddresses(res);
     } catch (err) {
       console.error("Error fetching addresses", err);
@@ -52,10 +52,10 @@ const MyAddresses = () => {
 
     try {
       if (editingAddressId) {
-        await updateUserAddress(user.id, editingAddressId, newAddress);
+        await updateUserAddress(user.id, editingAddressId, newAddress,user.token);
         toast.success("Address updated successfully!");
       } else {
-        await addUserAddress(user.id, newAddress);
+        await addUserAddress(user.id, newAddress,user.token);
         toast.success("Address added successfully!");
       }
       setNewAddress({
@@ -82,7 +82,7 @@ const MyAddresses = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteUserAddress(user.id, id);
+      await deleteUserAddress(user.id, id,user.token);
       toast.success("Address deleted.");
       fetchAddresses();
     } catch (err) {

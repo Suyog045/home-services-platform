@@ -6,11 +6,14 @@ import { useAuth } from "../../Providers/AuthContext";
 import { UPDATE_USER } from "../../api/config";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useOutletContext } from "react-router-dom";
 
 const PersonalInfo = () => {
+  const userDetails = useOutletContext();
+
   const { user, login } = useAuth();
-  console.log(user);
-  const [formData, setFormData] = useState({ ...user });
+  console.log(userDetails);
+  const [formData, setFormData] = useState({ ...userDetails });
   const [editable, setEditable] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -32,7 +35,11 @@ const PersonalInfo = () => {
       const { firstName, lastName, email, phone } = formData;
       const userPayload = { firstName, lastName, email, phone };
 
-      const response = await axios.put(UPDATE_USER(user.id), userPayload);
+      const response = await axios.put(UPDATE_USER(user.id), userPayload, {
+        headers: {
+          Authorization: `Bearer ${user.token}`, // Assuming your user object has the token
+        },
+      });
 
       login({ ...user, ...response.data });
       setFormData(response.data);
@@ -54,6 +61,13 @@ const PersonalInfo = () => {
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    if (userDetails) {
+      setFormData({ ...userDetails });
+    }
+  }, [userDetails]);
+  if (!formData) return <p>Loading profile...</p>;
 
   return (
     <div className="bg-white p-4 sm:p-6 rounded shadow-md w-full max-w-3xl mx-auto">

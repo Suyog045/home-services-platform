@@ -4,15 +4,17 @@ import CheckOutOrder from "./CheckOutOrder";
 import AddressForm from "./AddressForm";
 import { useBooking } from "../../../../hooks/useBooking";
 import { getServicesByIds } from "../../../../api/CatalogService";
+import { useAuth } from "../../../../Providers/AuthContext";
 
 const CheckOutPageLayout = () => {
   const { bookingDetails } = useBooking();
   const [services, setServices] = useState([]);
+  const {user} = useAuth()
 
   useEffect(() => {
     const loadServices = async () => {
       if (bookingDetails?.serviceIds?.length > 0) {
-        const data = await getServicesByIds(bookingDetails.serviceIds);
+        const data = await getServicesByIds(bookingDetails.serviceIds,user.token);
         setServices(data);
       } else {
         setServices([]);

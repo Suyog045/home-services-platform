@@ -58,7 +58,7 @@ public class User extends BaseEntity {
 	@Column(name = "verify_token_expiry")
 	private LocalDateTime verifyTokenExpiry;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private List<UserAddress> addresses = new ArrayList<>();
 

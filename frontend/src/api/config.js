@@ -9,6 +9,7 @@ export const GET_SERVICES_BY_CATEGORY_ID = (id) => `${BASE_URL}/categories/${id}
 
 export const REGISTER_USER = `${BASE_URL}/user/register`;
 export const LOGIN_USER = `${BASE_URL}/auth/login`;
+export const GET_USER_BY_ID = (id) => `${BASE_URL}/user/${id}`;
 export const UPDATE_USER = (id) => `${BASE_URL}/user/${id}`;
 
 export const GET_USER_ADDRESSES = (userId) => `${BASE_URL}/user/${userId}/addresses`;

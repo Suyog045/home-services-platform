@@ -82,7 +82,7 @@ const AddressForm = () => {
 
   useEffect(()=> {
       const fetchUserAddresses = async()=>{
-        const response = await getUserAddresses(user.id);
+        const response = await getUserAddresses(user.id,user.token);
         setSavedAddresses(response)
       }
       console.log(savedAddresses)

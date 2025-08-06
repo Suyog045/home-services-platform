@@ -16,7 +16,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await getOrdersByUserId(user.id);
+        const response = await getOrdersByUserId(user.id,user.token);
         console.log("Fetched orders:", response);
         setOrders(response);
         if (response.length === 0) {
@@ -40,7 +40,7 @@ const Orders = () => {
     if (!confirm) return;
 
     try {
-      const response = await cancelOrder(orderId);
+      const response = await cancelOrder(orderId,user.token);
       if (!response) {
         toast.error("Order cancellation failed.");
         return;
