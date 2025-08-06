@@ -12,10 +12,10 @@ import {
 } from "flowbite-react";
 import { useAuthModal } from "../../hooks/useAuthModal";
 import { useAuth } from "../../Providers/AuthContext";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { userLogin } from "../../api/User";
-
 
 const customTheme = createTheme({
   root: {
@@ -88,20 +88,19 @@ const UserLogin = () => {
     setIsEmailValid(regex.test(e.target.value));
   };
 
-
   const handleLogin = async () => {
-      try {
-        const res = await userLogin({ email, password });
-        console.log("Login response:", res);
-        if (res) {
-          login(res);
-          closeModal();
-          
-        }
-      } catch (error) {
-        console.error("Login failed:", error);
-
+    try {
+      const res = await userLogin({ email, password });
+      console.log("Login response:", res);
+      if (res) {
+        login(res);
+        closeModal();
+        toast.success("Login successful!");
       }
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("Login failed. Please check your credentials.");
+    }
   };
 
   useEffect(() => {

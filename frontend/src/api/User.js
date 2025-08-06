@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CREATE_USER_ADDRESS, DELETE_USER_ADDRESS, GET_USER_ADDRESSES, LOGIN_USER, REGISTER_USER, UPDATE_USER_ADDRESS } from "./config";
+import { CREATE_USER_ADDRESS, DELETE_USER_ADDRESS, GET_USER_ADDRESSES, LOGIN_USER, REGISTER_USER, UPDATE_USER_ADDRESS, UPDATE_USER_PASSWORD } from "./config";
  
 export const userRegistration = async (userData, ) => {
   try {
@@ -61,6 +61,16 @@ export const deleteUserAddress = async (userId, addressId) => {
   }
 };
 
+
+export const updateUserPassword = async (userId, passwordData) => {
+  try {
+    const response = await axios.put(UPDATE_USER_PASSWORD(userId, 'password'), passwordData);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating password:", error.response?.data || error.message);
+    throw error;
+  }
+};
 
 
 
