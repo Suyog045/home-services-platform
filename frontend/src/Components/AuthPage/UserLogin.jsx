@@ -13,7 +13,6 @@ import {
 import { useAuthModal } from "../../hooks/useAuthModal";
 import { useAuth } from "../../Providers/AuthContext";
 
-import axios from "axios";
 import { userLogin } from "../../api/User";
 
 
