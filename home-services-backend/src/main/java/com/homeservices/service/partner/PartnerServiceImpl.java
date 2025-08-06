@@ -22,6 +22,7 @@ import com.homeservices.entities.Category;
 import com.homeservices.entities.Order;
 import com.homeservices.entities.Partner;
 import com.homeservices.entities.PartnerAddress;
+import com.homeservices.utils.OrderStatus;
 
 import lombok.AllArgsConstructor;
 
@@ -137,6 +138,7 @@ public class PartnerServiceImpl implements PartnerService {
 
 	@Override
 	public ApiResponse assignOrderToPartner(Long partnerId, Long orderId) {
+		System.out.println(partnerId);
 		Partner partner = partnerRepository.findById(partnerId)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Partner ID"));
 
@@ -147,6 +149,9 @@ public class PartnerServiceImpl implements PartnerService {
 			throw new ApiException("Order Already Assigned to this Partner");
 		}
 
+		order.setOrderStatus(OrderStatus.CONFIRMED);
+		orderRepository.save(order);
+		
 		partner.getMyOrders().add(order);
 		partnerRepository.save(partner);
 		return new ApiResponse("Order with Id " + orderId + " Assigned to Partner " + partnerId);
