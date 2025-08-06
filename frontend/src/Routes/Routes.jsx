@@ -7,19 +7,19 @@ import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";
 import CheckoutPage from "../pages/ServicePages/CheckoutPage/CheckoutPage";
 import UserProfileLayout from "../pages/User/UserProfileLayout";
-import PersonalInfo from "../Components/User/PersonalInfo";
-import Orders from "../Components/User/Orders";
-import ChangePassword from "../Components/User/ChangePassword";
-import PartnerDashBoard from "../pages/Partner/PartnerDashBoard";
-import PartnerLogin from "../pages/Partner/PartnerLogin";
-import PartnerRegister from "../pages/Partner/PartnerRegister";
+import PersonalInfo from '../Components/User/PersonalInfo';
+import Orders from '../Components/User/Orders';
+import ChangePassword from '../Components/User/ChangePassword';
+import PartnerDashBoard from '../pages/Partner/PartnerDashBoard'
+import PartnerLogin from '../pages/Partner/PartnerLogin'
+import PartnerRegister from '../pages/Partner/PartnerRegister'
 
-import MyAddresses from "../Components/User/Addresses";
+import MyAddresses from '../Components/User/Addresses'
+
 
 import PartnerHome from "../pages/Partner/PartnerHome";
 import ServiceListings from "../Components/ServicesPage/ServiceListings";
 import OrderSuccess from "../Components/ServicesPage/Pages/OrderSuccess/OrderSuccess";
-import PrivateRoute from "./PrivateRoutes";
 
 const Routes = createBrowserRouter([
   {
@@ -46,19 +46,11 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/services/checkout",
-        element: (
-          <PrivateRoute>
-            <CheckoutPage />
-          </PrivateRoute>
-        ),
+        element: <CheckoutPage />,
       },
       {
         path: "/services/order-success",
-        element: (
-          <PrivateRoute>
-            <OrderSuccess />
-          </PrivateRoute>
-        ),
+        element: <OrderSuccess />,
       },
       {
         path: "/about-us",
@@ -70,11 +62,7 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/user-profile",
-        element: (
-          <PrivateRoute>
-            <UserProfileLayout />
-          </PrivateRoute>
-        ),
+        element: <UserProfileLayout />,
         children: [
           {
             index: true,
@@ -92,20 +80,12 @@ const Routes = createBrowserRouter([
             path: "change-password",
             element: <ChangePassword />,
           },
+         
         ],
       },
       {
         path: "/partner",
-        children: [
-          {
-            index: true,
-            element: <PartnerHome />,
-          },
-          {
-            path: "register",
-            element: <PartnerRegister />,
-          },
-        ],
+        element: <PartnerHome />,
       },
     ],
   },
@@ -117,10 +97,10 @@ const Routes = createBrowserRouter([
   //   path: "login",
   //   element: <PartnerLogin />
   // },
-  {
-    path: "register",
-    element: <PartnerRegister />,
-  },
+  // {
+  //   path: "register",
+  //   element: <PartnerRegister />
+  // }
 ]);
 
 export default Routes;

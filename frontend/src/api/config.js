@@ -8,7 +8,7 @@ export const DELETE_CATEGORY = (id) => `${BASE_URL}/categories/${id}`;
 export const GET_SERVICES_BY_CATEGORY_ID = (id) => `${BASE_URL}/categories/${id}/services`
 
 export const REGISTER_USER = `${BASE_URL}/user/register`;
-export const LOGIN_USER = `${BASE_URL}/user/login`;
+export const LOGIN_USER = `${BASE_URL}/auth/login`;
 export const UPDATE_USER = (id) => `${BASE_URL}/user/${id}`;
 
 export const GET_USER_ADDRESSES = (userId) => `${BASE_URL}/user/${userId}/addresses`;
@@ -38,7 +38,7 @@ export const GET_ALL_PARTNERS = `${BASE_URL}/partner`;
 export const GET_VERIFIED_PARTNERS = `${BASE_URL}/partner/verified`;
 export const GET_UNVERIFIED_PARTNERS = `${BASE_URL}/partner/unverified`;
 
-export const REGISTER_PARTNER = `${BASE_URL}/partner`; // POST
+export const REGISTER_PARTNER = `${BASE_URL}/partner/register`; // POST
 export const GET_PARTNER_BY_ID = (partnerId) => `${BASE_URL}/partner/${partnerId}`;
 export const UPDATE_PARTNER = (partnerId) => `${BASE_URL}/partner/${partnerId}`;
 export const DELETE_PARTNER = (partnerId) => `${BASE_URL}/partner/${partnerId}`;
