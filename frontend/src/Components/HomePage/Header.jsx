@@ -13,6 +13,7 @@ import { useAuthModal } from "../../hooks/useAuthModal";
 import { useAuth } from "../../Providers/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { usePartnerAuth } from "../../Providers/PartnerAuthContext";
 
 const customTheme = createTheme({
   navbar: {
@@ -33,14 +34,22 @@ const Header = () => {
   const { setModalType } = useAuthModal();
   const navLinkFilter = ["Home", "Services", "About-Us", "Contact-Us"];
   const { user, logout } = useAuth();
+  const { partner, logout: partnerLogout } = usePartnerAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
+  const isPartnerRoute = location.pathname.startsWith("/partner");
+
   const handleLogout = () => {
-    logout();
-    navigate("/"); 
-      toast.success("Logged out successfully");
-  }
+    if (partner) {
+      partnerLogout();
+      navigate("/partner");
+    } else {
+      logout();
+      navigate("/");
+    }
+    toast.success("Logged out successfully");
+  };
   return (
     <Navbar
       theme={customTheme}
@@ -70,7 +79,7 @@ const Header = () => {
           ))}
         </div>
         <div className="mt-3 md:mt-0 gap-2 flex items-center flex-col md:flex-row">
-          {!location.pathname.startsWith("/partner") && !user && (
+          {!location.pathname.startsWith("/partner") && !user && !partner && (
             <div className="flex flex-col gap-1">
               <Link
                 to={"/partner"}
@@ -81,13 +90,13 @@ const Header = () => {
               <div className="w-1/2 h-0.5 bg-secondary" />
             </div>
           )}
-          {user ? (
+          {user || partner ? (
             <>
               <Link
-                to="/user-profile"
+                to={partner ? "/partner/dashboard" : "/user-profile"}
                 className="text-primary font-medium hover:text-secondary transition"
               >
-                Profile
+                {partner ? "Partner Profile" : "Profile"}
               </Link>
               <button
                 onClick={handleLogout}
@@ -99,7 +108,7 @@ const Header = () => {
           ) : (
             <>
               <SharedButton setModalType={setModalType} label="Login" />
-              {!location.pathname.startsWith("/partner") ? (
+              {!isPartnerRoute ? (
                 <SharedButton setModalType={setModalType} label="Register" />
               ) : (
                 <Link

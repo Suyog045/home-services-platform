@@ -5,5 +5,6 @@ public enum OrderStatus {
     CONFIRMED,     // Accepted by partner
     INPROGRESS,   // Partner started job
     COMPLETED,     // Job done
+    PAID,
     CANCELLED      // Cancelled by user/admin
 }

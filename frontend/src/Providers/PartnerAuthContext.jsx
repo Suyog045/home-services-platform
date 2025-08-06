@@ -1,21 +1,16 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
-const PartnerAuthContext = createContext();
+export const PartnerAuthContext = createContext();
 
 export const PartnerAuthProvider = ({ children }) => {
   const [partner, setPartner] = useState(() => {
-    try {
-      const stored = localStorage.getItem("partner");
-      return stored ? JSON.parse(stored) : null;
-    } catch (e) {
-      localStorage.removeItem("partner");
-      return null;
-    }
+    const stored = localStorage.getItem("partner");
+    return stored ? JSON.parse(stored) : null;
   });
 
-  const login = (partnerData) => {
-    setPartner(partnerData);
-    localStorage.setItem("partner", JSON.stringify(partnerData));
+  const login = (data) => {
+    setPartner(data);
+    localStorage.setItem("partner", JSON.stringify(data));
   };
 
   const logout = () => {

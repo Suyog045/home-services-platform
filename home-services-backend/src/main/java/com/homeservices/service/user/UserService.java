@@ -8,6 +8,7 @@ import com.homeservices.dto.request.UserRequestDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.ChangePasswordDto;
 import com.homeservices.dto.response.UserResponseDto;
+import com.homeservices.entities.User;
 
 
 public interface UserService {
@@ -21,6 +22,8 @@ public interface UserService {
 	UserResponseDto userLogin(UserLoginDto dto);
 
 	ChangePasswordDto updatePassword(Long userId , UpdatePasswordDto dto);
+
+	UserResponseDto getUserById(Long id);
 
 
 
