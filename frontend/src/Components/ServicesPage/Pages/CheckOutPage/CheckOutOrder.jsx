@@ -1,6 +1,6 @@
 import { Button } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { placeOrder } from "../../../../api/Order";
 import { useBooking } from "../../../../hooks/useBooking";
 import { useAuth } from "../../../../Providers/AuthContext";
@@ -11,8 +11,8 @@ const CheckOutOrder = ({ services }) => {
   const [tax, setTax] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
-  const {bookingDetails} = useBooking();
-  const {user} = useAuth();
+  const { bookingDetails, clearCart } = useBooking();
+  const { user } = useAuth();
 
   useEffect(() => {
     const calculatedBase = services.reduce((acc, service) => acc + service.price, 0);
@@ -26,9 +26,15 @@ const CheckOutOrder = ({ services }) => {
     setTotalAmount(calculatedTotal);
   }, [services]);
 
-  const handlePayOnVisit = async() => {
-    await placeOrder(user.id,bookingDetails)
-    navigate("/services/order-success?payment=visit");
+  const handlePlaceOrder = async () => {
+    try {
+      await placeOrder(user.id, bookingDetails);
+      clearCart();
+      navigate("/services/order-success"); // or "/payment-success"
+    } catch (error) {
+      console.error("Order placement failed:", error);
+      // optionally show a toast or alert here
+    }
   };
 
   if (!services.length) return null;
@@ -64,19 +70,13 @@ const CheckOutOrder = ({ services }) => {
           <span>₹{totalAmount.toFixed(2)}</span>
         </div>
 
-        <div className="w-full flex flex-col md:flex-row justify-center gap-4 pt-4">
+        <div className="w-full pt-4">
           <Button
             className="bg-green-600 hover:bg-green-700 w-full cursor-pointer"
-            onClick={handlePayOnVisit}
+            onClick={handlePlaceOrder}
           >
-            Pay on Visit
+            Place Order
           </Button>
-
-          <Link to="/payment" className="w-full">
-            <Button className="bg-secondary hover:bg-secondary-hover w-full cursor-pointer">
-              Pay Online
-            </Button>
-          </Link>
         </div>
       </div>
     </div>
