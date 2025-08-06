@@ -8,29 +8,15 @@ import {
 } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { useBooking } from "../../../../hooks/useBooking";
+import { getUserAddresses } from "../../../../api/User";
+import { useAuth } from "../../../../Providers/AuthContext";
 
 const AddressForm = () => {
   const navigate = useNavigate();
   const { setAddress } = useBooking();
+  const {user} = useAuth();
 
-  const savedAddresses = [
-    {
-      id: 1,
-      address: "123, ABC Street",
-      city: "Pune",
-      state: "Maharashtra",
-      country: "India",
-      pincode: "411001",
-    },
-    {
-      id: 2,
-      address: "456, XYZ Nagar",
-      city: "Mumbai",
-      state: "Maharashtra",
-      country: "India",
-      pincode: "400001",
-    },
-  ];
+  const [savedAddresses, setSavedAddresses] = useState([]);
 
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [addressDetails, setAddressDetails] = useState({
@@ -48,19 +34,20 @@ const AddressForm = () => {
     const selected = savedAddresses.find((addr) => addr.id === Number(id));
     if (selected) {
       setAddressDetails({ ...selected });
+      setTouched({});
     }
   };
 
-  const handleNewAddress = () => {
-    setSelectedAddressId(null);
-    setAddressDetails({
-      address: "",
-      city: "",
-      state: "",
-      country: "",
-      pincode: "",
-    });
-  };
+  // const handleNewAddress = () => {
+  //   setSelectedAddressId(null);
+  //   setAddressDetails({
+  //     address: "",
+  //     city: "",
+  //     state: "",
+  //     country: "",
+  //     pincode: "",
+  //   });
+  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -93,6 +80,16 @@ const AddressForm = () => {
     }
   }, [addressDetails]);
 
+  useEffect(()=> {
+      const fetchUserAddresses = async()=>{
+        const response = await getUserAddresses(user.id,user.token);
+        setSavedAddresses(response)
+      }
+      console.log(savedAddresses)
+
+      fetchUserAddresses()
+    },[])
+
   return (
     <div className="flex w-full">
       <div className="flex flex-col items-center justify-center w-full mx-4 gap-6">
@@ -117,14 +114,7 @@ const AddressForm = () => {
                 </option>
               ))}
             </select>
-            <Button
-              type="button"
-              size="xs"
-              className="mt-2 text-blue-600 hover:underline bg-transparent"
-              onClick={handleNewAddress}
-            >
-              + Add New Address
-            </Button>
+            
           </div>
 
           <div>

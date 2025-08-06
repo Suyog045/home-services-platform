@@ -4,11 +4,16 @@ import { Button } from "flowbite-react";
 import axios from "axios";
 import { useAuth } from "../../Providers/AuthContext";
 import { UPDATE_USER } from "../../api/config";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useOutletContext } from "react-router-dom";
 
 const PersonalInfo = () => {
+  const userDetails = useOutletContext();
+
   const { user, login } = useAuth();
-  console.log(user);
-  const [formData, setFormData] = useState({ ...user });
+  console.log(userDetails);
+  const [formData, setFormData] = useState({ ...userDetails });
   const [editable, setEditable] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -20,29 +25,34 @@ const PersonalInfo = () => {
     }
   };
 
- const handleUpdateButton = async () => {
-  if (!user?.id) {
-    return;
-  }
+  const handleUpdateButton = async () => {
+    if (!user?.id) {
+      return;
+    }
 
-  setIsUpdating(true);
-  try {
-    const { firstName, lastName, email, phone } = formData;
-    const userPayload = { firstName, lastName, email, phone };
+    setIsUpdating(true);
+    try {
+      const { firstName, lastName, email, phone } = formData;
+      const userPayload = { firstName, lastName, email, phone };
 
-    const response = await axios.put(UPDATE_USER(user.id), userPayload);
+      const response = await axios.put(UPDATE_USER(user.id), userPayload, {
+        headers: {
+          Authorization: `Bearer ${user.token}`, // Assuming your user object has the token
+        },
+      });
 
-    login({ ...user, ...response.data });
-    setFormData(response.data);
-    setEditable(false);
-  } catch (error) {
-    console.error("Update failed", error);
-  } finally {
-    setIsUpdating(false);
-  }
-};
+      login({ ...user, ...response.data });
+      setFormData(response.data);
+      setEditable(false);
 
-      
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      console.error("Update failed", error);
+      toast.error("Failed to update profile. Please try again.");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,9 +62,18 @@ const PersonalInfo = () => {
     }));
   };
 
+  useEffect(() => {
+    if (userDetails) {
+      setFormData({ ...userDetails });
+    }
+  }, [userDetails]);
+  if (!formData) return <p>Loading profile...</p>;
+
   return (
     <div className="bg-white p-4 sm:p-6 rounded shadow-md w-full max-w-3xl mx-auto">
-      <h2 className="text-lg font-semibold mb-6 text-center sm:text-left">Personal Information</h2>
+      <h2 className="text-lg font-semibold mb-6 text-center sm:text-left">
+        Personal Information
+      </h2>
 
       <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-6 gap-y-4">
         <div className="flex-shrink-0">
@@ -102,7 +121,6 @@ const PersonalInfo = () => {
             onChange={(e) => handleChange(e)}
             className="p-2 border border-gray-200 rounded shadow-sm bg-gray-100 w-full"
           />
-         
         </div>
       </div>
 

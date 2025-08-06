@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../Providers/AuthContext";
 import axios from "axios";
-import { deleteUserAddress, getUserAddresses, updateUserAddress , addUserAddress } from "../../api/User";
-
+import { toast } from "react-toastify";
+import {
+  deleteUserAddress,
+  getUserAddresses,
+  updateUserAddress,
+  addUserAddress,
+} from "../../api/User";
 
 const MyAddresses = () => {
   const { user } = useAuth();
@@ -20,11 +25,11 @@ const MyAddresses = () => {
   const fetchAddresses = async () => {
     if (!user?.id) return;
     try {
-      const res = await getUserAddresses(user.id);
+      const res = await getUserAddresses(user.id,user.token);
       setAddresses(res);
     } catch (err) {
       console.error("Error fetching addresses", err);
-  
+      toast.error("Failed to fetch addresses.");
     }
   };
 
@@ -39,25 +44,33 @@ const MyAddresses = () => {
 
   const handleSubmit = async () => {
     console.log("Submitting address:", newAddress);
-    const { address, pincode, city, state,country } = newAddress;
+    const { address, pincode, city, state, country } = newAddress;
     if (!address || !pincode || !city || !state || !country) {
- 
+      toast.warn("Please fill in all fields.");
       return;
     }
 
     try {
       if (editingAddressId) {
-        await updateUserAddress(user.id, editingAddressId, newAddress);
+        await updateUserAddress(user.id, editingAddressId, newAddress,user.token);
+        toast.success("Address updated successfully!");
       } else {
-        await addUserAddress(user.id, newAddress);
-   
+        await addUserAddress(user.id, newAddress,user.token);
+        toast.success("Address added successfully!");
       }
-      setNewAddress({ address: "", pincode: "", city: "", state: "", country: "" });
+      setNewAddress({
+        address: "",
+        pincode: "",
+        city: "",
+        state: "",
+        country: "",
+      });
       setEditingAddressId(null);
       setShowForm(false);
       fetchAddresses();
     } catch (error) {
       console.error("Error saving address:", error);
+      toast.error("Failed to save address.");
     }
   };
 
@@ -69,21 +82,29 @@ const MyAddresses = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteUserAddress(user.id, id);
+      await deleteUserAddress(user.id, id,user.token);
+      toast.success("Address deleted.");
       fetchAddresses();
     } catch (err) {
       console.error("Error deleting address", err);
+      toast.error("Failed to delete address.");
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-md  w-full max-w-2xl mx-auto">
+    <div className="bg-white p-6 rounded  w-full max-w-2xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-lg font-semibold">My Addresses</h2>
         <button
           className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-secondary-hover cursor-pointer transition"
           onClick={() => {
-            setNewAddress({ address: "", pincode: "", city: "", state: "",country:"" });
+            setNewAddress({
+              address: "",
+              pincode: "",
+              city: "",
+              state: "",
+              country: "",
+            });
             setEditingAddressId(null);
             setShowForm(true);
           }}
@@ -168,7 +189,9 @@ const MyAddresses = () => {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No addresses found. Please add an address.</p>
+        <p className="text-gray-500">
+          No addresses found. Please add an address.
+        </p>
       )}
     </div>
   );

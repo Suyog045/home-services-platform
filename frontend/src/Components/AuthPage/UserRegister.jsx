@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../Providers/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import {
   Button,
   Checkbox,
@@ -126,12 +129,13 @@ const UserRegister = () => {
       const data = await userRegistration(userData);
       console.log("Registration response:", data);
       if (data) {
+         toast.success("Registration successful!");
         closeModal();
     
       }
     } catch (error) {
       console.error("Registration failed:", error);
-   
+    toast.error("Registration failed. Please try again.");
     }
   };
 
