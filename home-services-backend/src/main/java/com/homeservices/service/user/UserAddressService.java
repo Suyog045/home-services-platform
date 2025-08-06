@@ -9,13 +9,15 @@ import com.homeservices.dto.response.ApiResponse;
 
 public interface UserAddressService {
 
-	AddressResponseDto addAddress(Long id, AddressRequestDto dto);
+	
 
 	List<AddressResponseDto> getUserAddresses(Long id);
 
 	AddressResponseDto updateAddress(Long id,UpdateAddressDto dto,  Long addressId);
 
 	ApiResponse deleteAddressByUserIdAndAddressId(Long userId, Long addressId);
+
+	AddressResponseDto addAddress(Long userId, AddressRequestDto dto);
 
 	
 

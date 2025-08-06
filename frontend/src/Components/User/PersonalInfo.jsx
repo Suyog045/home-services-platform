@@ -4,7 +4,6 @@ import { Button } from "flowbite-react";
 import axios from "axios";
 import { useAuth } from "../../Providers/AuthContext";
 import { UPDATE_USER } from "../../api/config";
-import { toast } from "react-toastify";
 
 const PersonalInfo = () => {
   const { user, login } = useAuth();
@@ -23,7 +22,6 @@ const PersonalInfo = () => {
 
  const handleUpdateButton = async () => {
   if (!user?.id) {
-    toast.error("User ID is missing. Please re-login.");
     return;
   }
 
@@ -37,10 +35,8 @@ const PersonalInfo = () => {
     login({ ...user, ...response.data });
     setFormData(response.data);
     setEditable(false);
-    toast.success("Profile updated successfully");
   } catch (error) {
     console.error("Update failed", error);
-    toast.error("Update failed");
   } finally {
     setIsUpdating(false);
   }

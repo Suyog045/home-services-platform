@@ -32,7 +32,6 @@ public class UserController {
 	public ResponseEntity<UserResponseDto> userLogin(@RequestBody UserLoginDto dto) {
 		return ResponseEntity.ok(userService.userLogin(dto));
 	}
-	
 
 	@PutMapping("/{id}") // Update user profile
 	public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserDto dto, @PathVariable Long id) {
@@ -44,12 +43,13 @@ public class UserController {
 		return ResponseEntity.ok(userService.deleteUser(id));
 	}
 
+
 	// user address
 
-	@PostMapping("/{userid}/addresses") // add User Address
-	public ResponseEntity<AddressResponseDto> addAddress(@RequestBody AddressRequestDto dto, @PathVariable("userid") Long id) {
-		userAddressService.addAddress(id, dto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(userAddressService.addAddress(id, dto));
+	@PostMapping("/{userId}/addresses") // ✅ Add user address
+	public ResponseEntity<AddressResponseDto> addAddress(@PathVariable Long userId, @RequestBody AddressRequestDto dto) {
+		AddressResponseDto response = userAddressService.addAddress(userId, dto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@GetMapping("/{userid}/addresses") // get User Address
@@ -58,13 +58,15 @@ public class UserController {
 	}
 
 	@PutMapping("/{userid}/addresses/{addressid}") // update User Address
-	public ResponseEntity<AddressResponseDto> updateAddress(@PathVariable("userid") Long userId ,@RequestBody UpdateAddressDto dto,  @PathVariable("addressid") Long addressId ) {
-		return ResponseEntity.ok(userAddressService.updateAddress(userId,dto, addressId));
+	public ResponseEntity<AddressResponseDto> updateAddress(@PathVariable("userid") Long userId,
+			@RequestBody UpdateAddressDto dto, @PathVariable("addressid") Long addressId) {
+		return ResponseEntity.ok(userAddressService.updateAddress(userId, dto, addressId));
 	}
 
 	@DeleteMapping("/{userId}/addresses/{addressId}") // delete user address
-	public ResponseEntity<ApiResponse> deleteAddressByUserIdAndAddressId(@PathVariable Long userId,@PathVariable Long addressId) {
-		return ResponseEntity.ok(userAddressService.deleteAddressByUserIdAndAddressId(userId,addressId));
+	public ResponseEntity<ApiResponse> deleteAddressByUserIdAndAddressId(@PathVariable Long userId,
+			@PathVariable Long addressId) {
+		return ResponseEntity.ok(userAddressService.deleteAddressByUserIdAndAddressId(userId, addressId));
 	}
 
 }

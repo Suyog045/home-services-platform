@@ -39,7 +39,7 @@ public class User extends BaseEntity {
 	private String email;
 	@Column(name = "phone", nullable = false)
 	private String phone;
-	@Column(name = "pasword_hash", nullable = false)
+	@Column(name = "password_hash", nullable = false)
 	private String password;
 	@Column(name = "profile_img")
 	private String profileImg;
@@ -51,20 +51,22 @@ public class User extends BaseEntity {
 	private String authToken;
 	@Column(name = "auth_token_expiry")
 	private LocalDateTime authTokenExpiry;
-	@Column(name="is_verified")
+	@Column(name = "is_verified")
 	private boolean isVerified;
 	@Column(name = "verify_token")
 	private String verifyToken;
 	@Column(name = "verify_token_expiry")
 	private LocalDateTime verifyTokenExpiry;
 
-	@OneToMany( cascade = CascadeType.ALL)
-	@JoinColumn(name="user_id")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
 	private List<UserAddress> addresses = new ArrayList<>();
-	
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JsonIgnore
 	@JoinColumn(name = "user_id")
 	private List<Order> orders = new ArrayList<>();
-	
+
+
+
 }

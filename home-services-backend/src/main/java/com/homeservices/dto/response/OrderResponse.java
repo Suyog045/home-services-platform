@@ -13,11 +13,12 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class OrderResponse {
-		public LocalDate serviceDate;
-		public LocalTime serviceTime;
-		public LocalDate completionDate;
-		public OrderStatus orderStatus;
-		public Double totalCost;
-		public String service;
-		public String address;
+	public Long id;
+	public LocalDate serviceDate;
+	public LocalTime serviceTime;
+	public LocalDate completionDate;
+	public OrderStatus orderStatus;
+	public Double totalCost;
+	public String service;
+	public String address;
 }

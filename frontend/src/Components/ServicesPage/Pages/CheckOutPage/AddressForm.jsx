@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Label,
   TextInput,
@@ -86,6 +86,12 @@ const AddressForm = () => {
     console.log("Success");
     navigate("/services/checkout");
   };
+  
+  useEffect(() => {
+    if(isValid()) {
+      setAddress(addressDetails);
+    }
+  }, [addressDetails]);
 
   return (
     <div className="flex w-full">
