@@ -18,7 +18,7 @@ const BookSlot = () => {
     setServiceDate(formattedDate);
   };
 
-  const isButtonDisabled = !selectedDate || !bookingDetails.serviceTime;
+  const isButtonDisabled = !selectedDate || !bookingDetails.serviceTime || bookingDetails.serviceIds.length == 0;
 
   return (
     <div className="flex flex-col items-center mb-5 sticky top-20 self-start">
