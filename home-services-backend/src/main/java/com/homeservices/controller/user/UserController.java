@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.homeservices.dto.request.*;
 import com.homeservices.dto.response.*;
+import com.homeservices.entities.User;
 import com.homeservices.service.user.UserAddressService;
 import com.homeservices.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,11 @@ public class UserController {
 		return ResponseEntity.ok(userService.updatePassword(userId,dto));
 	}
 
+	@GetMapping("/{id}") // get User Address
+	public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
+		System.out.println(id);
+		return ResponseEntity.ok(userService.getUserById(id));
+	}
 
 	// user address
 

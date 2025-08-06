@@ -87,20 +87,21 @@ const Routes = createBrowserRouter([
         path: "/partner",
         element: <PartnerHome />,
       },
+      {
+    path: "/partner/register",
+    element: <PartnerRegister />
+  },
+  {
+    path: "/partner/dashboard",
+    element: <PartnerDashBoard />
+  },
     ],
   },
-  // {
-  //   path: "dashboard",
-  //   element: <PartnerDashBoard />
-  // },
   // {
   //   path: "login",
   //   element: <PartnerLogin />
   // },
-  // {
-  //   path: "register",
-  //   element: <PartnerRegister />
-  // }
+  
 ]);
 
 export default Routes;

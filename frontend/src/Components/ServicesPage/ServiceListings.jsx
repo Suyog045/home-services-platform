@@ -4,21 +4,23 @@ import { Button, Pagination } from "flowbite-react";
 import { getServicesByCategoryId } from "../../api/CatalogService";
 import { useParams } from "react-router-dom";
 import PaginationComponent from "../Shared/PaginationComponent";
+import { useAuth } from "../../Providers/AuthContext";
 
 const ServiceListings = () => {
   const { categoryId } = useParams();
   const [services, setServices] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const providersPerPage = 5;
+  const {user} = useAuth()
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
         let res;
         if (categoryId === undefined) {
-          res = await getServicesByCategoryId(1);
+          res = await getServicesByCategoryId(1,user.token);
         } else {
-          res = await getServicesByCategoryId(categoryId);
+          res = await getServicesByCategoryId(categoryId,user.token);
         }
         setServices(res || []);
       } catch (err) {

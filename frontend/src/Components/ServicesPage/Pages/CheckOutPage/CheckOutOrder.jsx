@@ -28,7 +28,7 @@ const CheckOutOrder = ({ services }) => {
 
   const handlePlaceOrder = async () => {
     try {
-      await placeOrder(user.id, bookingDetails);
+      await placeOrder(user.id, bookingDetails,user.token);
       clearCart();
       navigate("/services/order-success"); // or "/payment-success"
     } catch (error) {

@@ -105,6 +105,24 @@ public class UserServiceImpl implements UserService {
 		return userMapper.map(userRepository.save(user), ChangePasswordDto.class);
 	}
 
+	@Override
+	public UserResponseDto getUserById(Long id) {
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+	    UserResponseDto dto = new UserResponseDto();
+	    dto.setId(user.getId());
+	    dto.setFirstName(user.getFirstName());
+	    dto.setLastName(user.getLastName());
+	    dto.setEmail(user.getEmail());
+	    dto.setPhone(user.getPhone());
+	    dto.setProfileImg(user.getProfileImg());
+	    dto.setBirthDate(user.getBirthDate());
+	    dto.setVerified(user.isVerified());
+
+	    return dto;
+	}
+
 
 
 }
