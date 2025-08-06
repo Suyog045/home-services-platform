@@ -11,7 +11,8 @@ import { SharedButton } from "../Shared/SharedButton";
 import { Link, NavLink, useLocation , useNavigate } from "react-router-dom";
 import { useAuthModal } from "../../hooks/useAuthModal";
 import { useAuth } from "../../Providers/AuthContext";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const customTheme = createTheme({
   navbar: {
@@ -38,6 +39,7 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     navigate("/"); 
+      toast.success("Logged out successfully");
   }
   return (
     <Navbar

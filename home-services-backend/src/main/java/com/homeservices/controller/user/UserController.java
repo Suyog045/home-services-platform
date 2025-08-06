@@ -43,11 +43,16 @@ public class UserController {
 	public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long id) {
 		return ResponseEntity.ok(userService.deleteUser(id));
 	}
+	
+	@PutMapping("/{userId}/password") // update password 
+	public ResponseEntity<ChangePasswordDto> updatePassword(@PathVariable Long userId , @RequestBody UpdatePasswordDto dto){
+		return ResponseEntity.ok(userService.updatePassword(userId,dto));
+	}
 
 
 	// user address
 
-	@PostMapping("/{userId}/addresses") // ✅ Add user address
+	@PostMapping("/{userId}/addresses") // Add user address
 	public ResponseEntity<AddressResponseDto> addAddress(@PathVariable Long userId, @RequestBody AddressRequestDto dto) {
 		AddressResponseDto response = userAddressService.addAddress(userId, dto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
