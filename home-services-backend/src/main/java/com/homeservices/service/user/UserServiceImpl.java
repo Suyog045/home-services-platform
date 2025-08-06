@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.homeservices.custom_exceptions.ApiException;
 import com.homeservices.custom_exceptions.ResourceNotFoundException;
 import com.homeservices.dao.UserRepository;
-
+import com.homeservices.dto.request.UpdatePasswordDto;
 import com.homeservices.dto.request.UpdateUserDto;
 import com.homeservices.dto.request.UserLoginDto;
 import com.homeservices.dto.request.UserRequestDto;
 import com.homeservices.dto.response.ApiResponse;
+import com.homeservices.dto.response.ChangePasswordDto;
 import com.homeservices.dto.response.UserResponseDto;
 
 import com.homeservices.entities.User;
@@ -88,6 +89,17 @@ public class UserServiceImpl implements UserService {
 		deletedUser.setDeleted(true);
 		userRepository.save(deletedUser);
 		return new ApiResponse("user deleted");
+	}
+
+
+
+	@Override
+	public ChangePasswordDto updatePassword(Long userId , UpdatePasswordDto dto) {
+		   User user = userRepository.findByIdAndIsDeletedFalse(userId)
+				   .orElseThrow(()-> new ResourceNotFoundException("user not found "));
+		   user.setPassword(dto.getPassword());
+		 
+		return userMapper.map(userRepository.save(user), ChangePasswordDto.class);
 	}
 
 

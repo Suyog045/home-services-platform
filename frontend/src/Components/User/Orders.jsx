@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../Providers/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { cancelOrder, getOrdersByUserId } from "../../api/Order";
 import { Button } from "flowbite-react";
 import PaginationComponent from "../Shared/PaginationComponent";
@@ -17,8 +19,12 @@ const Orders = () => {
         const response = await getOrdersByUserId(user.id);
         console.log("Fetched orders:", response);
         setOrders(response);
+        if (response.length === 0) {
+          toast.info("You have no orders yet.");
+        }
       } catch (error) {
         console.error("Error fetching orders:", error);
+        toast.error("Failed to fetch orders.");
       }
     };
 
@@ -35,39 +41,22 @@ const Orders = () => {
 
     try {
       const response = await cancelOrder(orderId);
-      if (!response) return;
+      if (!response) {
+        toast.error("Order cancellation failed.");
+        return;
+      }
 
+      // Update the status of the order in local state
       const updatedOrders = orders.map((order) =>
         order.id === orderId ? { ...order, orderStatus: "CANCELLED" } : order
       );
       setOrders(updatedOrders);
+      toast.success("Order cancelled successfully!");
     } catch (error) {
       console.error("Error cancelling order:", error);
+      toast.error("Something went wrong while cancelling the order.");
     }
   };
-
-  const handlePayment = (orderId) => {
-    console.log("Payment Done for Order ID:", orderId);
-  };
-
-  const statusPriority = {
-    COMPLETED: 1,
-    IN_PROGRESS: 2,
-    CONFIRMED: 3,
-    PENDING: 4,
-    CANCELLED:5
-  };
-
-  const sortedOrders = [...orders].sort((a, b) => {
-    const priorityA = statusPriority[a.orderStatus] || 5;
-    const priorityB = statusPriority[b.orderStatus] || 5;
-    return priorityA - priorityB;
-  });
-
-  const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
-  const indexOfLast = currentPage * ordersPerPage;
-  const indexOfFirst = indexOfLast - ordersPerPage;
-  const currentOrders = sortedOrders.slice(indexOfFirst, indexOfLast);
 
   return (
     <div className="bg-white p-6 rounded w-full max-w-2xl mx-auto">
