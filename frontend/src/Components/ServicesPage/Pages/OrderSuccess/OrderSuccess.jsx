@@ -26,7 +26,7 @@ const OrderSuccess = () => {
         </p>
 
         <div className="flex flex-col gap-3 mt-6">
-          <Link to="/user/orders">
+          <Link to="/user-profile/myorders">
             <Button color="gray" className="w-full cursor-pointer">
               View My Orders
             </Button>
