@@ -1,5 +1,7 @@
 package com.homeservices.service.partner;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -25,6 +27,8 @@ import com.homeservices.entities.Category;
 import com.homeservices.entities.Order;
 import com.homeservices.entities.Partner;
 import com.homeservices.entities.PartnerAddress;
+import com.homeservices.entities.UserAddress;
+import com.homeservices.utils.OrderStatus;
 import com.homeservices.utils.Role;
 
 import lombok.AllArgsConstructor;
@@ -112,7 +116,22 @@ public class PartnerServiceImpl implements PartnerService {
 		Partner partner = partnerRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Partner ID"));
 
-		return partner.getMyOrders().stream().map(order -> mapper.map(order, PartnerOrderDTO.class)).toList();
+		List<PartnerOrderDTO> response = new ArrayList<>();
+		for (Order order : partner.getMyOrders()) {
+			String serviceName = order.getService().getName();
+			String fullAddress = "No Address Provided";
+			if (order.getAddress() != null) {
+				UserAddress addr = order.getAddress();
+				fullAddress = addr.getAddress() + ", " + addr.getCity() + ", " + addr.getState() + ", "
+						+ addr.getCountry() + " - " + addr.getPincode();
+			}
+			PartnerOrderDTO dto = new PartnerOrderDTO(order.getId(), order.getServiceDate(), order.getServiceTime(),
+					order.getCompletionDate(), order.getOrderStatus(), order.getTotalCost(), serviceName, fullAddress);
+			response.add(dto);
+
+		}
+
+		return response;
 	}
 
 	@Override
@@ -152,6 +171,7 @@ public class PartnerServiceImpl implements PartnerService {
 
 	@Override
 	public ApiResponse assignOrderToPartner(Long partnerId, Long orderId) {
+		System.out.println(partnerId);
 		Partner partner = partnerRepository.findById(partnerId)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Partner ID"));
 
@@ -162,6 +182,9 @@ public class PartnerServiceImpl implements PartnerService {
 			throw new ApiException("Order Already Assigned to this Partner");
 		}
 
+		order.setOrderStatus(OrderStatus.CONFIRMED);
+		orderRepository.save(order);
+		
 		partner.getMyOrders().add(order);
 		partnerRepository.save(partner);
 		return new ApiResponse("Order with Id " + orderId + " Assigned to Partner " + partnerId);
@@ -196,6 +219,31 @@ public class PartnerServiceImpl implements PartnerService {
 			throw new ApiException("No Parteners to show");
 		}
 		return list;
+	}
+
+	@Override
+	public ApiResponse updateOrderStatus(Long partnerId, Long orderId) {
+		Partner partner = partnerRepository.findById(partnerId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Partner ID"));
+
+		Order order = orderRepository.findById(orderId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Order ID"));
+
+		if (!partner.getMyOrders().contains(order)) {
+			throw new ApiException("This order is not assigned to the specified partner.");
+		}
+
+		if (order.getOrderStatus() == OrderStatus.COMPLETED) {
+			throw new ApiException("Order is already marked as COMPLETED.");
+		}
+
+		order.setOrderStatus(OrderStatus.COMPLETED);
+		order.setCompletionDate(LocalDate.now());
+
+		orderRepository.save(order);
+
+		return new ApiResponse("Order with ID " + orderId + " marked as COMPLETED.");
+
 	}
 
 }
