@@ -16,7 +16,7 @@ const ChangePassword = () => {
       return;
     }
     try {
-      await updateUserPassword(user.id, { password: newPassword });
+      await updateUserPassword(user.id, { password: newPassword },user?.token);
       toast.success("Password updated successfully!");
       setNewPassword("");
       setConfirmPassword("");

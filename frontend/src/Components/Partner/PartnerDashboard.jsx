@@ -32,8 +32,8 @@ export default function PartnerDashboard() {
 
   const fetchPartnerData = async () => {
     try {
-      const profile = await getPartnerById(partnerId);
-      const orders = await getPartnerOrders(partnerId);
+      const profile = await getPartnerById(partner.id);
+      const orders = await getPartnerOrders(partner.id);
       setPartnerProfile(profile);
       setOrders(orders);
     } catch (error) {
@@ -139,7 +139,7 @@ const handleLogout = () => {
             <AllOrdersTable
               orders={orders}
               setOrders={setOrders}
-              partnerId={partnerId} 
+              partnerId={partner.id} 
             />
           )}
 
