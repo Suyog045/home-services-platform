@@ -11,6 +11,7 @@ export const REGISTER_USER = `${BASE_URL}/user/register`;
 export const LOGIN_USER = `${BASE_URL}/auth/login`;
 export const GET_USER_BY_ID = (id) => `${BASE_URL}/user/${id}`;
 export const UPDATE_USER = (id) => `${BASE_URL}/user/${id}`;
+export const FORGOT_PASSWORD = `${BASE_URL}/auth/forgot-password`;
 
 export const GET_USER_ADDRESSES = (userId) => `${BASE_URL}/user/${userId}/addresses`;
 export const DELETE_USER_ADDRESS = (userId, addressId) => `${BASE_URL}/user/${userId}/addresses/${addressId}`;

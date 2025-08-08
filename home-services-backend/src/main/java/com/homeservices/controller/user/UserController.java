@@ -3,14 +3,30 @@ package com.homeservices.controller.user;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.homeservices.dto.request.*;
-import com.homeservices.dto.response.*;
-import com.homeservices.entities.User;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.homeservices.dto.request.AddressRequestDto;
+import com.homeservices.dto.request.UpdateAddressDto;
+import com.homeservices.dto.request.UpdatePasswordDto;
+import com.homeservices.dto.request.UpdateUserDto;
+import com.homeservices.dto.request.UserLoginDto;
+import com.homeservices.dto.request.UserRequestDto;
+import com.homeservices.dto.response.AddressResponseDto;
+import com.homeservices.dto.response.ApiResponse;
+import com.homeservices.dto.response.ChangePasswordDto;
+import com.homeservices.dto.response.UserResponseDto;
 import com.homeservices.service.user.UserAddressService;
 import com.homeservices.service.user.UserService;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,6 +53,7 @@ public class UserController {
 
 	@PutMapping("/{id}") // Update user profile
 	public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserDto dto, @PathVariable Long id) {
+		System.out.println(dto);
 		return ResponseEntity.ok(userService.updateUser(id, dto));
 	}
 
