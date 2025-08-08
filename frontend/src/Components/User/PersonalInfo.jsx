@@ -37,7 +37,7 @@ const PersonalInfo = () => {
 
       const response = await axios.put(UPDATE_USER(user.id), userPayload, {
         headers: {
-          Authorization: `Bearer ${user.token}`, // Assuming your user object has the token
+          Authorization: `Bearer ${user.token}`,
         },
       });
 
