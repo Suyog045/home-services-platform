@@ -11,8 +11,8 @@ const AllOrdersTable = ({ orders, setOrders, partnerId }) => {
 
       if (currentStatus === "CONFIRMED") {
         await updateOrderStatusInProgress(partnerId, orderId);
-        newStatus = "IN_PROGRESS";
-      } else if (currentStatus === "IN_PROGRESS") {
+        newStatus = "INPROGRESS";
+      } else if (currentStatus === "INPROGRESS") {
         await updateOrderStatusCompleted(partnerId, orderId);
         newStatus = "COMPLETED";
       }
@@ -40,7 +40,7 @@ const AllOrdersTable = ({ orders, setOrders, partnerId }) => {
           Start
         </button>
       );
-    } else if (order.orderStatus === "IN_PROGRESS") {
+    } else if (order.orderStatus === "INPROGRESS") {
       return (
         <button
           onClick={() => handleStatusUpdate(order.id, order.orderStatus)}

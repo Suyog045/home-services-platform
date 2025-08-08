@@ -98,7 +98,7 @@ public class PartnerController {
 
 	@PutMapping("/{partnerId}/orders/{orderId}/status")
 	public ResponseEntity<?> updateOrderStatus(@PathVariable Long partnerId, @PathVariable Long orderId) {
-		return ResponseEntity.ok(partnerService.updateOrderStatus(partnerId, orderId));
+		return ResponseEntity.ok(partnerService.updateOrderStatusCompleted(partnerId, orderId));
 	}
 
 }

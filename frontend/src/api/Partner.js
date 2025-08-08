@@ -12,7 +12,8 @@ import {
   GET_PARTNER_SERVICES,
   VERIFY_PARTNER,
   ASSIGN_ORDER_TO_PARTNER,
-  UPDATE_ORDER_STATUS_PARTNER,
+  UPDATE_ORDER_STATUS_COMPLETED,
+  UPDATE_ORDER_STATUS_INPROGRESS
 } from "./config";
 
 // Register a new partner
@@ -150,7 +151,7 @@ export const assignOrderToPartner = async (partnerId, orderId) => {
 
 export const updateOrderStatusCompleted = async (partnerId, orderId) => {
   try {
-    const response = await axios.put(UPDATE_ORDER_STATUS_PARTNER(partnerId, orderId));
+    const response = await axios.put(UPDATE_ORDER_STATUS_COMPLETED(partnerId, orderId));
     return response.data;
   } catch (error) {
     console.error("Failed to change order status:", error.response?.data || error.message);
@@ -160,7 +161,7 @@ export const updateOrderStatusCompleted = async (partnerId, orderId) => {
 
 export const updateOrderStatusInProgress = async (partnerId, orderId) => {
   try {
-    const response = await axios.put(UPDATE_ORDER_STATUS_PARTNER(partnerId, orderId));
+    const response = await axios.put(UPDATE_ORDER_STATUS_INPROGRESS(partnerId, orderId));
     return response.data;
   } catch (error) {
     console.error("Failed to change order status:", error.response?.data || error.message);
