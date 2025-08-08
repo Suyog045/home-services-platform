@@ -1,15 +1,24 @@
-import { Button } from 'flowbite-react'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useBooking } from '../../../hooks/useBooking';
+import { Button } from "flowbite-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useBooking } from "../../../hooks/useBooking";
+import { useAuth } from "../../../Providers/AuthContext";
+import { useAuthModal } from "../../../hooks/useAuthModal";
 
-const ServiceProfileCard = ({service}) => {
+const ServiceProfileCard = ({ service }) => {
   const { bookingDetails, addServiceId } = useBooking();
+  const { user } = useAuth();
+  const { openModal, setModalType } = useAuthModal();
 
   const isAdded = bookingDetails.serviceIds.includes(service.id);
 
-  console.log(bookingDetails)
+  console.log(bookingDetails);
   const handleAddService = () => {
+    if (!user) {
+      setModalType("Login");
+      openModal();
+      return;
+    }
     if (!isAdded) {
       addServiceId(service.id);
     }
@@ -31,12 +40,16 @@ const ServiceProfileCard = ({service}) => {
       </div>
       <div className="text-center flex flex-col items-center">
         <p className="text-green-600 font-semibold mb-2">Available</p>
-          <Button onClick={handleAddService} disabled={isAdded} className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-secondary-hover cursor-pointer">
-            {isAdded? "Added" : "Add"}
-          </Button>
+        <Button
+          onClick={handleAddService}
+          disabled={isAdded}
+          className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-secondary-hover cursor-pointer"
+        >
+          {isAdded ? "Added" : "Add"}
+        </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ServiceProfileCard
+export default ServiceProfileCard;
