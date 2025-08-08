@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 import { FaCalendarAlt, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-// Make sure you have this API function created to call your new endpoint
+
 import { updateOrderStatusInProgress } from '../../api/Partner'; 
 
 const UpcomingOrdersTable = ({ orders, partnerId, onUpdateSuccess }) => {
-  // State to track which order card is expanded to show details
+  
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
-  // Filter for orders that are specifically "CONFIRMED"
+
   const confirmedOrders = Array.isArray(orders)
     ? orders.filter(order => order.orderStatus === "CONFIRMED")
     : [];
 
-  // Function to handle expanding/collapsing the details view
+
   const toggleDetails = (orderId) => {
     setSelectedOrderId(prevId => (prevId === orderId ? null : orderId));
   };
 
-  // Function for the "Start Job" button
+  
   const handleStartOrder = async (e, orderId) => {
-    e.stopPropagation(); // Prevents the card from toggling details when the button is clicked
+    e.stopPropagation();
 
     try {
       await updateOrderStatusInProgress(partnerId, orderId);
       toast.success("Job started! The order is now IN PROGRESS.");
-      // Call the refresh function from the dashboard to update all data
+      
       if (onUpdateSuccess) {
         onUpdateSuccess();
       }
@@ -47,7 +47,7 @@ const UpcomingOrdersTable = ({ orders, partnerId, onUpdateSuccess }) => {
           {confirmedOrders.map((order) => (
             <div key={order.id} className="bg-white shadow-md rounded-lg p-4 cursor-pointer transition-shadow hover:shadow-lg" onClick={() => toggleDetails(order.id)}>
               <div className="flex justify-between items-start">
-                {/* Left side: Order Info */}
+              
                 <div className="space-y-2">
                   <h4 className="font-bold text-lg text-gray-800">{order.service || 'N/A'}</h4>
                   <div className="flex items-center text-sm text-gray-600">
@@ -60,7 +60,7 @@ const UpcomingOrdersTable = ({ orders, partnerId, onUpdateSuccess }) => {
                   </div>
                 </div>
 
-                {/* Right side: Status Badge */}
+               
                 <div>
                   <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                     {order.orderStatus}

@@ -126,7 +126,7 @@ const PartnerUpdateForm = () => {
             onSubmit={handleSubmit}
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
           >
-            {/* CORRECTED READ-ONLY FIELDS */}
+            
             {["firstName", "lastName", "email", "phoneNumber"].map((field) => (
               <div key={field}>
                 <label className="block mb-1 font-medium capitalize">
@@ -135,7 +135,7 @@ const PartnerUpdateForm = () => {
                 <input
                   type="text"
                   name={field}
-                  // THE FIX IS HERE: Use '|| ""' as a fallback for null/undefined
+                  
                   value={partner[field] || ""} 
                   readOnly
                   className="w-full p-2 border border-gray-300 rounded bg-gray-100"
@@ -167,7 +167,7 @@ const PartnerUpdateForm = () => {
               />
             </div>
 
-            {/* CORRECTED FLOWBITE SELECT */}
+           
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="categoryId" value="Category" />
@@ -180,16 +180,16 @@ const PartnerUpdateForm = () => {
                 required
               >
                 <option value="">Select a category</option>
-                {/* Ensure you are using the correct property name from your API */}
+               
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
-                    {cat.name} {/* Corrected from cat.categoryName if needed */}
+                    {cat.name}
                   </option>
                 ))}
               </Select>
             </div>
 
-            {/* Address Fields */}
+           
             {["address", "city", "state", "pincode", "country"].map((field) => (
               <div key={field}>
                 <label className="block mb-1 font-medium capitalize">
