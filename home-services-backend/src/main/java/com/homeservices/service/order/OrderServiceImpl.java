@@ -17,6 +17,7 @@ import com.homeservices.dao.ServiceRepository;
 import com.homeservices.dao.UserAddressRepository;
 import com.homeservices.dao.UserRepository;
 import com.homeservices.dto.request.OrderRequestDto;
+import com.homeservices.dto.response.AllOrderResponseDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.OrderResponse;
 import com.homeservices.entities.Order;
@@ -180,12 +181,23 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Order> getAllOrders() {
+	public List<AllOrderResponseDto> getAllOrders() {
 		List<Order> orders = orderRepo.findAll();
 		if (orders.isEmpty()) {
 			throw new ResourceNotFoundException("Orders Not Found");
 		}
-		return orders;
+		return orders.stream().map(order -> {
+			AllOrderResponseDto neworder = new AllOrderResponseDto();
+			neworder.setId(order.getId());
+			neworder.setOrderStatus(order.getOrderStatus());
+			neworder.setCompletionDate(order.getCompletionDate());
+			neworder.setService(order.getService().getName());
+			neworder.setServiceDate(order.getServiceDate());
+			neworder.setServiceTime(order.getServiceTime());
+			neworder.setTotalCost(order.getTotalCost());
+			neworder.setServiceId(order.getService().getId());
+			return neworder;
+		}).toList();
 	}
 
 	@Override

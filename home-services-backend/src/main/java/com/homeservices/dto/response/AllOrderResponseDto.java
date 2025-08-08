@@ -7,11 +7,10 @@ import com.homeservices.entities.ProvidedService;
 import com.homeservices.entities.UserAddress;
 import com.homeservices.utils.OrderStatus;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class OrderResponse {
+public class AllOrderResponseDto {
 	public Long id;
 	public LocalDate serviceDate;
 	public LocalTime serviceTime;
@@ -19,5 +18,6 @@ public class OrderResponse {
 	public OrderStatus orderStatus;
 	public Double totalCost;
 	public String service;
-	public String address;
+	public Long serviceId;
+//	public String address;
 }

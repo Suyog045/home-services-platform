@@ -14,6 +14,7 @@ const OrderList = () => {
     const fetchOrders = async () => {
       try {
         const data = await getAllOrders();
+        console.log(data)
         setOrders(data);
       } catch (error) {
         console.error("Failed to fetch orders", error);

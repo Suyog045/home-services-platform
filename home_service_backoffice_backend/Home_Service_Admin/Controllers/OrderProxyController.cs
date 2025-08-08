@@ -6,6 +6,7 @@ namespace Home_Service_Admin.Controllers
 {
     [ApiController]
     [Route("api/admin/orders")]
+    //[Authorize(Roles = "Admin")]
     public class OrderProxyController : ControllerBase
     {
         private readonly SpringBootApiService _springService;
@@ -15,7 +16,6 @@ namespace Home_Service_Admin.Controllers
         }
 
         [HttpGet("test")]
-   
         public async Task<IActionResult> GetAllTasks()
         {
             var data = await _springService.GetTestAsync();

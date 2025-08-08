@@ -2,6 +2,7 @@ package com.homeservices.service.order;
 
 import java.util.List;
 import com.homeservices.dto.request.OrderRequestDto;
+import com.homeservices.dto.response.AllOrderResponseDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.OrderResponse;
 import com.homeservices.entities.Order;
@@ -19,7 +20,7 @@ public interface OrderService {
 
 	ApiResponse cancelOrderById(Long orderId);
 
-	List<Order> getAllOrders();
+	List<AllOrderResponseDto> getAllOrders();
 
 	List<Order> getOrdersByStatus(String status);
 	
