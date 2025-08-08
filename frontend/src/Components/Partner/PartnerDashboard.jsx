@@ -37,33 +37,33 @@ export default function PartnerDashboard() {
       setPartnerProfile(profile);
       setOrders(orders);
       if (
-      !profile.category ||
-      !profile.myAddress ||
-      !profile.myAddress.address ||
-      !profile.myAddress.city ||
-      !profile.myAddress.state ||
-      !profile.myAddress.pincode ||
-      !profile.myAddress.country
-    ) {
-      navigate("/partner/update"); 
-      toast.info("Please complete your profile details");
-    }
+        !profile.category ||
+        !profile.myAddress ||
+        !profile.myAddress.address ||
+        !profile.myAddress.city ||
+        !profile.myAddress.state ||
+        !profile.myAddress.pincode ||
+        !profile.myAddress.country
+      ) {
+        navigate("/partner/update");
+        toast.info("Please complete your profile details");
+      }
     } catch (error) {
       console.error("Failed to load partner data", error);
     }
   };
-const handleLogout = () => {
-  if (partner) {
-    partnerLogout();         
-    navigate("/partner");   
-     toast.success("Logged out successfully"); 
-  } else {
-    navigate("/");     
-     toast.success("Logged out successfully");      
-  }
+  const handleLogout = () => {
+    if (partner) {
+      partnerLogout();
+      navigate("/partner");
+      toast.success("Logged out successfully");
+    } else {
+      navigate("/");
+      toast.success("Logged out successfully");
+    }
 
- 
-};
+
+  };
 
 
   const tabData = [
@@ -74,7 +74,7 @@ const handleLogout = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100 text-gray-900 ">
-     
+
       <aside
         className={`bg-white shadow-lg flex flex-col py-4 px-2 transition-all duration-300 ${showSidebar ? "w-64" : "w-20"}`}
       >
@@ -140,10 +140,13 @@ const handleLogout = () => {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                 <StatCard label="Completed Visits" value={orders.filter(o => o.orderStatus === "COMPLETED").length} />
-                <StatCard label="Pending Visits" value={orders.filter(o => o.orderStatus === "PENDING").length} />
+                <StatCard label="Pending Visits" value={orders.filter(o => o.orderStatus === "CONFIRMED").length} />
                 <StatCard label="Total Earnings" value={`₹${partnerProfile?.totalEarning || 0}`} />
               </div>
-              <UpcomingOrdersTable orders={orders} />
+              <UpcomingOrdersTable
+                orders={orders}
+                partnerId={partner.id}
+                onUpdateSuccess={fetchPartnerData} />
             </>
           )}
 
@@ -151,7 +154,7 @@ const handleLogout = () => {
             <AllOrdersTable
               orders={orders}
               setOrders={setOrders}
-              partnerId={partner.id} 
+              partnerId={partner.id}
             />
           )}
 

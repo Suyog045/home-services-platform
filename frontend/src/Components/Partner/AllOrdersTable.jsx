@@ -80,7 +80,7 @@ const AllOrdersTable = ({ orders, setOrders, partnerId }) => {
                 className={`p-2 font-semibold ${
                   order.orderStatus === "COMPLETED"
                     ? "text-green-600"
-                    : order.orderStatus === "IN_PROGRESS"
+                    : order.orderStatus === "INPROGRESS"
                     ? "text-blue-600"
                     : "text-yellow-600"
                 }`}

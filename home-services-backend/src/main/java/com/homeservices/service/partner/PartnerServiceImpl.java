@@ -244,6 +244,7 @@ public class PartnerServiceImpl implements PartnerService {
 		partner.setTotalEarning(partner.getTotalEarning() + order.getService().getPrice());
 
 		orderRepository.save(order);
+		partnerRepository.save(partner);
 
 		return new ApiResponse("Order with ID " + orderId + " marked as COMPLETED.");
 
@@ -267,7 +268,7 @@ public class PartnerServiceImpl implements PartnerService {
 
 		order.setOrderStatus(OrderStatus.INPROGRESS);
 		orderRepository.save(order);
-		
+
 		return new ApiResponse("Order with ID " + orderId + " marked as INPROGRESS");
 	}
 
