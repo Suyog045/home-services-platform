@@ -65,5 +65,8 @@ public class CategoryController {
 		return ResponseEntity.ok(categoryService.deleteCatgory(categoryId));
 	}
 	
-	
+	@GetMapping("/{categoryId}/partners")
+	public ResponseEntity<?> getPartnersByCategoryId(@PathVariable Long categoryId){
+		return ResponseEntity.ok(categoryService.getPartnersByCategoryId(categoryId));
+	}
 }

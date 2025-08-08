@@ -3,128 +3,140 @@ import { useAuth } from "../../Providers/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { cancelOrder, getOrdersByUserId } from "../../api/Order";
-import { Button } from "flowbite-react";
+import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import PaginationComponent from "../Shared/PaginationComponent";
+import "dotenv";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalData, setModalData] = useState({
+    show: false,
+    type: "",
+    title: "",
+    message: "",
+    confirmAction: null,
+    confirmText: "",
+    confirmColor: "success",
+  });
+
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
   const ordersPerPage = 5;
 
   const { user } = useAuth();
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await getOrdersByUserId(user.id,user.token);
-        console.log("Fetched orders:", response);
-        setOrders(response);
-        if (response.length === 0) {
-          toast.info("You have no orders yet.");
-        }
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-        toast.error("Failed to fetch orders.");
+  const fetchOrders = async () => {
+    try {
+      const response = await getOrdersByUserId(user.id, user.token);
+      setOrders(response);
+      if (response.length === 0) {
+        toast.info("You have no orders yet.");
       }
-    };
-
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      toast.error("Failed to fetch orders.");
+    }
+  };
+  useEffect(() => {
     if (user?.id) {
       fetchOrders();
     }
   }, [user]);
 
-  const handleCancel = async (orderId) => {
-    const confirm = window.confirm(
-      "Are you sure you want to cancel this order?"
-    );
-    if (!confirm) return;
-
+  const handleCancelOrder = async (orderId) => {
     try {
-      const response = await cancelOrder(orderId,user.token);
-      if (!response) {
-        toast.error("Order cancellation failed.");
-        return;
-      }
-
-      // Update the status of the order in local state
-      const updatedOrders = orders.map((order) =>
-        order.id === orderId ? { ...order, orderStatus: "CANCELLED" } : order
-      );
-      setOrders(updatedOrders);
-      toast.success("Order cancelled successfully!");
+      await cancelOrder(orderId); // Your API call
+      fetchOrders(); // Refresh orders after cancel
+      toast.success("Order canceled successfully");
     } catch (error) {
-      console.error("Error cancelling order:", error);
-      toast.error("Something went wrong while cancelling the order.");
+      toast.error("Failed to cancel order");
+    } finally {
+      setShowCancelModal(false);
+      setSelectedOrderId(null);
     }
   };
 
   const handlePayment = async (orderId) => {
-  try {
-    const selectedOrder = orders.find((order) => order.id === orderId);
-    const amount = selectedOrder.totalCost;
+    try {
+      const selectedOrder = orders.find((order) => order.id === orderId);
+      const amount = selectedOrder.totalCost;
 
-    const res = await fetch("http://localhost:8080/payment/create-payment-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({ amount }),
-    });
-
-    const { orderId: razorpayOrderId } = await res.json();
-
-    const options = {
-      key: "rzp_test_wrOmk2JCVPRQZo",
-      amount: amount * 100,
-      currency: "INR",
-      name: "Home Services",
-      description: "Service Payment",
-      order_id: razorpayOrderId,
-      handler: async function (response) {
-        const verificationRes = await fetch("http://localhost:8080/payment/verify", {
+      const res = await fetch(
+        "http://localhost:8080/payment/create-payment-order",
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
-          body: JSON.stringify({
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpayOrderId: response.razorpay_order_id,
-            razorpaySignature: response.razorpay_signature,
-            orderId,
-          }),
-        });
-
-        if (verificationRes.ok) {
-          alert("Payment successful!");
-          setOrders((prevOrders) =>
-            prevOrders.map((o) =>
-              o.id === orderId ? { ...o, orderStatus: "PAID" } : o
-            )
-          );
-        } else {
-          alert("Payment verification failed!");
+          body: JSON.stringify({ amount }),
         }
-      },
-      prefill: {
-        name: user.fullName,
-        email: user.email,
-        contact: "9999999999",
-      },
-      theme: {
-        color: "#4CAF50",
-      },
-    };
+      );
 
-    const rzp = new window.Razorpay(options);
-    rzp.open();
-  } catch (error) {
-    console.error("Payment failed:", error);
-    alert("Something went wrong during payment!");
-  }
-};
+      const { orderId: razorpayOrderId } = await res.json();
+      console.log(import.meta.env.VITE_RAZORPAY_KEY_ID);
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: amount * 100,
+        currency: "INR",
+        name: "Home Services",
+        description: "Service Payment",
+        order_id: razorpayOrderId,
+        handler: async function (response) {
+          const verificationRes = await fetch(
+            "http://localhost:8080/payment/verify",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+              body: JSON.stringify({
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpaySignature: response.razorpay_signature,
+                orderId,
+              }),
+            }
+          );
 
+          if (verificationRes.ok) {
+            setModalData({
+              show: true,
+              type: "payment-success",
+              title: "Payment Successful!",
+              message: "Thank you for your payment.",
+              confirmAction: null,
+              confirmText: "",
+              confirmColor: "success",
+            });
+            setOrders((prevOrders) =>
+              prevOrders.map((o) =>
+                o.id === orderId ? { ...o, orderStatus: "PAID" } : o
+              )
+            );
+          } else {
+            alert("Payment verification failed!");
+          }
+        },
+        prefill: {
+          name: user.fullName,
+          email: user.email,
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#4CAF50",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error("Payment failed:", error);
+      alert("Something went wrong during payment!");
+    }
+  };
 
   const statusPriority = {
     COMPLETED: 1,
@@ -190,12 +202,23 @@ const Orders = () => {
                 <p className="text-sm text-gray-600">📍 {order.address}</p>
 
                 {order.orderStatus === "PENDING" && (
-                  <button
-                    onClick={() => handleCancel(order.id)}
-                    className="mt-3 bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition"
+                  <Button
+                    onClick={() => {
+                      setModalData({
+                        show: true,
+                        type: "cancel-order",
+                        title: "Cancel this order?",
+                        message: "This action cannot be undone.",
+                        confirmAction: () => handleCancelOrder(order.id),
+                        confirmText: "Yes, Cancel",
+                        confirmColor: "failure",
+                      });
+                    }}
+                    color="failure"
+                    className="mt-3 bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition cursor-pointer"
                   >
                     Cancel Order
-                  </button>
+                  </Button>
                 )}
 
                 {order.orderStatus === "COMPLETED" && (
@@ -217,6 +240,53 @@ const Orders = () => {
           />
         </>
       )}
+
+      <Modal
+        show={modalData.show}
+        size="md"
+        onClose={() => setModalData({ ...modalData, show: false })}
+        popup
+      >
+        <ModalHeader />
+        <ModalBody>
+          <div className="text-center">
+            <HiOutlineExclamationCircle
+              className={`mx-auto mb-4 h-14 w-14 ${
+                modalData.confirmColor === "failure"
+                  ? "text-red-500"
+                  : "text-green-500"
+              }`}
+            />
+            <h3 className="mb-5 text-lg font-semibold text-gray-700">
+              {modalData.title}
+            </h3>
+            {modalData.message && (
+              <p className="text-sm text-gray-500 mb-4">{modalData.message}</p>
+            )}
+            <div className="flex justify-center gap-4">
+              {modalData.confirmAction && (
+                <Button
+                  color={modalData.confirmColor}
+                  onClick={() => {
+                    modalData.confirmAction();
+                    setModalData({ ...modalData, show: false });
+                  }}
+                  className="cursor-pointer"
+                >
+                  {modalData.confirmText || "Confirm"}
+                </Button>
+              )}
+              <Button
+                color="gray"
+                onClick={() => setModalData({ ...modalData, show: false })}
+                className="cursor-pointer"
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
     </div>
   );
 };
