@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 import com.homeservices.custom_exceptions.ApiException;
 import com.homeservices.custom_exceptions.ResourceNotFoundException;
 import com.homeservices.dao.CategoryRepository;
+import com.homeservices.dao.PartnerRepository;
 import com.homeservices.dto.request.CategoryRequestDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.CategoryResponseDTO;
+import com.homeservices.dto.response.PartnerResponseDTO;
 import com.homeservices.entities.Category;
+import com.homeservices.entities.Partner;
 import com.homeservices.entities.ProvidedService;
 
 import jakarta.transaction.Transactional;
@@ -22,6 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CategoryServiceImp implements CategoryService{
 	private final CategoryRepository categoryRepository;
+	private final PartnerRepository partnerRespository;
 	private final ModelMapper modelMapper;
 	
 	@Override
@@ -81,5 +85,16 @@ public class CategoryServiceImp implements CategoryService{
 			throw new ResourceNotFoundException("No Services Found");
 		}
 		return services;
+	}
+
+
+	@Override
+	public List<PartnerResponseDTO> getPartnersByCategoryId(Long categoryId) {
+		Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category Not Found"));
+		List<PartnerResponseDTO> partners=partnerRespository.findByCategory(category)
+				.stream()
+				.map(partner -> modelMapper.map(partner, PartnerResponseDTO.class))
+				.toList();
+		return partners;
 	}
 }
