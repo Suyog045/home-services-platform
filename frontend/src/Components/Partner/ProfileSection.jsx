@@ -11,7 +11,7 @@ export default function ProfileSection({ partnerProfile }) {
       <p><strong>Email:</strong> {partnerProfile.email}</p>
       <p><strong>Phone:</strong> {partnerProfile.phoneNumber}</p>
       <p><strong>Experience:</strong> {partnerProfile.experience} years</p>
-      <p><strong>Rating:</strong> {partnerProfile.rating}</p>
+      {/* <p><strong>Rating:</strong> {partnerProfile.rating}</p> */}
       <p><strong>Category:</strong> {partnerProfile.category?.name}</p>
 
       <div className="mt-4">

@@ -87,10 +87,10 @@ public class PartnerServiceImpl implements PartnerService {
 
 		PartnerAddress myAddress = mapper.map(partnerupdateDTO.getMyAddress(), PartnerAddress.class);
 
-		partner.setFirstName(partnerupdateDTO.getFirstName());
-		partner.setLastName(partnerupdateDTO.getLastName());
-		partner.setEmail(partnerupdateDTO.getEmail());
-		partner.setPhoneNumber(partnerupdateDTO.getPhoneNumber());
+//		partner.setFirstName(partnerupdateDTO.getFirstName());
+//		partner.setLastName(partnerupdateDTO.getLastName());
+//		partner.setEmail(partnerupdateDTO.getEmail());
+//		partner.setPhoneNumber(partnerupdateDTO.getPhoneNumber());
 		partner.setExperience(partnerupdateDTO.getExperience());
 		partner.setBirthDate(partnerupdateDTO.getBirthDate());
 		partner.setCategory(category);

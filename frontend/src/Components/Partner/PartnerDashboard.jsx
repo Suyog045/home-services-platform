@@ -24,7 +24,7 @@ export default function PartnerDashboard() {
   const [partnerProfile, setPartnerProfile] = useState(null);
   const [orders, setOrders] = useState([]);
   const { partner, logout: partnerLogout } = usePartnerAuth();
-  const partnerId = 1;
+
 
   useEffect(() => {
     fetchPartnerData();
@@ -36,6 +36,18 @@ export default function PartnerDashboard() {
       const orders = await getPartnerOrders(partner.id);
       setPartnerProfile(profile);
       setOrders(orders);
+      if (
+      !profile.category ||
+      !profile.myAddress ||
+      !profile.myAddress.address ||
+      !profile.myAddress.city ||
+      !profile.myAddress.state ||
+      !profile.myAddress.pincode ||
+      !profile.myAddress.country
+    ) {
+      navigate("/partner/update"); 
+      toast.info("Please complete your profile details");
+    }
     } catch (error) {
       console.error("Failed to load partner data", error);
     }
@@ -108,7 +120,7 @@ const handleLogout = () => {
 
       {/* Main content */}
       <div className="flex flex-col flex-1">
-        <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+        <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center cursor-pointer">
           <h1 className="text-xl font-bold text-primary">
             Home<span className="text-secondary">Mate</span>
           </h1>

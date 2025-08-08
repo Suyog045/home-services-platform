@@ -13,6 +13,7 @@ import ChangePassword from "../Components/User/ChangePassword";
 import PartnerLogin from "../pages/Partner/PartnerLogin";
 import PartnerRegister from "../pages/Partner/PartnerRegister";
 import PartnerDashboard from "../Components/Partner/PartnerDashBoard";
+import PartnerUpdateForm from "../Components/Partner/PartnerUpdateForm";
 
 import MyAddresses from "../Components/User/Addresses";
 
@@ -101,6 +102,15 @@ const Routes = createBrowserRouter([
       </ProtectedPartnerRoutes>
     ),
   },
+  {
+  path: "/partner/update",
+  element: (
+    <ProtectedPartnerRoutes>
+      <PartnerUpdateForm />
+    </ProtectedPartnerRoutes>
+  ),
+}
+, 
   {
     path: "/partner/register",
     element: <PartnerRegister />,
