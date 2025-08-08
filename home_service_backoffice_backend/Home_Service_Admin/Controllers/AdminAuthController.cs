@@ -1,4 +1,5 @@
 ﻿using Home_Service_Admin.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Home_Service_Admin.Controllers
@@ -14,25 +15,53 @@ namespace Home_Service_Admin.Controllers
         {
             _adminService = adminService;
             _jwtService = jwtService;
-        }   
+        }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] AdminLoginDTO dto)
         {
-           var admin = _adminService.GetAdminByEmail(dto.Email);
-            if (admin == null || !BCrypt.Net.BCrypt.Verify(dto.Password,admin.PasswordHash))
+            if (dto == null)
+            {
+                return BadRequest(new { message = "Request body is missing or malformed." });
+            }
+
+            var admin = _adminService.GetAdminByEmail(dto.Email);
+            if (admin == null || !BCrypt.Net.BCrypt.Verify(dto.Password, admin.PasswordHash))
             {
                 return Unauthorized(new { message = "Invalid email or password" });
             }
-            
+
             var token = _jwtService.GenerateToken(admin.Email);
+            admin.JwtToken = token;
 
-            admin.JwtToken = token; 
+            return Ok(new { token });
+        }
 
-            return Ok(new
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] AdminRegisterDTO dto)
+        {
+            if (dto == null || string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.Password))
             {
-               token
-            });
+                return BadRequest(new { message = "Email and password are required." });
+            }
+
+            var existingAdmin = _adminService.GetAdminByEmail(dto.Email);
+            if (existingAdmin != null)
+            {
+                return Conflict(new { message = "Admin already exists with this email." });
+            }
+
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+            var admin = new Admin
+            {
+                Email = dto.Email,
+                PasswordHash = hashedPassword
+            };
+
+            _adminService.CreateAdmin(admin);
+
+            return Ok(new { message = "Admin registered successfully." });
         }
     }
 }

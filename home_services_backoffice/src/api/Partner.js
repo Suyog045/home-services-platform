@@ -5,6 +5,7 @@ import {
   DELETE_PARTNER,
   VERIFY_PARTNER,
   GET_UNVERIFIED_PARTNERS,
+  GET_PARTNERS_BY_CATEGORY_ID,
 } from "./Config";
 
 export const getVerifiedPartners = async () => {
@@ -36,6 +37,17 @@ export const verifyPartner = async (partnerId) => {
     return response.data;
   } catch (error) {
     console.error("Error verifying partner:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const getPartnersByCategoryId = async (categoryId) => {
+  try {
+    const response = await axios.get(GET_PARTNERS_BY_CATEGORY_ID(categoryId));
+    console.log(`Partners for category ${categoryId} fetched:`, response);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching partners for category ${categoryId}:`, error.response?.data || error.message);
     throw error;
   }
 };
