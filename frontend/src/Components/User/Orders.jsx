@@ -187,7 +187,7 @@ const Orders = () => {
                         : order.orderStatus === "COMPLETED"
                         ? "bg-blue-100 text-blue-700"
                         : order.orderStatus === "PAID"
-                        ? "bg-purple-100 text-primary"
+                        ? "bg-purple-100 text-purple-700"
                         : "bg-gray-100 text-gray-700"
                     }`}
                   >

@@ -135,7 +135,7 @@ const UserRegister = () => {
       }
     } catch (error) {
       console.error("Registration failed:", error);
-    toast.error("Registration failed. Please try again.");
+    toast.error("email or phone number already exists");
     }
   };
 

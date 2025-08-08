@@ -16,7 +16,6 @@ import ProfileSection from "./ProfileSection";
 import { usePartnerAuth } from "../../Providers/PartnerAuthContext";
 import { toast } from "react-toastify";
 
-
 export default function PartnerDashboard() {
   const navigate = useNavigate();
   const [showSidebar, setShowSidebar] = useState(true);
@@ -24,7 +23,6 @@ export default function PartnerDashboard() {
   const [partnerProfile, setPartnerProfile] = useState(null);
   const [orders, setOrders] = useState([]);
   const { partner, logout: partnerLogout } = usePartnerAuth();
-  const partnerId = 1;
 
   useEffect(() => {
     fetchPartnerData();
@@ -38,21 +36,21 @@ export default function PartnerDashboard() {
       setOrders(orders);
     } catch (error) {
       console.error("Failed to load partner data", error);
+      toast.error("Failed to load partner data. Please try again later.");
     }
   };
-const handleLogout = () => {
-  if (partner) {
-    partnerLogout();         
-    navigate("/partner");   
-     toast.success("Logged out successfully"); 
-  } else {
-    navigate("/");     
-     toast.success("Logged out successfully");      
-  }
 
- 
-};
+  const handleLogout = () => {
+    if (partner) {
+      partnerLogout();
+      navigate("/partner");
+    } else {
+      navigate("/");
+    }
 
+    toast.dismiss(); 
+    toast.success("Logged out successfully");
+  };
 
   const tabData = [
     { key: "dashboard", label: "Dashboard", icon: <FaTachometerAlt /> },
@@ -61,13 +59,17 @@ const handleLogout = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100 text-gray-900 ">
-     
+    <div className="flex min-h-screen bg-gray-100 text-gray-900">
+      {/* Sidebar */}
       <aside
-        className={`bg-white shadow-lg flex flex-col py-4 px-2 transition-all duration-300 ${showSidebar ? "w-64" : "w-20"}`}
+        className={`bg-white shadow-lg flex flex-col py-4 px-2 transition-all duration-300 ${
+          showSidebar ? "w-64" : "w-20"
+        }`}
       >
         <div className="flex justify-between items-center px-2 mb-4">
-          {showSidebar && <h2 className="text-xl font-bold text-primary">Partner</h2>}
+          {showSidebar && (
+            <h2 className="text-xl font-bold text-primary">Partner</h2>
+          )}
           <button
             onClick={() => setShowSidebar(!showSidebar)}
             className="text-xl text-primary"
@@ -93,10 +95,11 @@ const handleLogout = () => {
           {tabData.map(({ key, label, icon }) => (
             <button
               key={key}
-              className={`flex items-center gap-3 px-4 py-2 rounded transition ${activeTab === key
-                ? "bg-secondary text-white"
-                : "hover:bg-primary/10 text-primary"
-                }`}
+              className={`flex items-center gap-3 px-4 py-2 rounded transition ${
+                activeTab === key
+                  ? "bg-secondary text-white"
+                  : "hover:bg-primary/10 text-primary"
+              }`}
               onClick={() => setActiveTab(key)}
             >
               <span className="text-lg">{icon}</span>
@@ -106,7 +109,7 @@ const handleLogout = () => {
         </nav>
       </aside>
 
-      {/* Main content */}
+      {/* Main Content */}
       <div className="flex flex-col flex-1">
         <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
           <h1 className="text-xl font-bold text-primary">
@@ -117,7 +120,7 @@ const handleLogout = () => {
             className="flex items-center gap-2 bg-secondary text-white px-4 py-2 hover:bg-secondary-hover transition cursor-pointer rounded-4xl"
           >
             <FaSignOutAlt />
-            <span onClick={handleLogout} className="hidden sm:inline">Logout</span>
+            <span className="hidden sm:inline">Logout</span>
           </button>
         </header>
 
@@ -127,9 +130,22 @@ const handleLogout = () => {
           {activeTab === "dashboard" && (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                <StatCard label="Completed Visits" value={orders.filter(o => o.orderStatus === "COMPLETED").length} />
-                <StatCard label="Pending Visits" value={orders.filter(o => o.orderStatus === "PENDING").length} />
-                <StatCard label="Total Earnings" value={`₹${partnerProfile?.totalEarning || 0}`} />
+                <StatCard
+                  label="Completed Visits"
+                  value={
+                    orders.filter((o) => o.orderStatus === "COMPLETED").length
+                  }
+                />
+                <StatCard
+                  label="Pending Visits"
+                  value={
+                    orders.filter((o) => o.orderStatus === "PENDING").length
+                  }
+                />
+                <StatCard
+                  label="Total Earnings"
+                  value={`₹${partnerProfile?.totalEarning || 0}`}
+                />
               </div>
               <UpcomingOrdersTable orders={orders} />
             </>
@@ -139,11 +155,13 @@ const handleLogout = () => {
             <AllOrdersTable
               orders={orders}
               setOrders={setOrders}
-              partnerId={partner.id} 
+              partnerId={partner.id}
             />
           )}
 
-          {activeTab === "profile" && partnerProfile && <ProfileSection partnerProfile={partnerProfile} />}
+          {activeTab === "profile" && partnerProfile && (
+            <ProfileSection partnerProfile={partnerProfile} />
+          )}
         </main>
       </div>
     </div>

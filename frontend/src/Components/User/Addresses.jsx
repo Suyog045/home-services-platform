@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../Providers/AuthContext";
 import axios from "axios";
+import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { toast } from "react-toastify";
 import {
   deleteUserAddress,
@@ -10,6 +12,16 @@ import {
 } from "../../api/User";
 
 const MyAddresses = () => {
+  const [modalData, setModalData] = useState({
+    show: false,
+    type: "",
+    title: "",
+    message: "",
+    confirmAction: null,
+    confirmText: "",
+    confirmColor: "failure",
+  });
+
   const { user } = useAuth();
   const [addresses, setAddresses] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -25,7 +37,7 @@ const MyAddresses = () => {
   const fetchAddresses = async () => {
     if (!user?.id) return;
     try {
-      const res = await getUserAddresses(user.id,user.token);
+      const res = await getUserAddresses(user.id, user.token);
       setAddresses(res);
     } catch (err) {
       console.error("Error fetching addresses", err);
@@ -52,10 +64,15 @@ const MyAddresses = () => {
 
     try {
       if (editingAddressId) {
-        await updateUserAddress(user.id, editingAddressId, newAddress,user.token);
+        await updateUserAddress(
+          user.id,
+          editingAddressId,
+          newAddress,
+          user.token
+        );
         toast.success("Address updated successfully!");
       } else {
-        await addUserAddress(user.id, newAddress,user.token);
+        await addUserAddress(user.id, newAddress, user.token);
         toast.success("Address added successfully!");
       }
       setNewAddress({
@@ -82,13 +99,25 @@ const MyAddresses = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteUserAddress(user.id, id,user.token);
+      await deleteUserAddress(user.id, id, user.token);
       toast.success("Address deleted.");
-      fetchAddresses();
+      fetchAddresses(); // refresh
     } catch (err) {
       console.error("Error deleting address", err);
       toast.error("Failed to delete address.");
     }
+  };
+
+  const confirmDelete = (id) => {
+    setModalData({
+      show: true,
+      type: "delete-address",
+      title: "Delete this address?",
+      message: "This action cannot be undone.",
+      confirmAction: () => handleDelete(id),
+      confirmText: "Yes, Delete",
+      confirmColor: "failure",
+    });
   };
 
   return (
@@ -180,7 +209,7 @@ const MyAddresses = () => {
                 </button>
                 <button
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full cursor-pointer"
-                  onClick={() => handleDelete(addr.id)}
+                  onClick={() => confirmDelete(addr.id)}
                 >
                   Delete
                 </button>
@@ -193,6 +222,52 @@ const MyAddresses = () => {
           No addresses found. Please add an address.
         </p>
       )}
+      <Modal
+        show={modalData.show}
+        size="md"
+        onClose={() => setModalData({ ...modalData, show: false })}
+        popup
+      >
+        <ModalHeader />
+        <ModalBody>
+          <div className="text-center">
+            <HiOutlineExclamationCircle
+              className={`mx-auto mb-4 h-14 w-14 ${
+                modalData.confirmColor === "failure"
+                  ? "text-red-500"
+                  : "text-green-500"
+              }`}
+            />
+            <h3 className="mb-5 text-lg font-semibold text-gray-700">
+              {modalData.title}
+            </h3>
+            {modalData.message && (
+              <p className="text-sm text-gray-500 mb-4">{modalData.message}</p>
+            )}
+            <div className="flex justify-center gap-4">
+              {modalData.confirmAction && (
+                <Button
+                  color={modalData.confirmColor}
+                  onClick={() => {
+                    modalData.confirmAction();
+                    setModalData({ ...modalData, show: false });
+                  }}
+                  className="cursor-pointer"
+                >
+                  {modalData.confirmText || "Confirm"}
+                </Button>
+              )}
+              <Button
+                color="gray"
+                onClick={() => setModalData({ ...modalData, show: false })}
+                className="cursor-pointer"
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
     </div>
   );
 };
