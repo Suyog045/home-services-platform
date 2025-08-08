@@ -10,6 +10,7 @@ import com.homeservices.utils.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@AllArgsConstructor
 @Data
 public class OrderResponse {
 	public Long id;

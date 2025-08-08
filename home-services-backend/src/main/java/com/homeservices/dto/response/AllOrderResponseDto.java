@@ -18,6 +18,6 @@ public class AllOrderResponseDto {
 	public OrderStatus orderStatus;
 	public Double totalCost;
 	public String service;
-	public Long serviceId;
+	public Long categoryId;
 //	public String address;
 }

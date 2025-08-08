@@ -25,7 +25,7 @@ namespace Home_Service_Admin.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, "Admin") // Important for [Authorize(Roles = "Admin")]
+                new Claim(ClaimTypes.Role, "Admin")
             };
 
             var token = new JwtSecurityToken(

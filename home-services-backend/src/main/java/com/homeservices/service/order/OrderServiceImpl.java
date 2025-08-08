@@ -195,7 +195,7 @@ public class OrderServiceImpl implements OrderService {
 			neworder.setServiceDate(order.getServiceDate());
 			neworder.setServiceTime(order.getServiceTime());
 			neworder.setTotalCost(order.getTotalCost());
-			neworder.setServiceId(order.getService().getId());
+			neworder.setCategoryId(order.getService().getCategory().getId());
 			return neworder;
 		}).toList();
 	}
