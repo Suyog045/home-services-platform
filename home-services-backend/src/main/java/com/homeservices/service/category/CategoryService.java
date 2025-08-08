@@ -6,7 +6,9 @@ import com.homeservices.dto.request.CategoryRequestDto;
 import com.homeservices.dto.request.ProvidedServiceRequestDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.CategoryResponseDTO;
+import com.homeservices.dto.response.PartnerResponseDTO;
 import com.homeservices.entities.Category;
+import com.homeservices.entities.Partner;
 import com.homeservices.entities.ProvidedService;
 
 public interface CategoryService {
@@ -25,5 +27,7 @@ public interface CategoryService {
 	ApiResponse deleteCatgory(Long categoryId);
 
 	List<ProvidedService> getServicesByCategoryId(Long categoryId);
+
+	List<PartnerResponseDTO> getPartnersByCategoryId(Long categoryId);
 	
 }
