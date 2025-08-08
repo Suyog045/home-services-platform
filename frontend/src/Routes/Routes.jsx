@@ -7,20 +7,20 @@ import AboutUs from "../pages/AboutUs";
 import ContactUs from "../pages/ContactUs";
 import CheckoutPage from "../pages/ServicePages/CheckoutPage/CheckoutPage";
 import UserProfileLayout from "../pages/User/UserProfileLayout";
-import PersonalInfo from '../Components/User/PersonalInfo';
-import Orders from '../Components/User/Orders';
-import ChangePassword from '../Components/User/ChangePassword';
-import PartnerLogin from '../pages/Partner/PartnerLogin'
-import PartnerRegister from '../pages/Partner/PartnerRegister'
+import PersonalInfo from "../Components/User/PersonalInfo";
+import Orders from "../Components/User/Orders";
+import ChangePassword from "../Components/User/ChangePassword";
+import PartnerLogin from "../pages/Partner/PartnerLogin";
+import PartnerRegister from "../pages/Partner/PartnerRegister";
 import PartnerDashboard from "../Components/Partner/PartnerDashBoard";
 
-import MyAddresses from '../Components/User/Addresses'
-
+import MyAddresses from "../Components/User/Addresses";
 
 import PartnerHome from "../pages/Partner/PartnerHome";
 import ServiceListings from "../Components/ServicesPage/ServiceListings";
 import OrderSuccess from "../Components/ServicesPage/Pages/OrderSuccess/OrderSuccess";
-
+import PrivateRoute from "./PrivateRoutes";
+import ProtectedPartnerRoutes from "./ProtectedPartnerRoutes";
 
 const Routes = createBrowserRouter([
   {
@@ -63,7 +63,11 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/user-profile",
-        element: <UserProfileLayout />,
+        element: (
+          <PrivateRoute>
+            <UserProfileLayout />
+          </PrivateRoute>
+        ),
         children: [
           {
             index: true,
@@ -81,28 +85,26 @@ const Routes = createBrowserRouter([
             path: "change-password",
             element: <ChangePassword />,
           },
-
         ],
       },
       {
         path: "/partner",
         element: <PartnerHome />,
       },
-      {
-    path: "/partner/register",
-    element: <PartnerRegister />
+    ],
   },
   {
     path: "/partner/dashboard",
-    element: <PartnerDashboard />
+    element: (
+      <ProtectedPartnerRoutes>
+        <PartnerDashboard />
+      </ProtectedPartnerRoutes>
+    ),
   },
-    ],
+  {
+    path: "/partner/register",
+    element: <PartnerRegister />,
   },
-  // {
-  //   path: "login",
-  //   element: <PartnerLogin />
-  // },
-  
 ]);
 
 export default Routes;
