@@ -120,7 +120,16 @@
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
         }
-        //Restrict Partner
+        // Partner by categoryId
+
+        public async Task<string> GetPartnersByCategoryId(long categoryId)
+        {
+            string url = $"http://localhost:8080/categories/{categoryId}/partners";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
+        }
+
 
     }
 }

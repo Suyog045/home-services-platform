@@ -1,5 +1,9 @@
 using Home_Service_Admin.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 namespace Home_Service_Admin
 {
     public class Program
@@ -12,50 +16,63 @@ namespace Home_Service_Admin
             {
                 options.AddPolicy("AllowFrontend", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173") // or whatever your React app origin is
+                    policy.WithOrigins("http://localhost:5173") // React app origin
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
             });
 
-
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             builder.Services.AddDbContext<Data.AdminDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            
+
             builder.Services.AddScoped<AdminService>();
             builder.Services.AddScoped<JwtService>();
-            builder.Services.AddAuthentication("Bearer")
-            .AddJwtBearer("Bearer", options =>
-            {
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
-                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
-                        System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
-                };
-            });
-            builder.Services.AddAuthorization();
 
-            //var springBootUrl = builder.Configuration["SpringBootUrl"];
-            //builder.Services.AddHttpClient<SpringBootApiService>();
+            //var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+            //var key = jwtSettings["Key"];
+
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //.AddJwtBearer(options =>
+            //{
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuer = true,
+            //        ValidateAudience = true,
+            //        ValidateLifetime = true,
+            //        ValidateIssuerSigningKey = true,
+            //        ValidIssuer = jwtSettings["Issuer"],
+            //        ValidAudience = jwtSettings["Audience"],
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+            //    };
+            //});
+
+            // Add policy requiring Admin role
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("AdminOnly", policy =>
+            //    {
+            //        policy.RequireRole("Admin");
+            //    });
+            //});
+
+            // Register HttpClient with base address
             builder.Services.AddHttpClient<SpringBootApiService>(client =>
             {
-                client.BaseAddress = new Uri("http://localhost:8080"); // Or use configuration
+                client.BaseAddress = new Uri("http://localhost:8080"); // Or load from config
             });
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -66,15 +83,12 @@ namespace Home_Service_Admin
 
             app.UseCors("AllowFrontend");
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-            
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             app.MapControllers();
 
             app.Run();
         }
     }
-
-  
 }

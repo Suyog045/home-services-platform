@@ -93,6 +93,8 @@ public class PartnerController {
 
 	@PutMapping("/{partnerId}/orders/{orderId}")
 	public ResponseEntity<?> assignOrderToPartner(@PathVariable Long partnerId, @PathVariable Long orderId) {
+		System.out.println("Partner"+partnerId);
+		System.out.println("Partner"+orderId);
 		return ResponseEntity.ok(partnerService.assignOrderToPartner(partnerId, orderId));
 	}
 
