@@ -5,7 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { cancelOrder, getOrdersByUserId } from "../../api/Order";
 import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import PaginationComponent from "../Shared/PaginationComponent";
-import "dotenv";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const Orders = () => {
@@ -188,7 +187,7 @@ const Orders = () => {
                         : order.orderStatus === "COMPLETED"
                         ? "bg-blue-100 text-blue-700"
                         : order.orderStatus === "PAID"
-                        ? "bg-purple-100 text-primary"
+                        ? "bg-purple-100 text-purple-700"
                         : "bg-gray-100 text-gray-700"
                     }`}
                   >
