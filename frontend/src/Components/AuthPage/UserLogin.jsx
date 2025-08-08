@@ -196,15 +196,6 @@ const UserLogin = () => {
                 Log in to your account
               </Button>
             </div>
-            <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
-              Not registered?&nbsp;
-              <p
-                onClick={() => setModalType("Register")}
-                className="text-primary hover:underline dark:text-primary cursor-pointer"
-              >
-                Create account
-              </p>
-            </div>
           </div>
         </ModalBody>
       </Modal>

@@ -1,10 +1,7 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../../Providers/AuthContext';
-
-const UserMenu = () => {
-  const { user } = useAuth();
+const UserMenu = ({userDetails}) => {
   return (
     <div>
       <h2 className="text-lg font-semibold mb-6">Welcome!</h2>
