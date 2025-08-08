@@ -3,8 +3,8 @@
     public class Admin
     {
         public int Id { get; set; }
-        public string Email { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-
+        public string Email { get; set; } = null!; // Not nullable
+        public string PasswordHash { get; set; } = null!; // Not nullable
+        public string? JwtToken { get; set; } // Nullable
     }
 }

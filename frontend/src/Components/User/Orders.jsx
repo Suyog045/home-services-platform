@@ -5,7 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { cancelOrder, getOrdersByUserId } from "../../api/Order";
 import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import PaginationComponent from "../Shared/PaginationComponent";
-import "dotenv";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const Orders = () => {
