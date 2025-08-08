@@ -15,7 +15,7 @@ const UpcomingOrdersTable = ({ orders }) => (
         </tr>
       </thead>
       <tbody>
-        {orders.filter(o => o.orderStatus === "PENDING").map(order => (
+        {orders.filter(o => o.orderStatus === "CONFIRMED").map(order => (
           <tr key={order.id} className="border-b hover:bg-gray-50">
             <td className="p-2">#{order.id}</td>
             <td className="p-2">{order.service}</td>
