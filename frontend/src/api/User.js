@@ -108,5 +108,17 @@ export const getUserById = async (id,token) => {
 };
 
 
+export const resetUserPassword = async (resetPasswordData) => {
+  try {
+    const response = await axios.post(FORGOT_PASSWORD, resetPasswordData);
+    console.log("Password reset response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error resetting password:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
 
 

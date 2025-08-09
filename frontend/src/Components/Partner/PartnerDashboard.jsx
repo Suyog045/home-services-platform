@@ -16,7 +16,6 @@ import ProfileSection from "./ProfileSection";
 import { usePartnerAuth } from "../../Providers/PartnerAuthContext";
 import { toast } from "react-toastify";
 
-
 export default function PartnerDashboard() {
   const navigate = useNavigate();
   const [showSidebar, setShowSidebar] = useState(true);
@@ -50,21 +49,21 @@ export default function PartnerDashboard() {
       }
     } catch (error) {
       console.error("Failed to load partner data", error);
+      toast.error("Failed to load partner data. Please try again later.");
     }
   };
+
   const handleLogout = () => {
     if (partner) {
       partnerLogout();
       navigate("/partner");
-      toast.success("Logged out successfully");
     } else {
       navigate("/");
-      toast.success("Logged out successfully");
     }
 
-
+    toast.dismiss(); 
+    toast.success("Logged out successfully");
   };
-
 
   const tabData = [
     { key: "dashboard", label: "Dashboard", icon: <FaTachometerAlt /> },
@@ -73,13 +72,16 @@ export default function PartnerDashboard() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100 text-gray-900 ">
-
+    <div className="flex min-h-screen bg-gray-100 text-gray-900">
       <aside
-        className={`bg-white shadow-lg flex flex-col py-4 px-2 transition-all duration-300 ${showSidebar ? "w-64" : "w-20"}`}
+        className={`bg-white shadow-lg flex flex-col py-4 px-2 transition-all duration-300 ${
+          showSidebar ? "w-64" : "w-20"
+        }`}
       >
         <div className="flex justify-between items-center px-2 mb-4">
-          {showSidebar && <h2 className="text-xl font-bold text-primary">Partner</h2>}
+          {showSidebar && (
+            <h2 className="text-xl font-bold text-primary">Partner</h2>
+          )}
           <button
             onClick={() => setShowSidebar(!showSidebar)}
             className="text-xl text-primary"
@@ -105,10 +107,11 @@ export default function PartnerDashboard() {
           {tabData.map(({ key, label, icon }) => (
             <button
               key={key}
-              className={`flex items-center gap-3 px-4 py-2 rounded transition ${activeTab === key
-                ? "bg-secondary text-white"
-                : "hover:bg-primary/10 text-primary"
-                }`}
+              className={`flex items-center gap-3 px-4 py-2 rounded transition ${
+                activeTab === key
+                  ? "bg-secondary text-white"
+                  : "hover:bg-primary/10 text-primary"
+              }`}
               onClick={() => setActiveTab(key)}
             >
               <span className="text-lg">{icon}</span>
@@ -118,7 +121,7 @@ export default function PartnerDashboard() {
         </nav>
       </aside>
 
-      {/* Main content */}
+      {/* Main Content */}
       <div className="flex flex-col flex-1">
         <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center cursor-pointer">
           <h1 className="text-xl font-bold text-primary">
@@ -129,7 +132,7 @@ export default function PartnerDashboard() {
             className="flex items-center gap-2 bg-secondary text-white px-4 py-2 hover:bg-secondary-hover transition cursor-pointer rounded-4xl"
           >
             <FaSignOutAlt />
-            <span onClick={handleLogout} className="hidden sm:inline">Logout</span>
+            <span className="hidden sm:inline">Logout</span>
           </button>
         </header>
 
@@ -158,7 +161,9 @@ export default function PartnerDashboard() {
             />
           )}
 
-          {activeTab === "profile" && partnerProfile && <ProfileSection partnerProfile={partnerProfile} />}
+          {activeTab === "profile" && partnerProfile && (
+            <ProfileSection partnerProfile={partnerProfile} />
+          )}
         </main>
       </div>
     </div>

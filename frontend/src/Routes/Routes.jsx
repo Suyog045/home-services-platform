@@ -15,8 +15,10 @@ import PartnerRegister from "../pages/Partner/PartnerRegister";
 import PartnerDashboard from "../Components/Partner/PartnerDashBoard";
 import PartnerUpdateForm from "../Components/Partner/PartnerUpdateForm";
 
+// import { PartnerHome } from "../pages/Partner/PartnerHome";
+import ResetPassword from "../Components/AuthPage/ResetPassword";
 import MyAddresses from "../Components/User/Addresses";
-
+import ForgotPassword from "../Components/AuthPage/ForgotPassword";
 import PartnerHome from "../pages/Partner/PartnerHome";
 import ServiceListings from "../Components/ServicesPage/ServiceListings";
 import OrderSuccess from "../Components/ServicesPage/Pages/OrderSuccess/OrderSuccess";
@@ -32,6 +34,16 @@ const Routes = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
+      },
+
       {
         path: "/services",
         element: <Services />,
