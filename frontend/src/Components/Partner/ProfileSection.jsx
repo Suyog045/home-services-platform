@@ -1,6 +1,6 @@
 export default function ProfileSection({ partnerProfile }) {
   if (!partnerProfile) {
-    return <div>Loading profile...</div>; // or return null if you want to show nothing
+    return <div>Loading profile...</div>; 
   }
 
   return (
