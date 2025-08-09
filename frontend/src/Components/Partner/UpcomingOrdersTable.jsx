@@ -68,14 +68,14 @@ const UpcomingOrdersTable = ({ orders, partnerId, onUpdateSuccess }) => {
                 </div>
               </div>
 
-              {/* Collapsible Details Section */}
+              
               {selectedOrderId === order.id && (
                 <div className="mt-4 pt-4 border-t border-gray-200 space-y-2">
                   <h5 className="font-semibold">Order Details</h5>
                   {/* <p className="text-sm"><strong>Customer Name:</strong> {order.address?.user?.firstName || 'N/A'}</p> */}
                   <p className="text-sm"><strong>Total Cost:</strong> ₹{order.totalCost?.toFixed(2) || '0.00'}</p>
                   
-                  {/* Action Button */}
+                 
                   <div className="pt-2">
                     <button
                       onClick={(e) => handleStartOrder(e, order.id)}
