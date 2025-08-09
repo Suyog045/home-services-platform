@@ -93,14 +93,17 @@ public class PartnerController {
 
 	@PutMapping("/{partnerId}/orders/{orderId}")
 	public ResponseEntity<?> assignOrderToPartner(@PathVariable Long partnerId, @PathVariable Long orderId) {
-		System.out.println("Partner"+partnerId);
-		System.out.println("Partner"+orderId);
 		return ResponseEntity.ok(partnerService.assignOrderToPartner(partnerId, orderId));
 	}
 
-	@PutMapping("/{partnerId}/orders/{orderId}/status")
-	public ResponseEntity<?> updateOrderStatus(@PathVariable Long partnerId, @PathVariable Long orderId) {
-		return ResponseEntity.ok(partnerService.updateOrderStatus(partnerId, orderId));
+	@PutMapping("/{partnerId}/orders/{orderId}/status/completed")
+	public ResponseEntity<?> updateOrderStatusCompleted(@PathVariable Long partnerId, @PathVariable Long orderId) {
+		return ResponseEntity.ok(partnerService.updateOrderStatusCompleted(partnerId, orderId));
+	}
+	
+	@PutMapping("/{partnerId}/orders/{orderId}/status/inprogress")
+	public ResponseEntity<?> updateOrderStatusInProgress(@PathVariable Long partnerId, @PathVariable Long orderId) {
+		return ResponseEntity.ok(partnerService.updateOrderStatusInProgress(partnerId, orderId));
 	}
 
 }

@@ -24,6 +24,7 @@ export default function PartnerDashboard() {
   const [orders, setOrders] = useState([]);
   const { partner, logout: partnerLogout } = usePartnerAuth();
 
+
   useEffect(() => {
     fetchPartnerData();
   }, []);
@@ -34,6 +35,18 @@ export default function PartnerDashboard() {
       const orders = await getPartnerOrders(partner.id);
       setPartnerProfile(profile);
       setOrders(orders);
+      if (
+        !profile.category ||
+        !profile.myAddress ||
+        !profile.myAddress.address ||
+        !profile.myAddress.city ||
+        !profile.myAddress.state ||
+        !profile.myAddress.pincode ||
+        !profile.myAddress.country
+      ) {
+        navigate("/partner/update");
+        toast.info("Please complete your profile details");
+      }
     } catch (error) {
       console.error("Failed to load partner data", error);
       toast.error("Failed to load partner data. Please try again later.");
@@ -60,7 +73,6 @@ export default function PartnerDashboard() {
 
   return (
     <div className="flex min-h-screen bg-gray-100 text-gray-900">
-      {/* Sidebar */}
       <aside
         className={`bg-white shadow-lg flex flex-col py-4 px-2 transition-all duration-300 ${
           showSidebar ? "w-64" : "w-20"
@@ -111,7 +123,7 @@ export default function PartnerDashboard() {
 
       {/* Main Content */}
       <div className="flex flex-col flex-1">
-        <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+        <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center cursor-pointer">
           <h1 className="text-xl font-bold text-primary">
             Home<span className="text-secondary">Mate</span>
           </h1>
@@ -130,24 +142,14 @@ export default function PartnerDashboard() {
           {activeTab === "dashboard" && (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                <StatCard
-                  label="Completed Visits"
-                  value={
-                    orders.filter((o) => o.orderStatus === "COMPLETED").length
-                  }
-                />
-                <StatCard
-                  label="Pending Visits"
-                  value={
-                    orders.filter((o) => o.orderStatus === "PENDING").length
-                  }
-                />
-                <StatCard
-                  label="Total Earnings"
-                  value={`₹${partnerProfile?.totalEarning || 0}`}
-                />
+                <StatCard label="Completed Visits" value={orders.filter(o => o.orderStatus === "COMPLETED").length} />
+                <StatCard label="Pending Visits" value={orders.filter(o => o.orderStatus === "CONFIRMED").length} />
+                <StatCard label="Total Earnings" value={`₹${partnerProfile?.totalEarning || 0}`} />
               </div>
-              <UpcomingOrdersTable orders={orders} />
+              <UpcomingOrdersTable
+                orders={orders}
+                partnerId={partner.id}
+                onUpdateSuccess={fetchPartnerData} />
             </>
           )}
 

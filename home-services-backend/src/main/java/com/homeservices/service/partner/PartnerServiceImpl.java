@@ -87,10 +87,10 @@ public class PartnerServiceImpl implements PartnerService {
 
 		PartnerAddress myAddress = mapper.map(partnerupdateDTO.getMyAddress(), PartnerAddress.class);
 
-		partner.setFirstName(partnerupdateDTO.getFirstName());
-		partner.setLastName(partnerupdateDTO.getLastName());
-		partner.setEmail(partnerupdateDTO.getEmail());
-		partner.setPhoneNumber(partnerupdateDTO.getPhoneNumber());
+//		partner.setFirstName(partnerupdateDTO.getFirstName());
+//		partner.setLastName(partnerupdateDTO.getLastName());
+//		partner.setEmail(partnerupdateDTO.getEmail());
+//		partner.setPhoneNumber(partnerupdateDTO.getPhoneNumber());
 		partner.setExperience(partnerupdateDTO.getExperience());
 		partner.setBirthDate(partnerupdateDTO.getBirthDate());
 		partner.setCategory(category);
@@ -184,7 +184,7 @@ public class PartnerServiceImpl implements PartnerService {
 
 		order.setOrderStatus(OrderStatus.CONFIRMED);
 		orderRepository.save(order);
-		
+
 		partner.getMyOrders().add(order);
 		partnerRepository.save(partner);
 		return new ApiResponse("Order with Id " + orderId + " Assigned to Partner " + partnerId);
@@ -222,7 +222,7 @@ public class PartnerServiceImpl implements PartnerService {
 	}
 
 	@Override
-	public ApiResponse updateOrderStatus(Long partnerId, Long orderId) {
+	public ApiResponse updateOrderStatusCompleted(Long partnerId, Long orderId) {
 		Partner partner = partnerRepository.findById(partnerId)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Partner ID"));
 
@@ -239,11 +239,37 @@ public class PartnerServiceImpl implements PartnerService {
 
 		order.setOrderStatus(OrderStatus.COMPLETED);
 		order.setCompletionDate(LocalDate.now());
+		partner.setNoOfOrders(partner.getNoOfOrders() + 1);
+
+		partner.setTotalEarning(partner.getTotalEarning() + order.getService().getPrice());
 
 		orderRepository.save(order);
+		partnerRepository.save(partner);
 
 		return new ApiResponse("Order with ID " + orderId + " marked as COMPLETED.");
 
+	}
+
+	@Override
+	public ApiResponse updateOrderStatusInProgress(Long partnerId, Long orderId) {
+		Partner partner = partnerRepository.findById(partnerId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Partner ID"));
+
+		Order order = orderRepository.findById(orderId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Order ID"));
+
+		if (!partner.getMyOrders().contains(order)) {
+			throw new ApiException("This order is not assigned to the specified partner.");
+		}
+
+		if (order.getOrderStatus() == OrderStatus.INPROGRESS) {
+			throw new ApiException("Order is already marked as COMPLETED.");
+		}
+
+		order.setOrderStatus(OrderStatus.INPROGRESS);
+		orderRepository.save(order);
+
+		return new ApiResponse("Order with ID " + orderId + " marked as INPROGRESS");
 	}
 
 }
