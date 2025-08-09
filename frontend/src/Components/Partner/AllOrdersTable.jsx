@@ -1,18 +1,56 @@
 import React from "react";
-import { updateOrderStatus } from "../../api/Partner"; 
+import {
+  updateOrderStatusCompleted,
+  updateOrderStatusInProgress,
+} from "../../api/Partner";
 
 const AllOrdersTable = ({ orders, setOrders, partnerId }) => {
-  const handleMarkCompleted = async (orderId) => {
+  const handleStatusUpdate = async (orderId, currentStatus) => {
     try {
-      await updateOrderStatus(partnerId, orderId); 
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.id === orderId ? { ...order, orderStatus: "COMPLETED" } : order
-        )
-      );
+      let newStatus;
+
+      if (currentStatus === "CONFIRMED") {
+        await updateOrderStatusInProgress(partnerId, orderId);
+        newStatus = "INPROGRESS";
+      } else if (currentStatus === "INPROGRESS") {
+        await updateOrderStatusCompleted(partnerId, orderId);
+        newStatus = "COMPLETED";
+      }
+
+      if (newStatus) {
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === orderId ? { ...order, orderStatus: newStatus } : order
+          )
+        );
+      }
     } catch (error) {
       console.error("Failed to update order status", error);
       alert("Something went wrong while updating the order.");
+    }
+  };
+
+  const getStatusButton = (order) => {
+    if (order.orderStatus === "CONFIRMED") {
+      return (
+        <button
+          onClick={() => handleStatusUpdate(order.id, order.orderStatus)}
+          className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+        >
+          Start
+        </button>
+      );
+    } else if (order.orderStatus === "INPROGRESS") {
+      return (
+        <button
+          onClick={() => handleStatusUpdate(order.id, order.orderStatus)}
+          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+        >
+          Mark Completed
+        </button>
+      );
+    } else {
+      return null;
     }
   };
 
@@ -42,22 +80,15 @@ const AllOrdersTable = ({ orders, setOrders, partnerId }) => {
                 className={`p-2 font-semibold ${
                   order.orderStatus === "COMPLETED"
                     ? "text-green-600"
+                    : order.orderStatus === "INPROGRESS"
+                    ? "text-blue-600"
                     : "text-yellow-600"
                 }`}
               >
                 {order.orderStatus}
               </td>
               <td className="p-2">₹{order.totalCost}</td>
-              <td className="p-2">
-                {order.orderStatus !== "COMPLETED" && (
-                  <button
-                    onClick={() => handleMarkCompleted(order.id)}
-                    className="bg-secondary text-white px-3 py-1 rounded hover:bg-secondary-hover"
-                  >
-                    Mark Completed
-                  </button>
-                )}
-              </td>
+              <td className="p-2">{getStatusButton(order)}</td>
             </tr>
           ))}
         </tbody>

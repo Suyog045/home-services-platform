@@ -45,6 +45,8 @@ public interface PartnerService {
 
 	List<PartnerResponseDTO> getByVerificationStatusFalse();
 
-	ApiResponse updateOrderStatus(Long partnerId, Long orderId);
+	ApiResponse updateOrderStatusCompleted(Long partnerId, Long orderId);
+
+	ApiResponse updateOrderStatusInProgress(Long partnerId, Long orderId);
 
 }
