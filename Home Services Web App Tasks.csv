@@ -1,0 +1,38 @@
+HOME SERVICES WEB APP TASKS - GENERATED FROM PLAKY ( TASK MANAGEMENT TOOL),,,,,,,
+Group,Item Parent Id,Item/Subitem Id,Title,Status,Priority,Assigned To,Deadline
+Product Backlog,,3471595,Partner Panel,Done,High,SuYoG,21-07-2025
+Product Backlog,,3471596,User Dashboard,Done,High,"Rutvik Raut,Viranj Masdekar",21-07-2025
+Product Backlog,,3471627,Admin Panel,Done,High,MD Mahboob alam ansari,21-07-2025
+Product Backlog,,3471594,About Us Page,Done,High,MD Mahboob alam ansari,15-06-2025
+Product Backlog,,3533843,Contact Us Page,Done,High,SuYoG,15-06-2025
+Product Backlog,,3523052,User Login and Register,Done,High,Rutvik Raut,21-07-2025
+Product Backlog,,3471587,Contact Page wireframe,Done,High,Rutvik Raut,15-06-2025
+Product Backlog,,3523053,Partner Login and Register,Done,High,Rutvik Raut,21-07-2025
+Sprint 1,3471571,3471583,Home Page,Done,High,Rutvik Raut,
+Sprint 1,3471569,3471609,User,,High,MD Mahboob alam ansari,
+Sprint 1,3471571,3471584,Login & SignUp,Done,High,MD Mahboob alam ansari,
+Sprint 1,3471569,3471610,Partner,Done,High,SuYoG,
+Sprint 1,3471571,3471585,Orders Page,Done,High,Rutvik Raut,
+Sprint 1,3471569,3471611,Orders,,High,Rutvik Raut,
+Sprint 1,,3034526,Create SRS Document,Done,High,Viranj Masdekar,01-06-2025
+Sprint 1,3471571,3471586,Services Page,Done,High,Rutvik Raut,
+Sprint 1,3471569,3471612,Admin,Done,High,Viranj Masdekar,
+Sprint 1,,3471569,Database Design,Done,High,"MD Mahboob alam ansari,Viranj Masdekar,SuYoG,Rutvik Raut",01-06-2025
+Sprint 1,3471571,3522898,Add date slot options,Done,High,Rutvik Raut,
+Sprint 1,,3471565,Create User Flow,Done,High,"MD Mahboob alam ansari,Rutvik Raut",01-06-2025
+Sprint 1,3471571,3471588,Partner Page,Done,High,SuYoG,
+Sprint 1,,3471571,Create website design,Done,High,Rutvik Raut,01-06-2025
+Sprint 2,,3471592,Home Page,Done,High,Rutvik Raut,15-06-2025
+Sprint 2,,3471593,Services Page,Done,High,Viranj Masdekar,15-06-2025
+Sprint 3 Backend Development (Backoffice),,3471614,Backoffice Backend,Done,Medium,,24-07-2025
+Sprint 3 Backend Development (Backoffice),3851181,3851184,User and UserAddress,Done,High,MD Mahboob alam ansari,28-07-2025
+Sprint 3 Backend Development (Backoffice),3851181,3851187,Partner and PartnerAddress,Done,High,SuYoG,28-07-2025
+Sprint 3 Backend Development (Backoffice),3851181,3851188,Category and Services,Done,High,Rutvik Raut,28-07-2025
+Sprint 3 Backend Development (Backoffice),,3471616,Connect Frontend and Backen (BackOffice)d,Done,Medium,Viranj Masdekar,27-07-2025
+Sprint 3 Backend Development (Backoffice),3851181,3851189,"Admin , Orders and Payment",Done,High,Rutvik Raut,28-07-2025
+Sprint 3 Backend Development (Backoffice),,3851181,create models,Done,High,"Rutvik Raut,Viranj Masdekar,SuYoG,MD Mahboob alam ansari",
+Sprint 4 Backend Development (Front Office),,3935304,User Backend,Done,High,MD Mahboob alam ansari,07-08-2025
+Sprint 4 Backend Development (Front Office),,3935305,Admin Backend,Done,High,Viranj Masdekar,07-08-2025
+Sprint 4 Backend Development (Front Office),,3935306,Orders/Service Scheduling Backend,Done,High,Rutvik Raut,07-08-2025
+Sprint 4 Backend Development (Front Office),,3935307,Partner Backend,,High,SuYoG,07-08-2025
+Sprint 5,,3471617,Testing,Done,High,"Rutvik Raut,Viranj Masdekar,SuYoG,MD Mahboob alam ansari",11-08-2025
