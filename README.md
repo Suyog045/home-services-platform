@@ -5,7 +5,6 @@ Built with:
 - **React** for the user-facing frontend
 - **Spring Boot** for the core backend API
 - **ASP.NET Core** for the admin backend  
-Based on a modern [Figma UI design](https://www.figma.com/design/WHTTDWaYzRBYknqPoweXKf/Housing-Services?node-id=0-1&t=W85xXQylwvhiiOrS-1).
 
 ---
 
