@@ -8,7 +8,7 @@ const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
     <div className="flex justify-center mt-4">
       <Pagination
         currentPage={currentPage}
-        totalPages={totalPages}
+        totalPages={totalPages || 1}
         onPageChange={onPageChange}
         showIcons
         previousLabel="Back"
