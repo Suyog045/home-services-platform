@@ -11,6 +11,7 @@ export const REGISTER_USER = `${BASE_URL}/user/register`;
 export const LOGIN_USER = `${BASE_URL}/auth/login`;
 export const GET_USER_BY_ID = (id) => `${BASE_URL}/user/${id}`;
 export const UPDATE_USER = (id) => `${BASE_URL}/user/${id}`;
+export const FORGOT_PASSWORD = `${BASE_URL}/auth/forgot-password`;
 
 export const GET_USER_ADDRESSES = (userId) => `${BASE_URL}/user/${userId}/addresses`;
 export const DELETE_USER_ADDRESS = (userId, addressId) => `${BASE_URL}/user/${userId}/addresses/${addressId}`;
@@ -47,7 +48,8 @@ export const DELETE_PARTNER = (partnerId) => `${BASE_URL}/partner/${partnerId}`;
 export const GET_PARTNER_ORDERS = (partnerId) => `${BASE_URL}/partner/${partnerId}/orders`;
 export const GET_PARTNER_EARNINGS = (partnerId) => `${BASE_URL}/partner/${partnerId}/earnings`;
 export const GET_PARTNER_SERVICES = (partnerId) => `${BASE_URL}/partner/${partnerId}/services`;
-export const UPDATE_ORDER_STATUS_PARTNER=(partnerId, orderId)=> `${BASE_URL}/partner/${partnerId}/orders/${orderId}/status`;
+export const UPDATE_ORDER_STATUS_COMPLETED=(partnerId, orderId)=> `${BASE_URL}/partner/${partnerId}/orders/${orderId}/status/completed`;
+export const UPDATE_ORDER_STATUS_INPROGRESS=(partnerId, orderId)=> `${BASE_URL}/partner/${partnerId}/orders/${orderId}/status/inprogress`;
 
 export const VERIFY_PARTNER = (partnerId) => `${BASE_URL}/partner/${partnerId}/verify`;
 export const ASSIGN_ORDER_TO_PARTNER = (partnerId, orderId) =>

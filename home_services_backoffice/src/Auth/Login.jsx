@@ -1,28 +1,38 @@
-import { Avatar, Box, Container, Paper, Typography } from "@mui/material";
+import React, { useState } from "react";
 import {
+  Avatar,
+  Box,
+  Container,
+  Paper,
+  Typography,
   Button,
   TextField,
   InputLabel,
   OutlinedInput,
   InputAdornment,
   IconButton,
+  FormControl,
 } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import React, { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Login = (props) => {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleMouseDownPassword = (event) => event.preventDefault();
   const handleMouseUpPassword = (event) => event.preventDefault();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (props.onLogin) {
-      props.onLogin(); 
+      props.onLogin({ email, password });  // Pass email and password up
     }
   };
+
   return (
     <Container maxWidth="xs">
       <Paper
@@ -30,7 +40,7 @@ const Login = (props) => {
         sx={{
           mt: 18,
           p: 4,
-          backgroundColor: "rgba(255, 255, 255, 0.05)", // transparent white
+          backgroundColor: "rgba(255, 255, 255, 0.05)", 
           backdropFilter: "blur(8px)",
           border: "1px solid rgba(255, 255, 255, 0.2)",
           borderRadius: 2,
@@ -54,6 +64,8 @@ const Login = (props) => {
             label="Email Address"
             name="email"
             autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: "rgba(255, 255, 255, 0.6)" },
@@ -103,13 +115,13 @@ const Login = (props) => {
             <OutlinedInput
               id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
                     aria-label={
-                      showPassword
-                        ? "hide the password"
-                        : "display the password"
+                      showPassword ? "hide the password" : "show the password"
                     }
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}

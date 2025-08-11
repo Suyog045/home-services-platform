@@ -12,13 +12,12 @@ export const getAllOrders = async () => {
 };
 
 export const assignOrderToPartner = async (orderId, partnerId) => {
-  const url = ASSIGN_ORDER_TO_PARTNER(partnerId, orderId);
-  console.log("Assigning order with URL:", url);
   try {
-    const response = await axios.put(url);
+    const response = await axios.put(ASSIGN_ORDER_TO_PARTNER(orderId, partnerId));
+    console.log("Order assigned successfully:", response);
     return response.data;
   } catch (error) {
-    console.error("Failed to assign order:", error);
+    console.error("Error assigning order to partner:", error.response?.data || error.message);
     throw error;
   }
 };

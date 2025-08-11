@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { registerPartner } from "../../api/Partner";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function PartnerRegistration() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phoneNumber: "",
     password: "",
+    confirmPassword: "", 
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,23 +27,35 @@ export default function PartnerRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+   
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return; 
+    }
+
+    setIsSubmitting(true); 
+
     try {
-      const response = await registerPartner(formData);
-      alert("Partner registered successfully!");
+     
+      const { confirmPassword, ...payload } = formData; 
+
+      const response = await registerPartner(payload); 
+      toast.success("Partner registered successfully! Please log in.");
       console.log("Registered Partner:", response);
-      // Optionally reset form
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        password: "",
-      });
+      
+     
+      navigate("/partner"); 
+      
     } catch (error) {
-      alert("Partner registration failed. Please try again.");
-      console.log(error)
+      
+      if (error.response && error.response.data.message.includes("already exists")) {
+          toast.error("A user with this email or phone number already exists.");
+      } else {
+          toast.error("Partner registration failed. Please try again.");
+      }
+      console.log(error);
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false); 
     }
   };
 
@@ -99,6 +115,16 @@ export default function PartnerRegistration() {
             className={inputClass}
             required
           />
+          
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className={inputClass}
+            required
+          />
 
           <button
             type="submit"
@@ -108,6 +134,19 @@ export default function PartnerRegistration() {
             {isSubmitting ? "Registering..." : "Register"}
           </button>
         </form>
+
+       
+        <div className="text-center mt-6">
+          <p className="text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link
+              to="/partner"
+              className="font-medium text-yellow-600 hover:text-yellow-700"
+            >
+              Log in
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

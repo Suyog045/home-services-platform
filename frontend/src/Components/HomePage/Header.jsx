@@ -1,5 +1,8 @@
 import {
+  Button,
   createTheme,
+  Dropdown,
+  DropdownItem,
   Navbar,
   NavbarBrand,
   NavbarCollapse,
@@ -14,6 +17,8 @@ import { useAuth } from "../../Providers/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { usePartnerAuth } from "../../Providers/PartnerAuthContext";
+import { useBooking } from "../../hooks/useBooking";
+import { CgProfile } from "react-icons/cg";
 
 const customTheme = createTheme({
   navbar: {
@@ -37,16 +42,15 @@ const Header = () => {
   const { partner, logout: partnerLogout } = usePartnerAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { clearCart } = useBooking();
 
   const isPartnerRoute = location.pathname.startsWith("/partner");
-    
 
-  // List of routes where Header should be hidden
   const hideHeaderRoutes = ["/partner/dashboard"];
 
   const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
 
-  if(shouldHideHeader) return null;
+  if (shouldHideHeader) return null;
 
   const handleLogout = () => {
     if (partner) {
@@ -56,6 +60,7 @@ const Header = () => {
       logout();
       navigate("/");
     }
+    clearCart();
     toast.success("Logged out successfully");
   };
   return (
@@ -100,18 +105,23 @@ const Header = () => {
           )}
           {user || partner ? (
             <>
-              <Link
-                to={partner ? "/partner/dashboard" : "/user-profile"}
-                className="text-primary font-medium hover:text-secondary transition"
+              <Dropdown
+                label={
+                  <CgProfile className="text-2xl text-primary cursor-pointer" />
+                }
+                inline
               >
-                {partner ? "Partner Profile" : "Profile"}
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="text-red-500 font-medium hover:text-red-700 transition"
-              >
-                Logout
-              </button>
+                <DropdownItem
+                  onClick={() =>
+                    navigate(partner ? "/partner/dashboard" : "/user-profile")
+                  }
+                >
+                  {partner ? "Partner Dashboard" : "Profile"}
+                </DropdownItem>
+                <DropdownItem onClick={handleLogout} className="text-red-500">
+                  Logout
+                </DropdownItem>
+              </Dropdown>
             </>
           ) : (
             <>
@@ -119,11 +129,10 @@ const Header = () => {
               {!isPartnerRoute ? (
                 <SharedButton setModalType={setModalType} label="Register" />
               ) : (
-                <Link
-                  to="/partner/register"
-                  className="text-primary font-medium hover:text-secondary transition border border-primary rounded px-3 py-1"
-                >
-                  Partner Register
+                <Link to="/partner/register">
+                  <Button className="bg-secondary rounded-4xl hover:bg-secondary cursor-pointer w-24 text-nowrap font-medium">
+                    Register
+                  </Button>
                 </Link>
               )}
             </>

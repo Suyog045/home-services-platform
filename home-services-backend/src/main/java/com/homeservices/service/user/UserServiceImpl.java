@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
 	private final ModelMapper userMapper;
 	private final AppUserRepository appUserRepository;
 	private final PasswordEncoder passwordEncoder;
+	
 
 	@Override
 	public UserResponseDto registerUser(UserRequestDto dto) {
@@ -46,10 +47,8 @@ public class UserServiceImpl implements UserService {
 		newUser.setDeleted(false);
 
 		User savedUser = userRepository.save(newUser);
-
 		AppUser appUser = AppUser.builder().email(savedUser.getEmail()).password(savedUser.getPassword())
 				.role(Role.USER).referenceId(savedUser.getId()).entityType("USER").build();
-
 		appUserRepository.save(appUser);
 
 		return userMapper.map(savedUser, UserResponseDto.class);
@@ -64,25 +63,26 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserResponseDto updateUser(Long id, UpdateUserDto dto) {
-		User oldUser = userRepository.findByIdAndIsDeletedFalse(id)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found !!"));
-		oldUser.setFirstName(dto.getFirstName());
-		oldUser.setLastName(dto.getLastName());
-		oldUser.setEmail(dto.getEmail());
-		oldUser.setPhone(dto.getPhone());
-		oldUser.setProfileImg(dto.getProfileImg());
+	    User oldUser = userRepository.findByIdAndIsDeletedFalse(id)
+	            .orElseThrow(() -> new ResourceNotFoundException("User not found !!"));
 
-		if (oldUser.getAddresses() != null && !oldUser.getAddresses().isEmpty()) {
-			UserAddress address = oldUser.getAddresses().stream().filter(a -> !a.isDeleted()).findFirst().orElse(null);
+	    if (dto.getFirstName() != null) {
+	        oldUser.setFirstName(dto.getFirstName());
+	    }
+	    if (dto.getLastName() != null) {
+	        oldUser.setLastName(dto.getLastName());
+	    }
+	    if (dto.getEmail() != null) {
+	        oldUser.setEmail(dto.getEmail());
+	    }
+	    if (dto.getPhone() != null) {
+	        oldUser.setPhone(dto.getPhone());
+	    }
+	    if (dto.getProfileImg() != null) {
+	        oldUser.setProfileImg(dto.getProfileImg());
+	    }
 
-			if (address != null) {
-				address.setCity(dto.getCity());
-				address.setState(dto.getState());
-				address.setPincode(dto.getPincode());
-			}
-		}
-
-		return userMapper.map(userRepository.save(oldUser), UserResponseDto.class);
+	    return userMapper.map(userRepository.save(oldUser), UserResponseDto.class);
 	}
 
 	@Override
@@ -100,8 +100,10 @@ public class UserServiceImpl implements UserService {
 	public ChangePasswordDto updatePassword(Long userId , UpdatePasswordDto dto) {
 		   User user = userRepository.findByIdAndIsDeletedFalse(userId)
 				   .orElseThrow(()-> new ResourceNotFoundException("user not found "));
-		   user.setPassword(dto.getPassword());
-		 
+		   user.setPassword(passwordEncoder.encode(dto.getPassword()));
+		   AppUser appUser = appUserRepository.findByReferenceId(userId).orElseThrow(()-> new ResourceNotFoundException("user not found "));
+		   appUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+		   appUserRepository.save(appUser);
 		return userMapper.map(userRepository.save(user), ChangePasswordDto.class);
 	}
 

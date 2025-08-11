@@ -2,7 +2,7 @@ import React from 'react';
 import { Pagination } from 'flowbite-react';
 
 const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
-  if (totalPages <= 1) return null;
+ 
 
   return (
     <div className="flex justify-center mt-4">

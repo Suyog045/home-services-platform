@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  Checkbox,
   createTheme,
   HelperText,
   Label,
@@ -15,7 +14,7 @@ import { useAuth } from "../../Providers/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 import { userLogin } from "../../api/User";
 import { usePartnerAuth } from "../../Providers/PartnerAuthContext";
 
@@ -181,7 +180,7 @@ const UserLogin = () => {
             </div>
             <div className="flex justify-between">
               <a
-                href="#"
+                href="/forgot-password"
                 className="text-sm text-primary hover:underline dark:text-primary"
               >
                 Forgot Password?
@@ -195,15 +194,6 @@ const UserLogin = () => {
               >
                 Log in to your account
               </Button>
-            </div>
-            <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
-              Not registered?&nbsp;
-              <p
-                onClick={() => setModalType("Register")}
-                className="text-primary hover:underline dark:text-primary cursor-pointer"
-              >
-                Create account
-              </p>
             </div>
           </div>
         </ModalBody>

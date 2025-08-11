@@ -1,5 +1,7 @@
 package com.homeservices.entities;
 
+import java.time.LocalDateTime;
+
 import com.homeservices.utils.Role;
 
 import jakarta.persistence.Column;
@@ -27,5 +29,9 @@ public class AppUser extends BaseEntity {
 	private Role role;
 	private Long referenceId;
 	private String entityType;
+	@Column(name = "verify_token")
+	private String verifyToken;
+	@Column(name = "verify_token_expiry")
+	private LocalDateTime verifyTokenExpiry;
 
 }

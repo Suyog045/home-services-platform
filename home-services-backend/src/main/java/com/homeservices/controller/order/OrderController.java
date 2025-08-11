@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.homeservices.dto.request.OrderRequestDto;
+import com.homeservices.dto.response.AllOrderResponseDto;
 import com.homeservices.dto.response.ApiResponse;
 import com.homeservices.dto.response.OrderResponse;
 import com.homeservices.entities.Order;
@@ -38,7 +39,7 @@ public class OrderController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto,userId));
 	}
 	@GetMapping
-	public ResponseEntity<List<Order>> getAllOrders(){
+	public ResponseEntity<List<AllOrderResponseDto>> getAllOrders(){
 		return ResponseEntity.ok(orderService.getAllOrders());
 	}
 	

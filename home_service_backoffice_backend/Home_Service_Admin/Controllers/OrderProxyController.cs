@@ -6,6 +6,7 @@ namespace Home_Service_Admin.Controllers
 {
     [ApiController]
     [Route("api/admin/orders")]
+    //[Authorize(Roles = "Admin")]
     public class OrderProxyController : ControllerBase
     {
         private readonly SpringBootApiService _springService;
@@ -15,7 +16,6 @@ namespace Home_Service_Admin.Controllers
         }
 
         [HttpGet("test")]
-   
         public async Task<IActionResult> GetAllTasks()
         {
             var data = await _springService.GetTestAsync();
@@ -81,10 +81,17 @@ namespace Home_Service_Admin.Controllers
         [HttpPut("partner/{partnerId}/orders/{orderId}")]
         public async Task<IActionResult> AssignOrderToPartner(long partnerId, long orderId)
         {
-            var result = await _springService.AssignOrderToPartner(partnerId, orderId);
+            var result = await _springService.AssignOrderToPartner(orderId, partnerId);
             return Content(result, "application/json");
         }
 
+        [HttpGet("{categoryId}/partners")]
+        public async Task<IActionResult> GetPartnerByCategoryId([FromRoute] long categoryId)
+        {
+            var result = await _springService.GetPartnersByCategoryId(categoryId);
+            //return Content(result, "application/json");
+            return Ok(result);
+        }
     }
 
 }
