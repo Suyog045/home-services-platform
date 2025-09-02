@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { placeOrder } from "../../../../api/Order";
 import { useBooking } from "../../../../hooks/useBooking";
-import { useAuth } from "../../../../Providers/AuthContext";
+import { useAuth } from "../../../../providers/AuthContext";
+import { toast } from "react-toastify";
 
-const CheckOutOrder = ({ services }) => {
+const CheckOut = ({ services }) => {
   const [basePrice, setBasePrice] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [tax, setTax] = useState(0);
@@ -30,10 +31,9 @@ const CheckOutOrder = ({ services }) => {
     try {
       await placeOrder(user.id, bookingDetails,user.token);
       clearCart();
-      navigate("/services/order-success"); // or "/payment-success"
+      navigate("/services/booking-success");
     } catch (error) {
-      console.error("Order placement failed:", error);
-      // optionally show a toast or alert here
+      toast.error("Something went wrong");
     }
   };
 
@@ -75,7 +75,7 @@ const CheckOutOrder = ({ services }) => {
             className="bg-green-600 hover:bg-green-700 w-full cursor-pointer"
             onClick={handlePlaceOrder}
           >
-            Place Order
+            Schedule Now
           </Button>
         </div>
       </div>
@@ -83,4 +83,4 @@ const CheckOutOrder = ({ services }) => {
   );
 };
 
-export default CheckOutOrder;
+export default CheckOut;

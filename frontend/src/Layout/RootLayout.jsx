@@ -1,6 +1,6 @@
-import Header from "../Components/HomePage/Header";
+import Header from "../components/Home/Header";
 import { Outlet } from "react-router-dom";
-import FootBar from "../Components/HomePage/Footer";
+import FootBar from "../components/Home/Footer";
 
 const RootLayout = () => {
   return (

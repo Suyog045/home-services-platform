@@ -10,13 +10,12 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useAuthModal } from "../../hooks/useAuthModal";
-import { useAuth } from "../../Providers/AuthContext";
+import { useAuth } from "../../providers/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { userLogin } from "../../api/User";
-import { usePartnerAuth } from "../../Providers/PartnerAuthContext";
+import { usePartnerAuth } from "../../providers/PartnerAuthContext";
 
 const customTheme = createTheme({
   root: {
@@ -72,7 +71,7 @@ const customTheme = createTheme({
   },
 });
 const UserLogin = () => {
-  const { isModalOpen, closeModal, modalType, setModalType } = useAuthModal();
+  const { isModalOpen, closeModal, modalType } = useAuthModal();
   const { login } = useAuth();
   const {login: partnerLogin} = usePartnerAuth()
   const [email, setEmail] = useState();
@@ -93,7 +92,6 @@ const UserLogin = () => {
   const handleLogin = async () => {
     try {
       const res = await userLogin({ email, password });
-      console.log("Login response:", res);
       if (res?.role === "USER" || res?.entityType === "USER") {
       login(res);
       toast.success("Login successful!");

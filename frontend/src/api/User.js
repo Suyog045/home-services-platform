@@ -94,7 +94,6 @@ export const updateUserPassword = async (userId, passwordData, token) => {
 
 export const getUserById = async (id,token) => {
   try {
-    console.log(token)
     const response = await axios.get(GET_USER_BY_ID(id),{
       headers: {
         Authorization: `Bearer ${token}`,
@@ -111,7 +110,6 @@ export const getUserById = async (id,token) => {
 export const resetUserPassword = async (resetPasswordData) => {
   try {
     const response = await axios.post(FORGOT_PASSWORD, resetPasswordData);
-    console.log("Password reset response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error resetting password:", error.response?.data || error.message);

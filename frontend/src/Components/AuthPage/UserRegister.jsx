@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../Providers/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -127,7 +126,6 @@ const UserRegister = () => {
   const handleRegister = async () => {
     try {
       const data = await userRegistration(userData);
-      console.log("Registration response:", data);
       if (data) {
          toast.success("Registration successful!");
         closeModal();

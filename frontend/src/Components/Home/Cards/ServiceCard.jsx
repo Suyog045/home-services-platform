@@ -1,6 +1,5 @@
 import { Button } from "flowbite-react";
 import React from "react";
-import { SharedButton } from "../../Shared/SharedButton";
 
 const ServiceCard = () => {
   return (

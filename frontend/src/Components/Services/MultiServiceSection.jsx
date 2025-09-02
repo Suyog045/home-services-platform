@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import ServicePageCard from "./Card/ServicePageCard";
+import ServicePageCard from "./Cards/ServicePageCard";
 import { MdCleaningServices, MdDesignServices, MdElectricalServices, MdOutlineMiscellaneousServices, MdPestControl } from "react-icons/md";
 import { GrCompliance, GrShieldSecurity, GrUpgrade } from "react-icons/gr";
 import { GiAutoRepair } from "react-icons/gi";
 import { SiRenovate } from "react-icons/si";
 import {Link} from "react-router-dom"
-import ShowMoreCard from "./Card/ShowMoreCard";
+import ShowMoreCard from "./Cards/ShowMoreCard";
 import { getAllCategories } from "../../api/CatalogService";
 
 const MultiServiceSection = () => {

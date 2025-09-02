@@ -13,10 +13,10 @@ import {
 import { SharedButton } from "../Shared/SharedButton";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuthModal } from "../../hooks/useAuthModal";
-import { useAuth } from "../../Providers/AuthContext";
+import { useAuth } from "../../providers/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { usePartnerAuth } from "../../Providers/PartnerAuthContext";
+import { usePartnerAuth } from "../../providers/PartnerAuthContext";
 import { useBooking } from "../../hooks/useBooking";
 import { CgProfile } from "react-icons/cg";
 

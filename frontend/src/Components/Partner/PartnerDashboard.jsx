@@ -13,7 +13,7 @@ import StatCard from "./StatCard";
 import UpcomingOrdersTable from "./UpcomingOrdersTable";
 import AllOrdersTable from "./AllOrdersTable";
 import ProfileSection from "./ProfileSection";
-import { usePartnerAuth } from "../../Providers/PartnerAuthContext";
+import { usePartnerAuth } from "../../providers/PartnerAuthContext";
 import { toast } from "react-toastify";
 
 export default function PartnerDashboard() {

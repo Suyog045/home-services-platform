@@ -1,11 +1,8 @@
-// src/pages/ResetPassword.jsx
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Label, TextInput, Button } from "flowbite-react";
 import { toast } from "react-toastify";
 import axios from "axios";
-
-
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -50,8 +47,7 @@ const ResetPassword = () => {
   useEffect(() => {
   const checkToken = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/auth/validate-token?token=${token}`);
-      console.log("Token validation response:", response.data);
+      await axios.get(`http://localhost:8080/auth/validate-token?token=${token}`);
     } catch (error) {
       console.error("Token validation failed:", error);
       toast.error(error?.response?.data?.message || "Invalid or expired token");
@@ -66,8 +62,6 @@ const ResetPassword = () => {
     navigate("/login");
   }
 }, [token]);
-
-
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../Providers/AuthContext";
+import { useAuth } from "../../providers/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { cancelOrder, getOrdersByUserId } from "../../api/Order";
@@ -7,8 +7,8 @@ import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import PaginationComponent from "../Shared/PaginationComponent";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-const Orders = () => {
-  const [orders, setOrders] = useState([]);
+const Bookings = () => {
+  const [bookings, setBookings] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [modalData, setModalData] = useState({
     show: false,
@@ -21,44 +21,41 @@ const Orders = () => {
   });
 
   const [selectedOrderId, setSelectedOrderId] = useState(null);
-  const ordersPerPage = 5;
-
+  const bookingsPerPage = 5;
   const { user } = useAuth();
 
-  const fetchOrders = async () => {
+  const fetchbookings = async () => {
     try {
       const response = await getOrdersByUserId(user.id, user.token);
-      setOrders(response);
-      if (response.length === 0) {
-        toast.info("You have no orders yet.");
-      }
+      setBookings(response);
     } catch (error) {
-      console.error("Error fetching orders:", error);
-      toast.error("Failed to fetch orders.");
+      console.error("Error fetching bookings:", error);
+      toast.error("Failed to fetch bookings.");
     }
   };
   useEffect(() => {
     if (user?.id) {
-      fetchOrders();
+      fetchbookings();
     }
   }, [user]);
 
   const handleCancelOrder = async (orderId) => {
     try {
-      await cancelOrder(orderId); // Your API call
-      fetchOrders(); // Refresh orders after cancel
+      await cancelOrder(orderId);
+      fetchbookings();
       toast.success("Order canceled successfully");
     } catch (error) {
+      console.log(error);
       toast.error("Failed to cancel order");
     } finally {
-      setShowCancelModal(false);
+      // setShowCancelModal(false);
       setSelectedOrderId(null);
     }
   };
 
   const handlePayment = async (orderId) => {
     try {
-      const selectedOrder = orders.find((order) => order.id === orderId);
+      const selectedOrder = bookings.find((order) => order.id === orderId);
       const amount = selectedOrder.totalCost;
 
       const res = await fetch(
@@ -74,7 +71,6 @@ const Orders = () => {
       );
 
       const { orderId: razorpayOrderId } = await res.json();
-      console.log(import.meta.env.VITE_RAZORPAY_KEY_ID);
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: amount * 100,
@@ -110,8 +106,8 @@ const Orders = () => {
               confirmText: "",
               confirmColor: "success",
             });
-            setOrders((prevOrders) =>
-              prevOrders.map((o) =>
+            setBookings((prevbookings) =>
+              prevbookings.map((o) =>
                 o.id === orderId ? { ...o, orderStatus: "PAID" } : o
               )
             );
@@ -138,77 +134,77 @@ const Orders = () => {
   };
 
   const statusPriority = {
-    COMPLETED: 1,
-    IN_PROGRESS: 2,
-    CONFIRMED: 3,
-    PENDING: 4,
+    PENDING: 1,
+    CONFIRMED: 2,
+    IN_PROGRESS: 3,
+    COMPLETED: 4,
     PAID: 5,
     CANCELLED: 6,
   };
 
-  const sortedOrders = [...orders].sort((a, b) => {
+  const sortedbookings = [...bookings].sort((a, b) => {
     const priorityA = statusPriority[a.orderStatus] || 5;
     const priorityB = statusPriority[b.orderStatus] || 5;
     return priorityA - priorityB;
   });
 
-  const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
-  const indexOfLast = currentPage * ordersPerPage;
-  const indexOfFirst = indexOfLast - ordersPerPage;
-  const currentOrders = sortedOrders.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(sortedbookings.length / bookingsPerPage);
+  const indexOfLast = currentPage * bookingsPerPage;
+  const indexOfFirst = indexOfLast - bookingsPerPage;
+  const currentbookings = sortedbookings.slice(indexOfFirst, indexOfLast);
 
   return (
     <div className="bg-white p-6 rounded w-full max-w-2xl mx-auto">
       <h2 className="text-lg font-semibold mb-6 text-center sm:text-left">
-        My Orders
+        My bookings
       </h2>
-      {orders.length === 0 ? (
-        <p className="text-center text-gray-500">No orders yet.</p>
+      {bookings.length === 0 ? (
+        <p className="text-center text-gray-500">No bookings yet.</p>
       ) : (
         <>
           <div className="space-y-4">
-            {currentOrders.map((order) => (
+            {currentbookings.map((booking) => (
               <div
-                key={order.id}
+                key={booking.id}
                 className="p-4 border border-gray-200 rounded shadow hover:shadow-md transition"
               >
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2">
                   <h3 className="text-md font-semibold text-primary">
-                    {order.service}
+                    {booking.service}
                   </h3>
                   <span
                     className={`text-sm px-2 py-1 rounded ${
-                      order.orderStatus === "CONFIRMED"
+                      booking.orderStatus === "CONFIRMED"
                         ? "bg-green-100 text-green-700"
-                        : order.orderStatus === "PENDING"
+                        : booking.orderStatus === "PENDING"
                         ? "bg-yellow-100 text-yellow-700"
-                        : order.orderStatus === "CANCELLED"
+                        : booking.orderStatus === "CANCELLED"
                         ? "bg-red-100 text-red-700"
-                        : order.orderStatus === "COMPLETED"
+                        : booking.orderStatus === "COMPLETED"
                         ? "bg-blue-100 text-blue-700"
-                        : order.orderStatus === "PAID"
+                        : booking.orderStatus === "PAID"
                         ? "bg-purple-100 text-purple-700"
                         : "bg-gray-100 text-gray-700"
                     }`}
                   >
-                    {order.orderStatus}
+                    {booking.orderStatus}
                   </span>
                 </div>
 
                 <p className="text-sm text-gray-600">
-                  📅 {order.date} at 🕒 {order.serviceTime}
+                  📅 {booking.serviceDate} at 🕒 {booking.serviceTime}
                 </p>
-                <p className="text-sm text-gray-600">📍 {order.address}</p>
+                <p className="text-sm text-gray-600">📍 {booking.address}</p>
 
-                {order.orderStatus === "PENDING" && (
+                {booking.orderStatus === "PENDING" && (
                   <Button
                     onClick={() => {
                       setModalData({
                         show: true,
-                        type: "cancel-order",
-                        title: "Cancel this order?",
+                        type: "cancel-booking",
+                        title: "Cancel this booking?",
                         message: "This action cannot be undone.",
-                        confirmAction: () => handleCancelOrder(order.id),
+                        confirmAction: () => handleCancelOrder(booking.id),
                         confirmText: "Yes, Cancel",
                         confirmColor: "failure",
                       });
@@ -216,13 +212,13 @@ const Orders = () => {
                     color="failure"
                     className="mt-3 bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition cursor-pointer"
                   >
-                    Cancel Order
+                    Cancel Booking
                   </Button>
                 )}
 
-                {order.orderStatus === "COMPLETED" && (
+                {booking.orderStatus === "COMPLETED" && (
                   <Button
-                    onClick={() => handlePayment(order.id)}
+                    onClick={() => handlePayment(booking.id)}
                     className="mt-3 bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-700 cursor-pointer transition"
                   >
                     Make A Payment
@@ -290,4 +286,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default Bookings;

@@ -1,5 +1,4 @@
 import React, { createContext, useState } from 'react'
-import RootLayout from '../Layout/RootLayout';
 
 export const AuthModalContext = createContext(undefined);
 const AuthModalProvider = ({children}) => {

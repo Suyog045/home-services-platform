@@ -1,25 +1,25 @@
 import { Button } from "flowbite-react";
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useBooking } from "../../../hooks/useBooking";
-import { useAuth } from "../../../Providers/AuthContext";
+import { useAuth } from "../../../providers/AuthContext";
 import { useAuthModal } from "../../../hooks/useAuthModal";
 
 const ServiceProfileCard = ({ service }) => {
-  const { bookingDetails, addServiceId } = useBooking();
+  const { bookingDetails, addServiceId, removeService } = useBooking();
   const { user } = useAuth();
   const { openModal, setModalType } = useAuthModal();
 
   const isAdded = bookingDetails.serviceIds.includes(service.id);
-
-  console.log(bookingDetails);
   const handleAddService = () => {
     if (!user) {
       setModalType("Login");
       openModal();
       return;
     }
-    if (!isAdded) {
+    if (isAdded) {
+      removeService(service.id);
+    }else{
       addServiceId(service.id);
     }
   };
@@ -42,10 +42,10 @@ const ServiceProfileCard = ({ service }) => {
         <p className="text-green-600 font-semibold mb-2">Available</p>
         <Button
           onClick={handleAddService}
-          disabled={isAdded}
-          className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-secondary-hover cursor-pointer"
+          // disabled={isAdded}
+          className={`${isAdded ? "bg-red-600 hover:bg-red-500" : "bg-secondary hover:bg-secondary-hover"} text-white px-4 py-2 rounded-full  cursor-pointer`}
         >
-          {isAdded ? "Added" : "Add"}
+          {isAdded ? "Remove" : "Add"}
         </Button>
       </div>
     </div>

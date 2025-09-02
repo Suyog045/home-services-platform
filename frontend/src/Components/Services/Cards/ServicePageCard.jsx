@@ -13,7 +13,7 @@ const ServicePageCard = ({ category,serviceIcon }) => {
         </div>
         </div>
         <div className="flex items-center w-full h-full">
-          <p className='text-[10px] font-semibold mb-2 break-words text-wrap px-2'>{category}</p>
+          <p className='text-[12px] font-bold mb-2 break-words text-wrap px-2'>{category}</p>
         </div>
       </div>
     </div>

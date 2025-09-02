@@ -1,15 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ServiceHeroSection from "./ServiceHeroSection";
 import MultiServiceSection from "./MultiServiceSection";
 import ServiceListings from "./ServiceListings";
 import BookSlot from "./BookSlot";
-import { BookingProvider } from "../../Providers/BookingContextProvider";
-import { useAuth } from "../../Providers/AuthContext";
-import { useAuthModal } from "../../hooks/useAuthModal";
+import { useAuth } from "../../providers/AuthContext";
 
 const ServicesLayout = () => {
   const {user} = useAuth()
-  const { openModal, setModalType } = useAuthModal();
   return (
     <div className="text-primary mx-20">
       <ServiceHeroSection />

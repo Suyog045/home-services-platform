@@ -1,8 +1,8 @@
 import { RouterProvider } from "react-router-dom";
-import Routes from "./Routes/Routes";
+import Routes from "./routes/Routes";
 import { ThemeConfig } from "flowbite-react";
 import { useEffect, useState } from "react";
-import Preloader from "./Components/Shared/PreLoader";
+import Preloader from "./components/Shared/PreLoader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

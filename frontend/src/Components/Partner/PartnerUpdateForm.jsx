@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updatePartner, getPartnerById } from "../../api/Partner";
-import { usePartnerAuth } from "../../Providers/PartnerAuthContext";
+import { usePartnerAuth } from "../../providers/PartnerAuthContext";
 import { toast } from "react-toastify";
 import { getAllCategories } from "../../api/CatalogService";
 import "react-toastify/dist/ReactToastify.css";

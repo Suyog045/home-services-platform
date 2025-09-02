@@ -1,4 +1,3 @@
-// Preloader.jsx
 import React, { useEffect, useState } from "react";
 import "./Preloader.css";
 import { FaBroom, FaHammer, FaWrench } from "react-icons/fa";
