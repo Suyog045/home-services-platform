@@ -3,24 +3,25 @@ import { useBooking } from "../../../../hooks/useBooking";
 import { Button } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
-const OrderSummary = ({ services }) => {
+
+const BookingSummary = ({ services }) => {
   const { bookingDetails,removeService } = useBooking();
-  let navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleRemove = (serviceId) => {
     removeService(serviceId);
   };
 
-  // useEffect(() => {
-  //   if (!bookingDetails.serviceIds || bookingDetails.serviceIds.length === 0) {
-  //     navigate("/services");
-  //   }
-  // }, [bookingDetails.serviceIds, navigate]);
+  useEffect(()=>{
+    if(bookingDetails?.serviceIds?.length == 0 && location.pathname !== "/services/booking-success"){
+    navigate("/services");
+    }
+  },[bookingDetails?.serviceIds?.length,navigate])
 
   
   return (
     <div className="p-6 w-full">
-      <h2 className="text-2xl font-bold mb-6 text-center">Order Summary</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">Service Booking Summary</h2>
       <div className="space-y-4">
         {services.map((service) => (
           <div
@@ -44,4 +45,4 @@ const OrderSummary = ({ services }) => {
   );
 };
 
-export default OrderSummary;
+export default BookingSummary;

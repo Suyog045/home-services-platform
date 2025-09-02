@@ -4,7 +4,7 @@ import { Button, Label } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useBooking } from "../../hooks/useBooking";
 import { useAuthModal } from "../../hooks/useAuthModal";
-import { useAuth } from "../../Providers/AuthContext";
+import { useAuth } from "../../providers/AuthContext";
 
 const BookSlot = () => {
   const { bookingDetails, setServiceDate, setServiceTime } = useBooking();

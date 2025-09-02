@@ -9,7 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useBooking } from "../../../../hooks/useBooking";
 import { getUserAddresses } from "../../../../api/User";
-import { useAuth } from "../../../../Providers/AuthContext";
+import { useAuth } from "../../../../providers/AuthContext";
 
 const AddressForm = () => {
   const navigate = useNavigate();
@@ -70,7 +70,6 @@ const AddressForm = () => {
     if (!isValid()) return;
 
     setAddress(addressDetails);
-    console.log("Success");
     navigate("/services/checkout");
   };
   
@@ -85,7 +84,6 @@ const AddressForm = () => {
         const response = await getUserAddresses(user.id,user.token);
         setSavedAddresses(response)
       }
-      console.log(savedAddresses)
 
       fetchUserAddresses()
     },[])
@@ -93,7 +91,7 @@ const AddressForm = () => {
   return (
     <div className="flex w-full">
       <div className="flex flex-col items-center justify-center w-full mx-4 gap-6">
-        <h1 className="text-xl font-semibold mt-4">Shipping Information</h1>
+        <h1 className="text-xl font-semibold mt-4">Address Information</h1>
 
         <form
           className="max-w-2xl pb-5 rounded-md w-full space-y-5"

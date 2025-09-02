@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthModal } from "../hooks/useAuthModal";
-import { usePartnerAuth } from "../Providers/PartnerAuthContext";
+import { usePartnerAuth } from "../providers/PartnerAuthContext";
 
 const ProtectedPartnerRoutes = ({ children }) => {
   const { partner } = usePartnerAuth();

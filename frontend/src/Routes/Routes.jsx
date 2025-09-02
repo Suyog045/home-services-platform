@@ -8,20 +8,20 @@ import ContactUs from "../pages/ContactUs";
 import CheckoutPage from "../pages/ServicePages/CheckoutPage/CheckoutPage";
 import UserProfileLayout from "../pages/User/UserProfileLayout";
 import PersonalInfo from "../Components/User/PersonalInfo";
-import Orders from "../Components/User/Orders";
+import Orders from "../components/User/Bookings";
 import ChangePassword from "../Components/User/ChangePassword";
 import PartnerLogin from "../pages/Partner/PartnerLogin";
 import PartnerRegister from "../pages/Partner/PartnerRegister";
-import PartnerDashboard from "../Components/Partner/PartnerDashBoard";
-import PartnerUpdateForm from "../Components/Partner/PartnerUpdateForm";
+import PartnerDashboard from "../components/Partner/PartnerDashBoard";
+import PartnerUpdateForm from "../components/Partner/PartnerUpdateForm";
 
 // import { PartnerHome } from "../pages/Partner/PartnerHome";
-import ResetPassword from "../Components/AuthPage/ResetPassword";
-import MyAddresses from "../Components/User/Addresses";
-import ForgotPassword from "../Components/AuthPage/ForgotPassword";
+import ResetPassword from "../components/AuthPage/ResetPassword";
+import MyAddresses from "../components/User/Addresses";
+import ForgotPassword from "../components/AuthPage/ForgotPassword";
 import PartnerHome from "../pages/Partner/PartnerHome";
-import ServiceListings from "../Components/ServicesPage/ServiceListings";
-import OrderSuccess from "../Components/ServicesPage/Pages/OrderSuccess/OrderSuccess";
+import ServiceListings from "../components/Services/ServiceListings";
+import BookingConfirmation from "../components/Services/Booking/BookingConfirmation";
 import PrivateRoute from "./PrivateRoutes";
 import ProtectedPartnerRoutes from "./ProtectedPartnerRoutes";
 
@@ -63,8 +63,8 @@ const Routes = createBrowserRouter([
         element: <CheckoutPage />,
       },
       {
-        path: "/services/order-success",
-        element: <OrderSuccess />,
+        path: "/services/booking-success",
+        element: <BookingConfirmation />,
       },
       {
         path: "/about-us",
@@ -87,7 +87,7 @@ const Routes = createBrowserRouter([
             element: <PersonalInfo />,
           },
           {
-            path: "myorders",
+            path: "mybookings",
             element: <Orders />,
           },
           {

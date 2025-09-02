@@ -2,9 +2,9 @@ import React from "react";
 import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { AiFillCheckCircle } from "react-icons/ai";
-import { useBooking } from "../../../../hooks/useBooking";
+import { useBooking } from "../../../hooks/useBooking";
 
-const OrderSuccess = () => {
+const BookingConfirmation = () => {
     const {clearCart} = useBooking();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -14,7 +14,7 @@ const OrderSuccess = () => {
         </div>
 
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-          Order Received!
+          Booking Details Received
         </h2>
 
         <p className="text-gray-600 mb-4">
@@ -26,9 +26,9 @@ const OrderSuccess = () => {
         </p>
 
         <div className="flex flex-col gap-3 mt-6">
-          <Link to="/user-profile/myorders">
+          <Link to="/user-profile/mybookings">
             <Button color="gray" className="w-full cursor-pointer">
-              View My Orders
+              View My Bookings
             </Button>
           </Link>
           <Link to="/services">
@@ -42,4 +42,4 @@ const OrderSuccess = () => {
   );
 };
 
-export default OrderSuccess;
+export default BookingConfirmation;

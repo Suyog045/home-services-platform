@@ -1,5 +1,5 @@
 import React from 'react'
-import AddressForm from '../../../Components/ServicesPage/Pages/CheckOutPage/AddressForm'
+import AddressForm from '../../../components/Services/Booking/CheckOut/AddressForm'
 
 const AddressFormPage = () => {
   return (

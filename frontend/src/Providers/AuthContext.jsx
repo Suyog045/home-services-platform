@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : null;
   } catch (error) {
     console.error("Error parsing user from localStorage:", error);
-    localStorage.removeItem("user"); // clean up bad data
+    localStorage.removeItem("user");
     return null;
   }
 });

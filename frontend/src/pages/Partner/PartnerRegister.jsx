@@ -41,7 +41,6 @@ export default function PartnerRegistration() {
 
       const response = await registerPartner(payload); 
       toast.success("Partner registered successfully! Please log in.");
-      console.log("Registered Partner:", response);
       
      
       navigate("/partner"); 
@@ -53,7 +52,6 @@ export default function PartnerRegistration() {
       } else {
           toast.error("Partner registration failed. Please try again.");
       }
-      console.log(error);
     } finally {
       setIsSubmitting(false); 
     }

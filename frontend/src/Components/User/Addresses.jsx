@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../../Providers/AuthContext";
-import axios from "axios";
+import { useAuth } from "../../providers/AuthContext";
 import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { toast } from "react-toastify";
@@ -55,7 +54,6 @@ const MyAddresses = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("Submitting address:", newAddress);
     const { address, pincode, city, state, country } = newAddress;
     if (!address || !pincode || !city || !state || !country) {
       toast.warn("Please fill in all fields.");

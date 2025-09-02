@@ -1,9 +1,7 @@
-// src/pages/ForgotPassword.jsx
 import React, { Fragment, useState } from "react";
 import { Label, TextInput, Button, HelperText } from "flowbite-react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

@@ -3,7 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 
-const UserMenu = ({userDetails}) => {
+const UserMenu = () => {
  
   return (
     <div>
@@ -23,13 +23,13 @@ const UserMenu = ({userDetails}) => {
         </li>
         <li>
           <NavLink 
-            to="myorders"
+            to="mybookings"
             className={({ isActive }) =>
               `block px-3 py-2 rounded cursor-pointer ${
                 isActive ? 'bg-secondary text-white' : 'hover:bg-primary'
               }`
             }>
-            My Orders
+            My Bookings
           </NavLink>
         </li>
         <li>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import ServiceProfileCard from "./Card/ServiceProfileCard";
+import ServiceProfileCard from "./Cards/ServiceProfileCard";
 import { Button, Pagination } from "flowbite-react";
 import { getServicesByCategoryId } from "../../api/CatalogService";
 import { useParams } from "react-router-dom";
 import PaginationComponent from "../Shared/PaginationComponent";
-import { useAuth } from "../../Providers/AuthContext";
+import { useAuth } from "../../providers/AuthContext";
 
 const ServiceListings = () => {
   const { categoryId } = useParams();
@@ -44,14 +44,16 @@ const ServiceListings = () => {
         ))}
       </div>
 
-      {/* Pagination Component */}
-      <div className="flex justify-center mt-4">
+      {
+        totalPages > 1 &&
+        (<div className="flex justify-center mt-4">
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={(page) => setCurrentPage(page)}
         />
-      </div>
+      </div>)
+      }
     </div>
   );
 };

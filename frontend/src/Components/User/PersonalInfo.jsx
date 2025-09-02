@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import profileImg from "../../../public/images/profile.png"; // adjust path if needed
 import { Button } from "flowbite-react";
 import axios from "axios";
-import { useAuth } from "../../Providers/AuthContext";
+import { useAuth } from "../../providers/AuthContext";
 import { UPDATE_USER } from "../../api/config";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,7 +12,6 @@ const PersonalInfo = () => {
   const userDetails = useOutletContext();
 
   const { user, login } = useAuth();
-  console.log(userDetails);
   const [formData, setFormData] = useState({ ...userDetails });
   const [editable, setEditable] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
